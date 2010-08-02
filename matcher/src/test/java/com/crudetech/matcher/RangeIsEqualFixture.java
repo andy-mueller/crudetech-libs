@@ -13,11 +13,12 @@ package com.crudetech.matcher;
 
 import org.junit.Test;
 
+import java.util.Arrays;
+
 import static com.crudetech.matcher.RangeIsEqual.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsNot.not;
-import java.util.Arrays;
 
 public class RangeIsEqualFixture {
     @Test

@@ -13,6 +13,7 @@ package com.crudetech.matcher;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
+
 import java.awt.geom.Point2D;
 
 import static com.crudetech.matcher.FloatingPointMatcher.equ;

@@ -10,12 +10,14 @@
 ////////////////////////////////////////////////////////////////////////////////
 package com.crudetech.matcher;
 
-import org.hamcrest.Matcher;
 import org.hamcrest.Description;
-import static org.hamcrest.core.IsNot.not;
 import org.hamcrest.Factory;
+import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
+
 import java.util.Iterator;
+
+import static org.hamcrest.core.IsNot.not;
 
 
 public final class RangeHasSize {

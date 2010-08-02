@@ -315,4 +315,8 @@ public final class Matrix3d implements ToleranceComparable<Matrix3d> {
     public static Matrix3d createScaleZ(double scaleZ) {
         return createScale(1.0, 1.0, scaleZ);
     }
+
+    public static Matrix3d createRotationInRadians(Point3d pt, Vector3d axis, double angle) {
+        throw new UnsupportedOperationException("This operation is not supported yet!");
+    }
 }

@@ -11,11 +11,12 @@
 package com.crudetech.matcher;
 
 
-import java.awt.geom.Rectangle2D;
 import org.hamcrest.Description;
 import org.hamcrest.Factory;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
+
+import java.awt.geom.Rectangle2D;
 
 import static com.crudetech.matcher.FloatingPointMatcher.equ;
 

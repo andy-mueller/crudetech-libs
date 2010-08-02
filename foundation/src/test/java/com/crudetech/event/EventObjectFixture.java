@@ -10,7 +10,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 package com.crudetech.event;
 
-import com.crudetech.unittests.EquivalentObjectFixture;
 import org.junit.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;

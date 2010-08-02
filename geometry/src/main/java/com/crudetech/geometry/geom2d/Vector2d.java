@@ -107,4 +107,8 @@ public final class Vector2d implements ToleranceComparable<Vector2d> {
     public double getLength() {
         return Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
     }
+
+    public Vector2d negate() {
+        return new Vector2d(-x, -y);
+    }
 }

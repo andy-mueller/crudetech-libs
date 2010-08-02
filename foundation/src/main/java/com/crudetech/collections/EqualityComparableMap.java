@@ -13,7 +13,10 @@ package com.crudetech.collections;
 import com.crudetech.lang.EqualityComparer;
 import functional.UnaryFunction;
 
-import java.util.*;
+import java.util.AbstractMap;
+import java.util.Collection;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * A {@link java.util.Map} adapter implementation that uses a passed in {@link com.crudetech.lang.EqualityComparer}

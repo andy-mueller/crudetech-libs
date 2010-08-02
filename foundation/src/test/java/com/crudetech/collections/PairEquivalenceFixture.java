@@ -13,7 +13,9 @@ package com.crudetech.collections;
 import com.crudetech.unittests.EquivalentObjectFixture;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
+
 import java.util.Collection;
+
 import static java.util.Arrays.asList;
 
 @RunWith(Parameterized.class)

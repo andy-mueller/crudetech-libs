@@ -40,10 +40,8 @@ public class Verify {
      * @param actual The computed value being compared.
      * @param matcher An expression, built of {@link Matcher}s, specifying allowed
      *                values.
-     *
-     * @see org.hamcrest.CoreMatchers
      */
-    public static <T> void verifyThat(T actual, Matcher<? super T> matcher) {
+    public static <T> void  verifyThat(T actual, Matcher<? super T> matcher) {
         verifyThat("", actual, matcher);
     }
 
@@ -65,8 +63,6 @@ public class Verify {
      * @param actual The computed value being compared.
      * @param matcher An expression, built of {@link Matcher}s, specifying allowed
      *                values.
-     *
-     * @see org.hamcrest.CoreMatchers
      */
     public static <T> void verifyThat(String reason, T actual, Matcher<? super T> matcher) {
         if (!matcher.matches(actual)) {

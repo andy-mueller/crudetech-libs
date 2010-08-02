@@ -127,4 +127,8 @@ public final class Point2d implements ToleranceComparable<Point2d> {
     public Vector2d toVector2d() {
         return new Vector2d(x, y);
     }
+
+    public Point2d transformBy(Matrix2d matrix2d) {
+        return matrix2d.multiply(this);
+    }
 }

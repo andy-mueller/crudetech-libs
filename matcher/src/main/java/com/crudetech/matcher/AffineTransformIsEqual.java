@@ -10,10 +10,11 @@
 ////////////////////////////////////////////////////////////////////////////////
 package com.crudetech.matcher;
 
-import java.awt.geom.AffineTransform;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
+
+import java.awt.geom.AffineTransform;
 
 /**
  * This class provides a {@link org.hamcrest.Matcher } implementations for {@link java.awt.geom.AffineTransform}

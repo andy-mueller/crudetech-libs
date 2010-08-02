@@ -14,7 +14,6 @@ import com.crudetech.unittests.EquivalentObjectFixture;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
-import java.awt.geom.Point2D;
 import java.util.Collection;
 
 import static java.util.Arrays.asList;

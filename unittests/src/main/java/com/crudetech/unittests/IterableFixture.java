@@ -18,9 +18,9 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsNot.not;
 import static org.hamcrest.core.IsNull.nullValue;
-import static org.hamcrest.MatcherAssert.assertThat;
 
 public abstract class IterableFixture<T> {
     protected abstract Iterable<T> createIterable();

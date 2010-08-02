@@ -10,7 +10,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 package com.crudetech.event;
 
-import com.crudetech.collections.Pair;
 import com.crudetech.unittests.EquivalentObjectFixture;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;

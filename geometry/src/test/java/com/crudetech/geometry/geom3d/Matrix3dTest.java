@@ -10,6 +10,8 @@
 ////////////////////////////////////////////////////////////////////////////////
 package com.crudetech.geometry.geom3d;
 
+import com.crudetech.geometry.geom.RadianAngles;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static com.crudetech.geometry.geom.Matrix.column;
@@ -286,6 +288,16 @@ public class Matrix3dTest {
 
         Matrix3d rotY = Matrix3d.createRotationAroundYAxisInRadians(30 * Math.PI / 180);
         Vector3d result = rotY.multiply(v);
+
+        assertThat(result, is(new Vector3d(1.0, 0.0, 0.0)));
+    }
+    @Test
+    @Ignore
+    public void rotationAroundArbitraryAxisRotatesPoint(){
+        Vector3d v = new Vector3d(0.5 * sqrt(3), 0.0, 0.5);
+
+        Matrix3d rot = Matrix3d.createRotationInRadians(new Point3d(2,5,7), new Vector3d(1,2,3), RadianAngles.k30);
+        Vector3d result = rot.multiply(v);
 
         assertThat(result, is(new Vector3d(1.0, 0.0, 0.0)));
     }

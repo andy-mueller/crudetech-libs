@@ -33,6 +33,7 @@
         <module>unittests</module>
         <module>query</module>
         <module>geometry</module>
+        <module>graphics2d</module>
     </modules>
     <developers>
         <developer>
@@ -103,7 +104,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-javadoc-plugin</artifactId>
-                    <version>2.6.1</version>
+                    <version>2.7</version>
                     <configuration>
                         <encoding>UTF-8</encoding>
                     </configuration>
@@ -204,7 +205,7 @@
             <artifactId>easymock</artifactId>
             <scope>test</scope>
         </dependency>
-        <dependency>
+        <dependency>                                                            
             <groupId>org.easymock</groupId>
             <artifactId>easymockclassextension</artifactId>
             <scope>test</scope>

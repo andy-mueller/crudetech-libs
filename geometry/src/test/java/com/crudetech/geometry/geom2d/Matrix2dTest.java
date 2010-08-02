@@ -10,6 +10,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 package com.crudetech.geometry.geom2d;
 
+import com.crudetech.geometry.geom.RadianAngles;
 import org.junit.Test;
 
 import static com.crudetech.geometry.geom.Matrix.column;
@@ -255,4 +256,89 @@ public class Matrix2dTest {
 
         assertThat(result, is(new Point2d(2, 1)));
     }
+    @Test
+    public void scaleRespectsCenter(){
+        Point2d center = new Point2d(1, 1);
+
+        Matrix2d scale = Matrix2d.createScale(2, 3, center) ;
+
+        assertThat(new Point2d(2,2).transformBy(scale), is(new Point2d(3, 4)));
+    }
+    @Test
+    public void scaleRespectsCenter2(){
+        Point2d center = new Point2d(2, 2);
+
+        Matrix2d scale = Matrix2d.createScale(2, 3, center) ;
+
+        assertThat(new Point2d(1, 1).transformBy(scale), is(new Point2d(0, -1)));
+    }
+
+    @Test
+    public void scaleRespectsOffsetCenter(){
+        Point2d center = new Point2d(1, 1);
+
+        Matrix2d trans = Matrix2d.createTranslation(1, 2);
+
+        Matrix2d scale = Matrix2d.createScale(2, 3, center) ;
+
+        Matrix2d mx = Matrix2d.preMultiply(trans, scale);
+
+        assertThat(new Point2d(2,2).transformBy(mx), is(new Point2d(4, 6)));
+    }
+
+    @Test
+    public void inverse() {
+        Matrix2d m = new Matrix2d(new double[][]{
+                {6, 7, 2},
+                {5, 4, 5},
+                {0, 0, 1},
+        });
+
+        Matrix2d i = m.inverse();
+
+        assertThat(i.multiply(m), is(Matrix2d.Identity));
+    }
+
+    @Test
+    public void preMultAddsNextXFormGlobally(){
+        Point2d p = new Point2d(1, 1);
+
+        Matrix2d rot45 = Matrix2d.createRotationInRadians(RadianAngles.k45);
+        Matrix2d trans11 = Matrix2d.createTranslation(1, 1);
+
+        Matrix2d mx = Matrix2d.preMultiply(trans11, rot45);
+
+        Point2d actual = mx.multiply(p);
+
+        assertThat(actual, is(new Point2d(1, 1 + sqrt(2))));
+    }
+
+    @Test
+    public void postMultAddsNextXFormOnLastXform(){
+        Point2d p = new Point2d(1, 1);
+
+        Matrix2d rot45 = Matrix2d.createRotationInRadians(RadianAngles.k45);
+        Matrix2d trans11 = Matrix2d.createTranslation(1, 1);
+
+        Matrix2d mx = Matrix2d.postMultiply(rot45, trans11);
+
+        Point2d actual = mx.multiply(p);
+
+        assertThat(actual, is(new Point2d(0, 2*sqrt(2))));
+    }
+    @Test
+    public void postMultWithScaleAddsNextXFormOnLastXform(){
+        Point2d p = new Point2d(1, 1);
+
+        Matrix2d rot45 = Matrix2d.createRotationInRadians(RadianAngles.k45);
+        Matrix2d trans11 = Matrix2d.createTranslation(1, 1);
+        Matrix2d scale = Matrix2d.createScale(2, 2);
+
+        Matrix2d mx = Matrix2d.postMultiply(rot45, trans11, scale);
+
+        Point2d actual = mx.multiply(p);
+
+        assertThat(actual, is(new Point2d(0, 3*sqrt(2))));
+    }
+
 }

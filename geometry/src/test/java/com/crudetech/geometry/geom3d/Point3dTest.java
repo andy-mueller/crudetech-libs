@@ -12,10 +12,10 @@ package com.crudetech.geometry.geom3d;
 
 import org.junit.Test;
 
+import static com.crudetech.matcher.FloatingPointMatcher.equalTo;
 import static com.crudetech.matcher.FloatingPointMatcher.withTol;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
-import static com.crudetech.matcher.FloatingPointMatcher.equalTo;
 
 
 public class Point3dTest {

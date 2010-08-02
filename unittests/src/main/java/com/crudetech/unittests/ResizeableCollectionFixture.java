@@ -11,7 +11,9 @@
 package com.crudetech.unittests;
 
 import org.junit.Test;
+
 import java.util.Collection;
+
 import static java.util.Arrays.asList;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;

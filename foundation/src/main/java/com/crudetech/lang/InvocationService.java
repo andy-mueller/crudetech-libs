@@ -11,7 +11,10 @@
 package com.crudetech.lang;
 
 import javax.swing.*;
-import java.util.concurrent.*;
+import java.util.concurrent.Callable;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.FutureTask;
 
 /**
  * When implemented, it offers several methods to dispatch a {@link Runnable} to another thread.

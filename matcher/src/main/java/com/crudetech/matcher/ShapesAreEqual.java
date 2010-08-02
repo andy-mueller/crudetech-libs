@@ -10,11 +10,12 @@
 ////////////////////////////////////////////////////////////////////////////////
 package com.crudetech.matcher;
 
-import java.awt.Shape;
-import java.awt.geom.PathIterator;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
+
+import java.awt.*;
+import java.awt.geom.PathIterator;
 
 import static com.crudetech.matcher.FloatingPointMatcher.equ;
 

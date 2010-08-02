@@ -11,14 +11,15 @@
 package com.crudetech.matcher;
 
 
-import static com.crudetech.matcher.RangeIsEquivalent.equivalentTo;
-import static java.util.Arrays.asList;
-import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.IsNot.not;
-import static org.hamcrest.MatcherAssert.assertThat;
 import org.junit.Test;
 
 import java.util.Arrays;
+
+import static com.crudetech.matcher.RangeIsEquivalent.equivalentTo;
+import static java.util.Arrays.asList;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsNot.not;
 
 public class RangeIsEquivalentFixture {
 

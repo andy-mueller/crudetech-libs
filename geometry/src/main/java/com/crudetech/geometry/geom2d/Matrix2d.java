@@ -11,6 +11,7 @@
 package com.crudetech.geometry.geom2d;
 
 import com.crudetech.geometry.geom.*;
+import com.crudetech.lang.ArgumentNullException;
 import com.crudetech.lang.ArgumentOutOfBoundsException;
 
 import static java.lang.Math.cos;
@@ -25,6 +26,14 @@ public final class Matrix2d implements ToleranceComparable<Matrix2d> {
 
     public static final Matrix2d Identity = new Matrix2d();
 
+    public Matrix2d() {
+        this(
+                1.0, 0.0, 0.0,
+                0.0, 1.0, 0.0,
+                0.0, 0.0, 1.0
+        );
+    }
+
     public Matrix2d(double m00, double m01, double m02,
                     double m10, double m11, double m12,
                     double m20, double m21, double m22) {
@@ -37,14 +46,6 @@ public final class Matrix2d implements ToleranceComparable<Matrix2d> {
         this.m20 = m20;
         this.m21 = m21;
         this.m22 = m22;
-    }
-
-    public Matrix2d() {
-        this(
-                1.0, 0.0, 0.0,
-                0.0, 1.0, 0.0,
-                0.0, 0.0, 1.0
-        );
     }
 
     public Matrix2d(double[][] rowMajorMatrix) {
@@ -171,12 +172,16 @@ public final class Matrix2d implements ToleranceComparable<Matrix2d> {
     }
 
     public static Matrix2d createTranslation(Vector2d translation) {
+        return createTranslation(translation.getX(), translation.getY());
+    }
+    public static Matrix2d createTranslation(double dx, double dy) {
         return new Matrix2d(
-                1, 0, translation.getX(),
-                0, 1, translation.getY(),
+                1, 0, dx,
+                0, 1, dy,
                 0, 0, 1
         );
     }
+
 
     public Point2d multiply(Point2d pt) {
         double[] result = multiply(pt.getX(), pt.getY(), 1);
@@ -201,8 +206,9 @@ public final class Matrix2d implements ToleranceComparable<Matrix2d> {
     }
 
     public static Matrix2d createScaleY(double scaleY) {
-     return createScale(1.0, scaleY);
+        return createScale(1.0, scaleY);
     }
+
     public static Matrix2d createScale(double scaleX, double scaleY) {
         return new Matrix2d(
                 scaleX, 0.0, 0.0,
@@ -210,116 +216,71 @@ public final class Matrix2d implements ToleranceComparable<Matrix2d> {
                 0.0, 0.0, 1.0
         );
     }
-}
 
-/*
-public final class Matrix2d implements ToleranceComparable<Matrix2d> {
-    private final double[] columnMajorMatrix;
-    private static final int Dimension = 3;
-
-    public static final Matrix2d Identity = new Matrix2d();
-
-    public Matrix2d() {
-        this(new double[]{
-                1, 0, 0,
-                0, 1, 0,
-                0, 0, 1
-        });
+    public Vector2d getTranslation() {
+        return new Vector2d(m02, m12);
     }
 
-    Matrix2d(double[] columnMajorMatrix) {
-        if (columnMajorMatrix.length / Dimension != Dimension) throw new IllegalArgumentException();
-        this.columnMajorMatrix = columnMajorMatrix;
+    public Matrix2d inverse() {
+        final double det = determinant();
+
+        return new Matrix2d(
+                (m11 * m22 - m12 * m21) / det, (m02 * m21 - m01 * m22) / det, (m01 * m12 - m02 * m11) / det,
+                (m12 * m20 - m10 * m22) / det, (m00 * m22 - m02 * m20) / det, (m02 * m10 - m00 * m12) / det,
+                (m10 * m21 - m11 * m20) / det, (m01 * m20 - m00 * m21) / det, (m00 * m11 - m01 * m10) / det
+        );
     }
 
-    public Matrix2d(double[][] rowMajorMatrix) {
-        this(flattenToColumnMajor(rowMajorMatrix, Dimension));
+    public double determinant() {
+        return m00 * m11 * m22
+                + m01 * m12 * m20
+                + m02 * m10 * m21
+                - m02 * m11 * m20
+                - m01 * m10 * m22
+                - m00 * m12 * m21;
     }
 
-    public Matrix2d(Matrix2d rhs) {
-        columnMajorMatrix = rhs.columnMajorMatrix.clone();
+    /**
+     * Multiplies the given matrices.
+     * @param matrices
+     * @return
+     */
+    public static Matrix2d preMultiply(Matrix2d... matrices) {
+        if(matrices == null){
+            throw new ArgumentNullException("matrices");
+        }
+        if(matrices.length <= 1){
+            throw new IllegalArgumentException();
+        }
+
+        Matrix2d rv = matrices[matrices.length - 1];
+        for(int i = 1; i < matrices.length; ++i){
+            rv = matrices[matrices.length - 1 - i].multiply(rv);
+        }
+        return rv;
     }
 
+    public static Matrix2d createScale(double scaleX, double scaleY, Point2d center) {
+        final Matrix2d toOrigin = createTranslation(center.toVector2d().negate());
+        final Matrix2d scale = createScale(scaleX, scaleY);
 
-    public double get(MatrixRow row, MatrixColumn column) {
-        return columnMajorMatrix[getOffset(row.getRowIndex(), column.getColumnIndex())];
+        Matrix2d rv = scale.multiply(toOrigin);
+        rv = toOrigin.inverse().multiply(rv);
+        return rv;
     }
 
-    private static int getOffset(int row, int column) {
-        return getColumnMajorOffset(row, column, Dimension);
-    }
+    public static Matrix2d postMultiply(Matrix2d... xforms) {
+        if(xforms== null){
+            throw new ArgumentNullException("matrices");
+        }
+        if(xforms.length <= 1){
+            throw new IllegalArgumentException();
+        }
 
-
-    @Override
-    public int hashCode(Tolerance tol) {
-        return FloatCompare.hashCode(columnMajorMatrix, tol.getVectorTolerance());
-    }
-
-    @Override
-    public boolean equals(Matrix2d rhs, Tolerance tol) {
-        return FloatCompare.equals(columnMajorMatrix, rhs.columnMajorMatrix, tol.getVectorTolerance());
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Matrix2d matrix2d = (Matrix2d) o;
-
-        return equals(matrix2d, Tolerance2d.getGlobalTolerance());
-    }
-
-    @Override
-    public int hashCode() {
-        return hashCode(Tolerance2d.getGlobalTolerance());
-    }
-
-    public Matrix2d multiply(Matrix2d rhs) {
-        double[] result = Matrix.multiply(columnMajorMatrix, rhs.columnMajorMatrix, Dimension);
-
-        return new Matrix2d(result);
-    }
-
-    @SuppressWarnings({"StringConcatenation", "HardCodedStringLiteral", "MagicCharacter"})
-    @Override
-    public String toString() {
-        return "Matrix2d{" +
-                Matrix.toRowMajorString(columnMajorMatrix, Dimension) +
-                '}';
-    }
-
-    public Matrix2d transpose() {
-        double[] newColumnMajorMatrix = columnMajorMatrix.clone();
-        Matrix.transpose(newColumnMajorMatrix, Dimension);
-        return new Matrix2d(newColumnMajorMatrix);
-
-    }
-
-    public static Matrix2d createTranslation(Vector2d translation) {
-        return new Matrix2d(new double[]{
-                1, 0, 0,
-                0, 1, 0,
-                translation.getX(), translation.getY(), 1
-        });
-    }
-
-    public Point2d multiply(Point2d pt) {
-        double[] result = Matrix.multiply(columnMajorMatrix, new double[]{pt.getX(), pt.getY(), 1}, Dimension);
-        return new Point2d(result[0], result[1]);
-    }
-
-    public static Matrix2d createRotationInRadians(double angle) {
-        return new Matrix2d(new double[]{
-                cos(angle), sin(angle), 0,
-                -sin(angle), cos(angle), 0,
-                0, 0, 1,
-        });
-    }
-
-    public Vector2d multiply(Vector2d vec) {
-        double[] result = Matrix.multiply(columnMajorMatrix, new double[]{vec.getX(), vec.getY(), 0}, Dimension);
-        return new Vector2d(result[0], result[1]);
+        Matrix2d rv = xforms[0];
+        for(int i =1; i < xforms.length; ++i){
+            rv = rv.multiply(xforms[i]);
+        }
+        return rv;
     }
 }
-* */
