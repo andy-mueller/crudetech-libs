@@ -10,6 +10,8 @@
 ////////////////////////////////////////////////////////////////////////////////
 package com.crudetech.graphics2d.xwt;
 
+import com.crudetech.event.EventListener;
+import com.crudetech.event.EventObject;
 import com.crudetech.geometry.geom.RadianAngles;
 import com.crudetech.geometry.geom2d.Matrix2d;
 import com.crudetech.geometry.geom2d.Point2d;
@@ -17,8 +19,13 @@ import com.crudetech.geometry.geom2d.Vector2d;
 import org.junit.Test;
 
 import static java.lang.Math.sqrt;
+import static java.util.Arrays.asList;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 
 
 public class Matrix2dStackTest {
@@ -127,5 +134,17 @@ public class Matrix2dStackTest {
         assertThat(actual, is(new Point2d(0, 3*sqrt(2))));
     }
 
+    @Test
+    public void clearMakesStackEmptyAndDoesNotRaiseEvents() {
+        EventListener<EventObject<NotifyingStack<Matrix2d>>> listener = mock(EventListener.class);
+        Matrix2dStack stack = new Matrix2dStack(asList(Matrix2d.Identity, Matrix2d.Identity));
+        stack.getPopEvent().addListener(listener);
+        stack.getPushEvent().addListener(listener);
+
+        stack.clear();
+
+        assertThat(stack.isEmpty(), is(true));
+        verify(listener, never()).onEvent((EventObject<NotifyingStack<Matrix2d>>) any());
+    }
 }
 

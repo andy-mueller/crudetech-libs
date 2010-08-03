@@ -17,27 +17,27 @@ import com.crudetech.event.EventObject;
 import com.crudetech.geometry.geom2d.*;
 
 public class GraphicsStream2d {
-    private final Matrix2dStack xforms = new Matrix2dStack();
-    private final NotifyingStackImp<Pen> penStack= new NotifyingStackImp<Pen>(new ListStack<Pen>());
+    private final Matrix2dStack coosStack = new Matrix2dStack();
+    private final NotifyingStackImp<Pen> penStack = new NotifyingStackImp<Pen>(new ListStack<Pen>());
     private final NotifyingStackImp<Brush> brushStack = new NotifyingStackImp<Brush>(new ListStack<Brush>());
     private final NotifyingStackImp<Font> fontStack = new NotifyingStackImp<Font>(new ListStack<Font>());
 
-
     private final GraphicsContext pipe;
 
-    public GraphicsStream2d(GraphicsContext graphicsContext){
+
+    public GraphicsStream2d(GraphicsContext graphicsContext) {
         this.pipe = graphicsContext;
 
-        xforms.pusXForm(graphicsContext.getTransform());        
+        coosStack.pusXForm(graphicsContext.getTransform());
         EventListener<EventObject<NotifyingStack<Matrix2d>>> xFormChangedListener =
                 new EventListener<EventObject<NotifyingStack<Matrix2d>>>() {
-            @Override
-            public void onEvent(EventObject<NotifyingStack<Matrix2d>> e) {
-                pipe.setTransform(xforms.peek());
-            }
-        };
-        xforms.getPushEvent().addListener(xFormChangedListener);
-        xforms.getPopEvent().addListener(xFormChangedListener);
+                    @Override
+                    public void onEvent(EventObject<NotifyingStack<Matrix2d>> e) {
+                        pipe.setTransform(coosStack.peek());
+                    }
+                };
+        coosStack.getPushEvent().addListener(xFormChangedListener);
+        coosStack.getPopEvent().addListener(xFormChangedListener);
 
         penStack.push(pipe.getPen());
         final EventListener<EventObject<NotifyingStack<Pen>>> penChangedListener = new EventListener<EventObject<NotifyingStack<Pen>>>() {
@@ -71,18 +71,22 @@ public class GraphicsStream2d {
     }
 
     public CoordinateSystemStack getCoordinateSystemStack() {
-        return xforms;
+        return coosStack;
     }
+
     public LightweightStack<Pen> getPenStack() {
         return penStack;
     }
+
     public LightweightStack<Brush> getBrushStack() {
         return brushStack;
     }
+
     public LightweightStack<Font> getFontStack() {
         return fontStack;
     }
-    public void drawString(String string, double x, double y){
+
+    public void drawString(String string, double x, double y) {
         pipe.drawString(string, x, y);
     }
 
@@ -120,10 +124,21 @@ public class GraphicsStream2d {
     }
 
     public void drawCurve(Curve2d crv) {
-         throw new UnsupportedOperationException("This operation is not supported yet!");
+        throw new UnsupportedOperationException("This operation is not supported yet!");
+    }
 
-     }
+    public RestorePoint createRestorePoint() {
+        return new RestorePoint();
+    }
 
+    public class RestorePoint {
+        private final Matrix2d[] xforms = coosStack.toArray();
+
+        public void restore() {
+//            coosStack.clear();
+//            coosStack.
+        }
+    }
 
 }
 

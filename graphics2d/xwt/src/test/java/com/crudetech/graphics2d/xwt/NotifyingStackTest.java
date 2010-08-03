@@ -55,10 +55,22 @@ public class NotifyingStackTest {
 
     @Test
     public void toArray() {
-        EventListener<EventObject<NotifyingStack<Integer>>> listener = mock(EventListener.class);
         NotifyingStackImp<Integer> stack = new NotifyingStackImp<Integer>(asList(0, 1, 2, 3));
 
         List<Integer> copy = asList(stack.toArray(Integer.class));
         assertThat(copy, is(equalTo(stack)));
+    }
+
+    @Test
+    public void clearMakesStackEmptyAndDoesNotRaiseEvents() {
+        EventListener<EventObject<NotifyingStack<Integer>>> listener = mock(EventListener.class);
+        NotifyingStackImp<Integer> stack = new NotifyingStackImp<Integer>(asList(41, 42));
+        stack.getPopEvent().addListener(listener);
+        stack.getPushEvent().addListener(listener);
+
+        stack.clear();
+
+        assertThat(stack.isEmpty(), is(true));
+        verify(listener, never()).onEvent((EventObject<NotifyingStack<Integer>>) any());
     }
 }

@@ -17,6 +17,8 @@ import com.crudetech.geometry.geom2d.Matrix2d;
 import com.crudetech.geometry.geom2d.Point2d;
 import com.crudetech.geometry.geom2d.Vector2d;
 
+import java.util.Iterator;
+
 import static com.crudetech.geometry.geom2d.Matrix2d.postMultiply;
 
 
@@ -25,6 +27,11 @@ class Matrix2dStack implements CoordinateSystemStack, NotifyingStack<Matrix2d>{
     Matrix2dStack(){
         stack = new NotifyingStackImp<Matrix2d>(new ListStack<Matrix2d>());
     }
+
+    Matrix2dStack(Iterable<Matrix2d> xforms) {
+        stack = new NotifyingStackImp<Matrix2d>(new ListStack<Matrix2d>(xforms));
+    }
+
     @Override
     public Event<EventObject<NotifyingStack<Matrix2d>>> getPushEvent() {
         return stack.getPushEvent();
@@ -94,5 +101,14 @@ class Matrix2dStack implements CoordinateSystemStack, NotifyingStack<Matrix2d>{
 
     public void pushTranslation(double dx, double dy) {
         pushTranslation(new Vector2d(dx, dy));
+    }
+
+    @Override
+    public Iterator<Matrix2d> iterator() {
+        return stack.iterator();
+    }
+
+    public void clear() {
+        stack.clear();                
     }
 }

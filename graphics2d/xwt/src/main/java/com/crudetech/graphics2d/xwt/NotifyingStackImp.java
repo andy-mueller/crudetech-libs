@@ -90,4 +90,9 @@ class NotifyingStackImp<T> implements NotifyingStack<T>, LightweightStack<T> {
     }
 
 
+    public void clear() {
+        while(!isEmpty()){
+            theStack.pop();
+        }
+    }
 }

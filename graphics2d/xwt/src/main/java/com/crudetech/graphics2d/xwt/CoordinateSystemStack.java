@@ -20,7 +20,7 @@ import com.crudetech.geometry.geom2d.Vector2d;
  * a normal stack like {@link com.crudetech.collections.LightweightStack} is, that
  * pushing a new transformation on top results the pushed matrix being multiplied
  * with the peek matrix. Therefore a call to {@link CoordinateSystemStack#peek()} will
- * give you the overall transform of all former transforms.
+ * give you the overall transform of all former transformations.
  * <p>
  * Every pushed transformation is applied to the top most coordinate system
  * by post multiplying the pushed transformation. Therefore the stack represents
@@ -28,7 +28,7 @@ import com.crudetech.geometry.geom2d.Vector2d;
  * the next step. This behaviour is the same as in object coordinate system
  * using frameworks such as OpenGL.
  */
-public interface CoordinateSystemStack {
+public interface CoordinateSystemStack extends Iterable<Matrix2d>{
     /**
      * Accesses the top most entry of the stack representing all merged
      * transformation on the stack.
