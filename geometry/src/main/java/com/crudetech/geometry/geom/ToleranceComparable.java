@@ -12,7 +12,7 @@ package com.crudetech.geometry.geom;
 
 /**
  * Implemented by all geometric objects in this package, demonstrating
- * their tolerance based equality handling. Tis enables generic operable
+ * their tolerance based equality handling. Tis enables generically implemented
  * service classes like {@link ToleranceComparer}.
  */
 public interface ToleranceComparable<TolComp extends ToleranceComparable<TolComp>> {

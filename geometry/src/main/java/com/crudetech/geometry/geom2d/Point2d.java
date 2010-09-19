@@ -21,7 +21,7 @@ import com.crudetech.geometry.geom.ToleranceComparable;
  * This class is not very suitable to serve as a hash key. For more details refer to the
  * {@link com.crudetech.geometry.geom2d.Point2d#equals(Object)} method.
  */
-public final class Point2d implements ToleranceComparable<Point2d> {
+public final class Point2d implements ToleranceComparable<Point2d>, Transformable2d<Point2d> {
     private final double x;
     private final double y;
     public static final Point2d Origin = new Point2d(0.0, 0.0);

@@ -10,12 +10,12 @@
 ////////////////////////////////////////////////////////////////////////////////
 package com.crudetech.collections;
 
-import functional.UnaryFunction;
+import com.crudetech.functional.UnaryFunction;
 
 import java.util.Set;
 
 public class XFormSet<To, From> extends XFormCollection<To, From> implements Set<To> {
-    public XFormSet(Set<From> from, UnaryFunction<To, From> xform, UnaryFunction<From, To> back) {
+    public XFormSet(Set<From> from, UnaryFunction<From, To> xform, UnaryFunction<To, From> back) {
         super(from, xform, back);
     }
     @Override

@@ -10,12 +10,10 @@
 ////////////////////////////////////////////////////////////////////////////////
 package com.crudetech.geometry.geom2d;
 
-public class BezierCurve2d implements Curve2d{
-    public BezierCurve2d(Point2d start, Vector2d startDir, Point2d end, Vector2d endDir) {
-    }
-
-    @Override
-    public BezierCurve2d transformBy(Matrix2d xform) {
-        throw new UnsupportedOperationException("transformBy is not supported yet!");
-    }
+/**
+ * When implemented it represents a entity that can be transformed using a
+ * {@link com.crudetech.geometry.geom2d.Matrix2d}.
+ */
+public interface Transformable2d<T extends Transformable2d<T>> {
+    T transformBy(Matrix2d xform);
 }

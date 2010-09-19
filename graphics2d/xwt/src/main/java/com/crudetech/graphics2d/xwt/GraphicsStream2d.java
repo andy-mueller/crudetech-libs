@@ -28,7 +28,7 @@ public class GraphicsStream2d {
     public GraphicsStream2d(GraphicsContext graphicsContext) {
         this.pipe = graphicsContext;
 
-        coosStack.pusXForm(graphicsContext.getTransform());
+        coosStack.pushXForm(graphicsContext.getTransform());
         EventListener<EventObject<NotifyingStack<Matrix2d>>> xFormChangedListener =
                 new EventListener<EventObject<NotifyingStack<Matrix2d>>>() {
                     @Override
@@ -133,10 +133,26 @@ public class GraphicsStream2d {
 
     public class RestorePoint {
         private final Matrix2d[] xforms = coosStack.toArray();
+        private final Pen[] pens = penStack.toArray(Pen.class);
+        private final Brush[] brushes= brushStack.toArray(Brush.class);
+        private final Font[] fonts = fontStack.toArray(Font.class);
 
         public void restore() {
-//            coosStack.clear();
-//            coosStack.
+            coosStack.clearWithoutEvents();
+            coosStack.addWithoutEvents(xforms);
+            pipe.setTransform(coosStack.peek());
+
+            penStack.clearWithoutEvents();
+            penStack.addWithoutEvents(pens);
+            pipe.setPen(penStack.peek());
+
+            brushStack.clearWithoutEvents();
+            brushStack.addWithoutEvents(brushes);
+            pipe.setBrush(brushStack.peek());
+
+            fontStack.clearWithoutEvents();
+            fontStack.addWithoutEvents(fonts);
+            pipe.setFont(fontStack.peek());
         }
     }
 

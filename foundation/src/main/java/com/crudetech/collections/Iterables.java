@@ -10,8 +10,10 @@
 ////////////////////////////////////////////////////////////////////////////////
 package com.crudetech.collections;
 
+import com.crudetech.functional.BinaryFunction;
 import com.crudetech.lang.ArgumentNullException;
 import com.crudetech.lang.Compare;
+import com.crudetech.functional.UnaryFunction;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
@@ -118,5 +120,48 @@ public final class Iterables {
     public static <T> T firstOf(Iterable<T> range) {
         if(range == null) throw new ArgumentNullException("range");
         return range.iterator().next();
+    }
+    public static <From, To> Iterable<To> transform(final Iterable<From> from, final UnaryFunction<From, To> xform){
+        if(from == null) throw new ArgumentNullException("from");
+        if(xform == null) throw new ArgumentNullException("xform");
+        
+        return new Iterable<To>() {
+            @Override
+            public Iterator<To> iterator() {
+                return transform(from.iterator(), xform);
+            }
+        };
+    }
+    public static <From, To> Iterator<To> transform(final Iterator<From> from, final UnaryFunction<From, To> xform){
+        if(from == null) throw new ArgumentNullException("from");
+         if(xform == null) throw new ArgumentNullException("xform");
+
+         return new Iterator<To>() {
+            @Override
+            public boolean hasNext() {
+                return from.hasNext();
+            }
+
+            @Override
+            public To next() {
+                return xform.execute(from.next());
+            }
+
+            @Override
+            public void remove() {
+                from.remove();
+            }
+        };
+    }
+
+    public static<T> T accumulate(Iterable<T> range, BinaryFunction<T, T, T> binaryFunction) {
+        Iterator<T> it = range.iterator();
+        if(!it.hasNext()) throw new IllegalArgumentException();
+        T init = it.next();
+
+        while(it.hasNext()){
+            init = binaryFunction.execute(init, it.next());
+        }
+        return init;
     }
 }

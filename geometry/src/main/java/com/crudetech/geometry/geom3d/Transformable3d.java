@@ -8,9 +8,12 @@
 // Contributors:
 //     Andreas Mueller - initial API and implementation
 ////////////////////////////////////////////////////////////////////////////////
-package functional;
+package com.crudetech.geometry.geom3d;
 
-
-public interface UnaryFunction<Result, Arg> {
-    Result execute(Arg arg);    
+/**
+ * When implemented it represents a entity that can be transformed using a
+ * {@link com.crudetech.geometry.geom3d.Matrix3d}.
+ */
+public interface Transformable3d<T extends Transformable3d<T>> {
+    T transformBy(Matrix3d xform);
 }

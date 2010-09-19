@@ -18,7 +18,7 @@ import static java.lang.Math.cos;
 import static java.lang.Math.sin;
 
 
-public final class Matrix2d implements ToleranceComparable<Matrix2d> {
+public final class Matrix2d implements ToleranceComparable<Matrix2d>, Transformable2d<Matrix2d> {
     private static final int Dimension = 3;
     final double m00, m01, m02;
     final double m10, m11, m12;
@@ -174,6 +174,7 @@ public final class Matrix2d implements ToleranceComparable<Matrix2d> {
     public static Matrix2d createTranslation(Vector2d translation) {
         return createTranslation(translation.getX(), translation.getY());
     }
+
     public static Matrix2d createTranslation(double dx, double dy) {
         return new Matrix2d(
                 1, 0, dx,
@@ -181,13 +182,17 @@ public final class Matrix2d implements ToleranceComparable<Matrix2d> {
                 0, 0, 1
         );
     }
-
-
-    public Point2d multiply(Point2d pt) {
-        double[] result = multiply(pt.getX(), pt.getY(), 1);
-        return new Point2d(result[0], result[1]);
+    public static Matrix2d createTranslationAndRotationInRadians(Vector2d translation, double angle) {
+       return createTranslationAndRotationInRadians(translation.getX(), translation.getY(), angle); 
     }
+    public static Matrix2d createTranslationAndRotationInRadians(double dx, double dy, double angle) {
+        return new Matrix2d(
+                 cos(angle), -sin(angle), dx,
+                 sin(angle), cos(angle), dy,
+                 0, 0, 1
+         );
 
+    }
     public static Matrix2d createRotationInRadians(double angle) {
         return new Matrix2d(
                 cos(angle), -sin(angle), 0,
@@ -195,12 +200,6 @@ public final class Matrix2d implements ToleranceComparable<Matrix2d> {
                 0, 0, 1
         );
     }
-
-    public Vector2d multiply(Vector2d vec) {
-        double[] result = multiply(vec.getX(), vec.getY(), 0);
-        return new Vector2d(result[0], result[1]);
-    }
-
     public static Matrix2d createScaleX(double scaleX) {
         return createScale(scaleX, 1.0);
     }
@@ -217,8 +216,25 @@ public final class Matrix2d implements ToleranceComparable<Matrix2d> {
         );
     }
 
+    public Vector2d multiply(Vector2d vec) {
+        double[] result = multiply(vec.getX(), vec.getY(), 0);
+        return new Vector2d(result[0], result[1]);
+    }
+     public Point2d multiply(Point2d pt) {
+        double[] result = multiply(pt.getX(), pt.getY(), 1);
+        return new Point2d(result[0], result[1]);
+    }
+
     public Vector2d getTranslation() {
         return new Vector2d(m02, m12);
+    }
+
+    public Vector2d getXAxis() {
+        return new Vector2d(m00, m10);
+    }
+
+    public Vector2d getYAxis() {
+        return new Vector2d(m01, m11);
     }
 
     public Matrix2d inverse() {
@@ -242,19 +258,20 @@ public final class Matrix2d implements ToleranceComparable<Matrix2d> {
 
     /**
      * Multiplies the given matrices.
+     *
      * @param matrices
      * @return
      */
     public static Matrix2d preMultiply(Matrix2d... matrices) {
-        if(matrices == null){
+        if (matrices == null) {
             throw new ArgumentNullException("matrices");
         }
-        if(matrices.length <= 1){
+        if (matrices.length <= 1) {
             throw new IllegalArgumentException();
         }
 
         Matrix2d rv = matrices[matrices.length - 1];
-        for(int i = 1; i < matrices.length; ++i){
+        for (int i = 1; i < matrices.length; ++i) {
             rv = matrices[matrices.length - 1 - i].multiply(rv);
         }
         return rv;
@@ -270,17 +287,22 @@ public final class Matrix2d implements ToleranceComparable<Matrix2d> {
     }
 
     public static Matrix2d postMultiply(Matrix2d... xforms) {
-        if(xforms== null){
+        if (xforms == null) {
             throw new ArgumentNullException("matrices");
         }
-        if(xforms.length <= 1){
+        if (xforms.length <= 1) {
             throw new IllegalArgumentException();
         }
 
         Matrix2d rv = xforms[0];
-        for(int i =1; i < xforms.length; ++i){
+        for (int i = 1; i < xforms.length; ++i) {
             rv = rv.multiply(xforms[i]);
         }
         return rv;
+    }
+
+    @Override
+    public Matrix2d transformBy(Matrix2d xform) {
+        return this.multiply(xform);
     }
 }

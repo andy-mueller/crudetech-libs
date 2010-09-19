@@ -18,6 +18,10 @@ import com.crudetech.event.EventSupport;
 
 import java.util.Iterator;
 
+import static com.crudetech.matcher.Verify.verifyThat;
+import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsNull.notNullValue;
+
 
 class NotifyingStackImp<T> implements NotifyingStack<T>, LightweightStack<T> {
     private final LightweightStack<T> theStack;
@@ -63,7 +67,7 @@ class NotifyingStackImp<T> implements NotifyingStack<T>, LightweightStack<T> {
     public Event<EventObject<NotifyingStack<T>>> getPopEvent() {
         return popEvent;
     }
-
+    @Override
     public T[] toArray(Class<T> clazz) {
         return theStack.toArray(clazz);        
     }
@@ -90,9 +94,16 @@ class NotifyingStackImp<T> implements NotifyingStack<T>, LightweightStack<T> {
     }
 
 
-    public void clear() {
+    void clearWithoutEvents() {
         while(!isEmpty()){
             theStack.pop();
+        }
+    }
+
+    public void addWithoutEvents(T... items) {
+        verifyThat(items, is(notNullValue()));
+        for(T item : items){
+            theStack.push(item);
         }
     }
 }

@@ -10,16 +10,47 @@
 ////////////////////////////////////////////////////////////////////////////////
 package com.crudetech.graphics2d.xwt;
 
+import static com.crudetech.matcher.Verify.verifyThat;
+import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsNull.notNullValue;
 
 
 public class SolidBrush implements Brush{
+    public static SolidBrush Red = new SolidBrush(Color.Red);
     private final Color color;
 
     public SolidBrush(Color color) {
+        verifyThat(color, is(notNullValue()));
+        
         this.color = color;
     }
 
     public Color getColor() {
         return color;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        SolidBrush that = (SolidBrush) o;
+
+        return color.equals(that.color);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return color.hashCode();
+    }
+
+    @SuppressWarnings({"StringConcatenation", "HardCodedStringLiteral", "MagicCharacter"})
+    @Override
+    public String toString() {
+        return "SolidBrush{" +
+                "color=" + color +
+                '}';
+    }
+
 }

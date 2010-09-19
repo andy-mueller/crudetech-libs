@@ -18,6 +18,7 @@ import static com.crudetech.geometry.geom.Matrix.row;
 import static com.crudetech.geometry.geom2d.matcher.Matrix2dIsIdentity.isIdentity;
 import static com.crudetech.geometry.geom2d.matcher.ToleranceEx.withGlobalTol;
 import static com.crudetech.matcher.ThrowsException.doesThrow;
+import static java.lang.Math.sin;
 import static java.lang.Math.sqrt;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
@@ -339,6 +340,22 @@ public class Matrix2dTest {
         Point2d actual = mx.multiply(p);
 
         assertThat(actual, is(new Point2d(0, 3*sqrt(2))));
+    }
+
+    @Test
+    public void rotatesPointBy45(){
+        final double sin45 = sin(RadianAngles.k45);     
+        Point2d p = new Point2d(3*sin45, 3*sin45);
+
+        Matrix2d rot45 = Matrix2d.createRotationInRadians(RadianAngles.k45);
+        Matrix2d trans21 = Matrix2d.createTranslation(2, 1);
+
+        Matrix2d mx = trans21.multiply(rot45);
+//        Matrix2d mx = rot45.multiply(trans21);
+
+        Point2d actual = mx.multiply(p);
+
+        assertThat(actual, is(new Point2d(2, 4)));
     }
 
 }

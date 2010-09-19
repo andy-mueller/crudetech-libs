@@ -30,18 +30,18 @@ public interface GraphicsContext {
     void setFont(Font font);
 
     void drawString(String string, double x, double y);
-    public abstract void drawString(String string, BoundingBox2d bound, double padding);
-    public abstract void drawLine(Point2d start, Point2d end);
+    void drawString(String string, BoundingBox2d bound, double padding);
+    void drawLine(Point2d start, Point2d end);
 
-    public abstract void drawCurve(BoundingBox2d rect);
+    void drawCurve(BoundingBox2d rect);
 
-    public abstract void drawRectangle(BoundingBox2d rect);
-    public abstract void fillRectangle(BoundingBox2d rect);
+    void drawRectangle(BoundingBox2d rect);
+    void fillRectangle(BoundingBox2d rect);
 
-    public abstract void drawEllipse(BoundingBox2d bounds);
-    public abstract void fillEllipse(BoundingBox2d bounds);
+    void drawEllipse(BoundingBox2d bounds);
+    void fillEllipse(BoundingBox2d bounds);
 
-    public abstract void drawBezier(BezierCurve2d bezier);
+    void drawBezier(BezierCurve2d bezier);
 
     void drawPolyLine(Iterable<Point2d> pts);
 }

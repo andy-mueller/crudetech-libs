@@ -11,10 +11,13 @@
 package com.crudetech.geometry.geom2d;
 
 import com.crudetech.geometry.geom.FloatCompare;
+import com.crudetech.geometry.geom.RadianAngles;
 import com.crudetech.geometry.geom.Tolerance;
 import com.crudetech.geometry.geom.ToleranceComparable;
 
-public final class Vector2d implements ToleranceComparable<Vector2d> {
+import static java.lang.Math.acos;
+
+public final class Vector2d implements ToleranceComparable<Vector2d>, Transformable2d<Vector2d> {
     private final double x;
     private final double y;
     public static final Vector2d xAxis = new Vector2d(1.0, 0);
@@ -110,5 +113,28 @@ public final class Vector2d implements ToleranceComparable<Vector2d> {
 
     public Vector2d negate() {
         return new Vector2d(-x, -y);
+    }
+    public double angleTo(Vector2d rhs){
+        return angleTo(rhs, Tolerance2d.getGlobalTolerance());
+    }
+    public double angleTo(Vector2d rhs, Tolerance tol) {
+        final double angle = acos(dot(rhs)/(getLength()*rhs.getLength()));
+        if(FloatCompare.equals(angle, 0.0, tol.getVectorTolerance())) {
+            return 0.0;
+        }
+        final double z = x*rhs.y - y*rhs.x;
+        if(z > 0)
+            return angle;
+
+        return RadianAngles.k360 - angle;
+    }
+
+    private double dot(Vector2d rhs) {
+        return x*rhs.x + y*rhs.y;
+    }
+
+    @Override
+    public Vector2d transformBy(Matrix2d xform) {
+        return xform.multiply(this);
     }
 }

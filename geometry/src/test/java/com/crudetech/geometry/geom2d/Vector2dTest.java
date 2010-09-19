@@ -10,8 +10,11 @@
 ////////////////////////////////////////////////////////////////////////////////
 package com.crudetech.geometry.geom2d;
 
+import com.crudetech.geometry.geom.RadianAngles;
 import org.junit.Test;
 
+import static com.crudetech.matcher.FloatingPointMatcher.equalTo;
+import static com.crudetech.matcher.FloatingPointMatcher.withTol;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 
@@ -67,5 +70,23 @@ public class Vector2dTest {
         Vector2d v = new Vector2d(3.0, 4.0);
 
         assertThat(v.getLength(), is(5.0));
+    }
+    @Test
+    public void angleToForLessPi(){
+        Vector2d v = new Vector2d(-1, 1);
+
+        assertThat(Vector2d.xAxis.angleTo(v), is(equalTo(RadianAngles.k135, withTol(1e-12))));
+    }
+    @Test
+    public void angleToForGreaterPi(){
+        Vector2d v = new Vector2d(-1, -1);
+
+        assertThat(Vector2d.xAxis.angleTo(v), is(equalTo(RadianAngles.k225, withTol(1e-12))));
+    }
+    @Test
+    public void angleToFor0(){
+        Vector2d v = new Vector2d(1, 0);
+
+        assertThat(Vector2d.xAxis.angleTo(v), is(equalTo(RadianAngles.k0, withTol(1e-12))));
     }
 }                               

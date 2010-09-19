@@ -20,104 +20,11 @@ import static org.mockito.Mockito.*;
 
 
 public class GraphicsStream2dTest {
-    class GraphicsStream2dImp extends GraphicsStream2d {
-
-        GraphicsStream2dImp(GraphicsContext pipe) {
-            super(pipe);
-        }
-    }
-
-    class GraphicsContextImp implements GraphicsContext {
-        private Font font = new Font("Arial", FontStyle.Bold, 12);
-        private Matrix2d mx = Matrix2d.preMultiply(Matrix2d.createScale(3, 5), Matrix2d.createTranslation(3, 2), Matrix2d.createRotationInRadians(0.022));
-        private Pen pen = new Pen(1, Cap.Butt, Join.Round, 1, new float[]{2, 1}, 1);
-        private Brush brush = new Brush() {
-        };
-
-        @Override
-        public Matrix2d getTransform() {
-            return mx;
-        }
-
-        @Override
-        public void setTransform(Matrix2d xform) {
-            mx = xform;
-        }
-
-        @Override
-        public Pen getPen() {
-            return pen;
-        }
-
-        @Override
-        public void setPen(Pen pen) {
-            this.pen = pen;
-        }
-
-        @Override
-        public Brush getBrush() {
-            return brush;
-        }
-
-
-        @Override
-        public void setBrush(Brush brush) {
-            this.brush = brush;
-        }
-
-        @Override
-        public Font getFont() {
-            return font;
-        }
-
-        @Override
-        public void setFont(Font font) {
-        }
-
-        @Override
-        public void drawString(String string, double x, double y) {
-        }
-
-        @Override
-        public void drawString(String string, BoundingBox2d bound, double padding) {
-        }
-
-        @Override
-        public void drawLine(Point2d start, Point2d end) {
-        }
-
-        @Override
-        public void drawCurve(BoundingBox2d rect) {
-        }
-
-        @Override
-        public void drawRectangle(BoundingBox2d rect) {
-        }
-
-        @Override
-        public void fillRectangle(BoundingBox2d rect) {
-        }
-
-        @Override
-        public void drawPolyLine(Iterable<Point2d> pts) {
-        }
-
-        public void drawEllipse(BoundingBox2d boundingBox2d) {
-        }
-
-        @Override
-        public void fillEllipse(BoundingBox2d bounds) {
-        }
-
-        @Override
-        public void drawBezier(BezierCurve2d bezier) {
-        }
-    }
 
     @Test
     public void xformIsAppliedOnPush() {
-        GraphicsContextImp context = spy(new GraphicsContextImp());
-        GraphicsStream2dImp pipe = new GraphicsStream2dImp(context);
+        GraphicsContextStub context = spy(new GraphicsContextStub());
+        GraphicsStream2dStub pipe = new GraphicsStream2dStub(context);
 
         pipe.getCoordinateSystemStack().pushTranslation(3, 5);
 
@@ -127,8 +34,8 @@ public class GraphicsStream2dTest {
 
     @Test
     public void xformIsAppliedOnPop() {
-        GraphicsContextImp context = spy(new GraphicsContextImp());
-        GraphicsStream2dImp pipe = new GraphicsStream2dImp(context);
+        GraphicsContextStub context = spy(new GraphicsContextStub());
+        GraphicsStream2dStub pipe = new GraphicsStream2dStub(context);
 
         pipe.getCoordinateSystemStack().pushTranslation(3, 5);
         pipe.getCoordinateSystemStack().pop();
@@ -139,8 +46,8 @@ public class GraphicsStream2dTest {
 
     @Test
     public void penIsAppliedOnPushAndPop() {
-        GraphicsContextImp context = spy(new GraphicsContextImp());
-        GraphicsStream2dImp pipe = new GraphicsStream2dImp(context);
+        GraphicsContextStub context = spy(new GraphicsContextStub());
+        GraphicsStream2dStub pipe = new GraphicsStream2dStub(context);
 
         assertThat(pipe.getPenStack().peek(), is(context.getPen()));
 
@@ -153,8 +60,8 @@ public class GraphicsStream2dTest {
 
     @Test
     public void brushIsAppliedOnPushAndPop() {
-        GraphicsContextImp context = spy(new GraphicsContextImp());
-        GraphicsStream2dImp pipe = new GraphicsStream2dImp(context);
+        GraphicsContextStub context = spy(new GraphicsContextStub());
+        GraphicsStream2dStub pipe = new GraphicsStream2dStub(context);
 
         assertThat(pipe.getBrushStack().peek(), is(context.getBrush()));
 
@@ -167,8 +74,8 @@ public class GraphicsStream2dTest {
 
     @Test
     public void fontIsAppliedOnPushAndPop() {
-        GraphicsContextImp context = spy(new GraphicsContextImp());
-        GraphicsStream2dImp pipe = new GraphicsStream2dImp(context);
+        GraphicsContextStub context = spy(new GraphicsContextStub());
+        GraphicsStream2dStub pipe = new GraphicsStream2dStub(context);
 
         pipe.getFontStack().push(mock(Font.class));
         pipe.getFontStack().pop();
@@ -179,8 +86,8 @@ public class GraphicsStream2dTest {
 
     @Test
     public void drawStringForwardsToContext(){
-        GraphicsContextImp context = spy(new GraphicsContextImp());
-        GraphicsStream2dImp pipe = new GraphicsStream2dImp(context);
+        GraphicsContextStub context = spy(new GraphicsContextStub());
+        GraphicsStream2dStub pipe = new GraphicsStream2dStub(context);
 
         pipe.drawString("Text", 3, 4);
 
@@ -188,8 +95,8 @@ public class GraphicsStream2dTest {
     }
     @Test
     public void drawString2ForwardsToContext(){
-        GraphicsContextImp context = spy(new GraphicsContextImp());
-        GraphicsStream2dImp pipe = new GraphicsStream2dImp(context);
+        GraphicsContextStub context = spy(new GraphicsContextStub());
+        GraphicsStream2dStub pipe = new GraphicsStream2dStub(context);
 
         pipe.drawString("Text", new BoundingBox2d(Point2d.Origin, new Point2d(4, 3)), 4);
 
@@ -197,8 +104,8 @@ public class GraphicsStream2dTest {
     }
     @Test
     public void drawLineForwardsToContext(){
-        GraphicsContextImp context = spy(new GraphicsContextImp());
-        GraphicsStream2dImp pipe = new GraphicsStream2dImp(context);
+        GraphicsContextStub context = spy(new GraphicsContextStub());
+        GraphicsStream2dStub pipe = new GraphicsStream2dStub(context);
 
         pipe.drawLine(new Point2d(3, 2), new Point2d(8, 2));
 
@@ -206,8 +113,8 @@ public class GraphicsStream2dTest {
     }
     @Test
     public void drawPolyLineForwardsToContext(){
-        GraphicsContextImp context = spy(new GraphicsContextImp());
-        GraphicsStream2dImp pipe = new GraphicsStream2dImp(context);
+        GraphicsContextStub context = spy(new GraphicsContextStub());
+        GraphicsStream2dStub pipe = new GraphicsStream2dStub(context);
 
         Iterable<Point2d> pts = asList(new Point2d(3, 2), new Point2d(8, 2), new Point2d(1, 5));
         pipe.drawPolyLine(pts);
@@ -216,8 +123,8 @@ public class GraphicsStream2dTest {
     }
     @Test
     public void drawRectangleForwardsToContext(){
-        GraphicsContextImp context = spy(new GraphicsContextImp());
-        GraphicsStream2dImp pipe = new GraphicsStream2dImp(context);
+        GraphicsContextStub context = spy(new GraphicsContextStub());
+        GraphicsStream2dStub pipe = new GraphicsStream2dStub(context);
 
         pipe.drawRectangle(new BoundingBox2d(new Point2d(2, 5), new Point2d(7, 9)));
 
@@ -225,8 +132,8 @@ public class GraphicsStream2dTest {
     }
     @Test
     public void fillRectangleForwardsToContext(){
-        GraphicsContextImp context = spy(new GraphicsContextImp());
-        GraphicsStream2dImp pipe = new GraphicsStream2dImp(context);
+        GraphicsContextStub context = spy(new GraphicsContextStub());
+        GraphicsStream2dStub pipe = new GraphicsStream2dStub(context);
 
         pipe.fillRectangle(new BoundingBox2d(new Point2d(2, 5), new Point2d(7, 9)));
 
@@ -234,8 +141,8 @@ public class GraphicsStream2dTest {
     }
     @Test
     public void drawElipseForwardsToContext(){
-        GraphicsContextImp context = spy(new GraphicsContextImp());
-        GraphicsStream2dImp pipe = new GraphicsStream2dImp(context);
+        GraphicsContextStub context = spy(new GraphicsContextStub());
+        GraphicsStream2dStub pipe = new GraphicsStream2dStub(context);
 
         pipe.drawEllipse(new BoundingBox2d(new Point2d(2, 5), new Point2d(7, 9)));
 
@@ -243,8 +150,8 @@ public class GraphicsStream2dTest {
     }
     @Test
     public void fillElipseForwardsToContext(){
-        GraphicsContextImp context = spy(new GraphicsContextImp());
-        GraphicsStream2dImp pipe = new GraphicsStream2dImp(context);
+        GraphicsContextStub context = spy(new GraphicsContextStub());
+        GraphicsStream2dStub pipe = new GraphicsStream2dStub(context);
 
         pipe.fillEllipse(new BoundingBox2d(new Point2d(2, 5), new Point2d(7, 9)));
 
@@ -252,8 +159,8 @@ public class GraphicsStream2dTest {
     }
     @Test
     public void drawBezierForwardsToContext(){
-        GraphicsContextImp context = spy(new GraphicsContextImp());
-        GraphicsStream2dImp pipe = new GraphicsStream2dImp(context);
+        GraphicsContextStub context = spy(new GraphicsContextStub());
+        GraphicsStream2dStub pipe = new GraphicsStream2dStub(context);
 
         BezierCurve2d b= new BezierCurve2d(new Point2d(2, 3), new Vector2d(1, 1), new Point2d(4, 5), new Vector2d(3, 5));
 
@@ -262,3 +169,4 @@ public class GraphicsStream2dTest {
         verify(context, times(1)).drawBezier(b);
     }
 }
+

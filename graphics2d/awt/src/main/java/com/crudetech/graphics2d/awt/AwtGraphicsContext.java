@@ -20,6 +20,7 @@ import com.crudetech.graphics2d.xwt.GraphicsContext;
 import com.crudetech.graphics2d.xwt.Pen;
 
 import java.awt.*;
+import java.awt.geom.Rectangle2D;
 
 import static com.crudetech.graphics2d.awt.Convert.*;
 
@@ -116,8 +117,12 @@ public class AwtGraphicsContext implements GraphicsContext{
 
     @Override
     public void drawRectangle(BoundingBox2d rect) {
-        throw new UnsupportedOperationException();
+        drawShape(new Rectangle2D.Double(rect.getLowerLeft().getX(), rect.getLowerLeft().getY(), rect.getWidth(), rect.getHeight()));
     }
+    private void drawShape(Shape s) {
+        pipe.draw(s);
+    }
+
 
     @Override
     public void fillRectangle(BoundingBox2d rect) {

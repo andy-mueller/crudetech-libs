@@ -8,14 +8,9 @@
 // Contributors:
 //     Andreas Mueller - initial API and implementation
 ////////////////////////////////////////////////////////////////////////////////
-package com.crudetech.geometry.geom2d;
+package com.crudetech.functional;
 
-public class BezierCurve2d implements Curve2d{
-    public BezierCurve2d(Point2d start, Vector2d startDir, Point2d end, Vector2d endDir) {
-    }
 
-    @Override
-    public BezierCurve2d transformBy(Matrix2d xform) {
-        throw new UnsupportedOperationException("transformBy is not supported yet!");
-    }
+public interface BinaryFunction<Arg1, Arg2, Result> {
+    Result execute(Arg1 arg1, Arg2 arg2);    
 }

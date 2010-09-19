@@ -11,5 +11,5 @@
 package com.crudetech.geometry.geom2d;
 
 
-public interface Curve2d {
+public interface Curve2d extends Transformable2d<Curve2d>{
 }

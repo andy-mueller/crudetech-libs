@@ -68,9 +68,22 @@ public class NotifyingStackTest {
         stack.getPopEvent().addListener(listener);
         stack.getPushEvent().addListener(listener);
 
-        stack.clear();
+        stack.clearWithoutEvents();
 
         assertThat(stack.isEmpty(), is(true));
+        verify(listener, never()).onEvent((EventObject<NotifyingStack<Integer>>) any());
+    }
+    @Test
+    public void addRaisesNoEvent() {
+        EventListener<EventObject<NotifyingStack<Integer>>> listener = mock(EventListener.class);
+        NotifyingStackImp<Integer> stack = new NotifyingStackImp<Integer>(asList(1, 2)) {
+        };
+        stack.getPopEvent().addListener(listener);
+        stack.getPushEvent().addListener(listener);
+
+        stack.addWithoutEvents(3, 4);
+
+        assertThat(stack, is(equalTo(1, 2, 3, 4)));
         verify(listener, never()).onEvent((EventObject<NotifyingStack<Integer>>) any());
     }
 }

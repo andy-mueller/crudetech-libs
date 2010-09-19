@@ -46,9 +46,10 @@ public interface CoordinateSystemStack extends Iterable<Matrix2d>{
      * Pushes an element on the top of this stack. The passed matrix will
      * be post multiplied to the former peek matrix.
      *
-     * @param item The element to be pushed on the stack.
+     * @param xform The element to be pushed on the stack.
      */
-    void pusXForm(Matrix2d item);
+    void pushXForm(Matrix2d xform);
+    void pushCoordinateSystem(CoordinateSystem coos);
 
     boolean isEmpty();
 

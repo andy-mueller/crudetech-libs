@@ -10,21 +10,31 @@
 ////////////////////////////////////////////////////////////////////////////////
 package com.crudetech.graphics2d.xwt.test;
 
-import com.crudetech.geometry.geom.RadianAngles;
 import com.crudetech.geometry.geom2d.Point2d;
-import com.crudetech.graphics2d.xwt.*;
+import com.crudetech.graphics2d.xwt.Color;
+import com.crudetech.graphics2d.xwt.GraphicsStream2d;
+import com.crudetech.graphics2d.xwt.Pen;
+import com.crudetech.graphics2d.xwt.SolidBrush;
+import com.crudetech.graphics2d.xwt.widgets.RectangularBorderedWidget;
+import com.crudetech.graphics2d.xwt.widgets.RectangularBorderedWidgetDispProps;
 
 /**
  * A very simple test scene that can be used to visually expect the your xwt implementation.
  */
 public class TestScene {
-    public void render(GraphicsStream2d pipe){
-        pipe.getCoordinateSystemStack().pushTranslation(100, 100);
-        pipe.getCoordinateSystemStack().pushRotationInRadians(RadianAngles.k30);
+    public void render(GraphicsStream2d pipe) {
+        RectangularBorderedWidgetDispProps rectProps = new RectangularBorderedWidgetDispProps(new Pen(2.0f), new SolidBrush(Color.Blue));
+        RectangularBorderedWidget rect = new RectangularBorderedWidget(200, 100, rectProps);
+        rect.getEcs().setLocation(new Point2d(100, 100));
 
-        pipe.getPenStack().push(new Pen(3, Cap.Square, Join.Miter, 1, null, 0));
+        GraphicsStream2d.RestorePoint rp = pipe.createRestorePoint();
+        try {
+//            pipe.getCoordinateSystemStack().pushTranslation(100, 100);
+//            pipe.getCoordinateSystemStack().pushRotationInRadians(RadianAngles.k30);
 
-        pipe.getBrushStack().push(new SolidBrush(Color.Blue));
-        pipe.drawLine(new Point2d(10, 100), new Point2d(200, 100));        
+            rect.draw(pipe);
+        } finally {
+            rp.restore();
+        }
     }
 }

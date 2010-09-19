@@ -10,15 +10,21 @@
 ////////////////////////////////////////////////////////////////////////////////
 package com.crudetech.collections;
 
+import com.crudetech.functional.BinaryFunction;
+import com.crudetech.lang.ArgumentNullException;
+import com.crudetech.lang.Compare;
+import com.crudetech.functional.UnaryFunction;
 import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.NoSuchElementException;
 
+import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsNull.nullValue;
+import static org.junit.Assert.assertTrue;
 
 
 public class IterablesFixture {
@@ -108,5 +114,64 @@ public class IterablesFixture {
         Iterable<Integer> range = Arrays.asList();
 
         assertThat(Iterables.isEmpty(range), is(true));
+    }
+    @Test
+    public void transform(){
+        Iterable<Double> input = asList(3.0, 5.0, 3.0, 8.0, 2.0);
+        UnaryFunction<Double, Integer> cast = new UnaryFunction<Double, Integer>() {
+            @Override
+            public Integer execute(Double aDouble) {
+                return (int)aDouble.doubleValue();
+            }
+        };
+
+        Iterable<Integer> result = Iterables.transform(input, cast);
+
+        assertTrue(Compare.equals(result, asList(3, 5, 3, 8, 2)));
+    }
+    @Test
+    public void transformWithEmptyReturnsEmptyRange(){
+        Iterable<Double> input = asList();
+        UnaryFunction<Double, Integer> cast = new UnaryFunction<Double, Integer>() {
+            @Override
+            public Integer execute(Double aDouble) {
+                return (int)aDouble.doubleValue();
+            }
+        };
+
+        Iterable<Integer> result = Iterables.transform(input, cast);
+
+        assertTrue(Compare.equals(result, asList()));
+    }
+    @Test(expected = ArgumentNullException.class)
+    public void transformWithNullThrows(){
+        Iterable<Double> input = asList();
+        UnaryFunction<Double, Integer> cast = new UnaryFunction<Double, Integer>() {
+            @Override
+            public Integer execute(Double aDouble) {
+                return (int)aDouble.doubleValue();
+            }
+        };
+
+        Iterables.transform((Iterable<Double>) null, cast);
+   }
+    @Test(expected = ArgumentNullException.class)
+    public void transformWithNullFunctorThrows(){
+        Iterable<Double> input = asList();
+
+
+        Iterables.transform(input, null);
+   }
+    @Test
+    public void accumulateAdds(){
+        Iterable<Integer> input = asList(1, 2, 3, 4);
+
+        BinaryFunction<Integer, Integer, Integer> add = new BinaryFunction<Integer, Integer, Integer>() {
+            @Override
+            public Integer execute(Integer i1, Integer i2) {
+                return i1 + i2;
+            }
+        };
+        assertThat(Iterables.accumulate(input, add), is(10));
     }
 }

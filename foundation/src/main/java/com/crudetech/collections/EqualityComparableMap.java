@@ -11,7 +11,7 @@
 package com.crudetech.collections;
 
 import com.crudetech.lang.EqualityComparer;
-import functional.UnaryFunction;
+import com.crudetech.functional.UnaryFunction;
 
 import java.util.AbstractMap;
 import java.util.Collection;
@@ -100,19 +100,19 @@ public class EqualityComparableMap<K, V> implements Map<K, V> {
 
     @Override
     public Set<K> keySet() {
-        UnaryFunction<K, EqualityComparable<K>> xform = new UnaryFunction<K, EqualityComparable<K>>() {
+        UnaryFunction<EqualityComparable<K>, K> xform = new UnaryFunction<EqualityComparable<K>, K>() {
             @Override
             public K execute(EqualityComparable<K> entry) {
                 return entry.getWrapped();
             }
         };
-        UnaryFunction<EqualityComparable<K>, K> back = new UnaryFunction<EqualityComparable<K>, K>() {
+        UnaryFunction<K, EqualityComparable<K>> back = new UnaryFunction<K, EqualityComparable<K>>() {
             @Override
             public EqualityComparable<K> execute(K key) {
                 return new EqualityComparable<K>(equComp, key);
             }
         };
-        return new XFormSet<K, EqualityComparable<K>>(wrapped.keySet(), xform, back);                                                                                                                           
+        return new XFormSet<K, EqualityComparable<K>>(wrapped.keySet(), xform, back);
     }
 
     @Override
@@ -123,14 +123,14 @@ public class EqualityComparableMap<K, V> implements Map<K, V> {
     @Override
     public Set<Entry<K, V>> entrySet() {
 
-        UnaryFunction<Entry<K, V>, Entry<EqualityComparable<K>, V>> xform = new UnaryFunction<Entry<K, V>, Entry<EqualityComparable<K>, V>>() {
+        UnaryFunction<Entry<EqualityComparable<K>, V>, Entry<K, V>> xform = new UnaryFunction<Entry<EqualityComparable<K>, V>, Entry<K, V>>() {
             @Override
             public Entry<K, V> execute(Entry<EqualityComparable<K>, V> entry) {
                 return new AbstractMap.SimpleEntry<K, V>(entry.getKey().getWrapped(), entry.getValue());
             }
         };
 
-        UnaryFunction<Entry<EqualityComparable<K>, V>, Entry<K, V>> back = new UnaryFunction<Entry<EqualityComparable<K>, V>, Entry<K, V>>() {
+        UnaryFunction<Entry<K, V>, Entry<EqualityComparable<K>, V>> back = new UnaryFunction<Entry<K, V>, Entry<EqualityComparable<K>, V>>() {
             @Override
             public Entry<EqualityComparable<K>, V> execute(Entry<K, V> entry) {
                 return new AbstractMap.SimpleEntry<EqualityComparable<K>, V>(new EqualityComparable<K>(equComp, entry.getKey()), entry.getValue());

@@ -18,6 +18,7 @@ import com.crudetech.geometry.geom2d.Point2d;
 import com.crudetech.geometry.geom2d.Vector2d;
 import org.junit.Test;
 
+import static com.crudetech.matcher.RangeIsEqual.equalTo;
 import static java.lang.Math.sqrt;
 import static java.util.Arrays.asList;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -40,7 +41,7 @@ public class Matrix2dStackTest {
     public void popRestoresPreviousTransformation() {
         Matrix2dStack stack = new Matrix2dStack();
 
-        stack.pusXForm(Matrix2d.createRotationInRadians(Math.PI / 3));
+        stack.pushXForm(Matrix2d.createRotationInRadians(Math.PI / 3));
         assertThat(stack.peek(), is(Matrix2d.createRotationInRadians(Math.PI / 3)));
 
         stack.pop();
@@ -121,7 +122,7 @@ public class Matrix2dStackTest {
     }
 
     @Test
-    public void postMultWithScaleAddsNextXFormOnLastXform(){
+    public void postMultWithScaleAddsNextXFormOnLastXform() {
         final Point2d p = new Point2d(1, 1);
 
         Matrix2dStack stack = new Matrix2dStack();
@@ -131,7 +132,7 @@ public class Matrix2dStackTest {
 
         Point2d actual = stack.peek().multiply(p);
 
-        assertThat(actual, is(new Point2d(0, 3*sqrt(2))));
+        assertThat(actual, is(new Point2d(0, 3 * sqrt(2))));
     }
 
     @Test
@@ -141,9 +142,22 @@ public class Matrix2dStackTest {
         stack.getPopEvent().addListener(listener);
         stack.getPushEvent().addListener(listener);
 
-        stack.clear();
+        stack.clearWithoutEvents();
 
         assertThat(stack.isEmpty(), is(true));
+        verify(listener, never()).onEvent((EventObject<NotifyingStack<Matrix2d>>) any());
+    }
+
+    @Test
+    public void addRaisesNoEvent() {
+        EventListener<EventObject<NotifyingStack<Matrix2d>>> listener = mock(EventListener.class);
+        Matrix2dStack stack = new Matrix2dStack(asList(Matrix2d.Identity, Matrix2d.Identity));
+        stack.getPopEvent().addListener(listener);
+        stack.getPushEvent().addListener(listener);
+
+        stack.addWithoutEvents(Matrix2d.Identity, Matrix2d.Identity);
+
+        assertThat(stack, is(equalTo(Matrix2d.Identity, Matrix2d.Identity, Matrix2d.Identity, Matrix2d.Identity)));
         verify(listener, never()).onEvent((EventObject<NotifyingStack<Matrix2d>>) any());
     }
 }

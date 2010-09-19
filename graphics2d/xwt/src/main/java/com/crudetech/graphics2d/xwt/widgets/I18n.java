@@ -8,14 +8,21 @@
 // Contributors:
 //     Andreas Mueller - initial API and implementation
 ////////////////////////////////////////////////////////////////////////////////
-package com.crudetech.geometry.geom2d;
+package com.crudetech.graphics2d.xwt.widgets;
 
-public class BezierCurve2d implements Curve2d{
-    public BezierCurve2d(Point2d start, Vector2d startDir, Point2d end, Vector2d endDir) {
+import java.util.ResourceBundle;
+
+
+class I18n {
+//    static String Border = getString("Border");
+    static String Border(){
+      return getString("Border");  
     }
 
-    @Override
-    public BezierCurve2d transformBy(Matrix2d xform) {
-        throw new UnsupportedOperationException("transformBy is not supported yet!");
+    private static ResourceBundle resourceBundle =
+            ResourceBundle.getBundle(I18n.class.getCanonicalName().replace('.', '/'));
+
+    static String getString(String key) {
+        return resourceBundle.getString(key);
     }
 }

@@ -16,7 +16,7 @@ import com.crudetech.geometry.geom.ToleranceComparable;
 import com.crudetech.lang.ArgumentNullException;
 
 
-public final class Point3d implements ToleranceComparable<Point3d> {
+public final class Point3d implements ToleranceComparable<Point3d>, Transformable3d<Point3d> {
     private double x;
     private double y;
     private double z;
@@ -84,4 +84,8 @@ public final class Point3d implements ToleranceComparable<Point3d> {
         return new Vector3d(x - from.x, y - from.y, z - from.z);
     }
 
+    @Override
+    public Point3d transformBy(Matrix3d xform) {
+        return xform.multiply(this);
+    }
 }

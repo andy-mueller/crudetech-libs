@@ -11,7 +11,7 @@
 package com.crudetech.collections;
 
 import com.crudetech.lang.Compare;
-import functional.UnaryFunction;
+import com.crudetech.functional.UnaryFunction;
 
 import java.util.AbstractCollection;
 import java.util.Collection;
@@ -19,11 +19,11 @@ import java.util.Iterator;
 
 
 public class XFormCollection<To, From> extends AbstractCollection<To> {
-    private final UnaryFunction<To, From> xform;
-    private final UnaryFunction<From, To> back;
+    private final UnaryFunction<From, To> xform;
+    private final UnaryFunction<To, From> back;
     private final Collection<From> fromCollection;
 
-    public XFormCollection(Collection<From> fromCollection, UnaryFunction<To, From> xform, UnaryFunction<From, To> back) {
+    public XFormCollection(Collection<From> fromCollection, UnaryFunction<From, To> xform, UnaryFunction<To, From> back) {
         this.fromCollection = fromCollection;
         this.xform = xform;
         this.back = back;
@@ -33,11 +33,11 @@ public class XFormCollection<To, From> extends AbstractCollection<To> {
         return fromCollection;
     }
 
-    protected UnaryFunction<From, To> getBackTransform() {
+    protected UnaryFunction<To, From> getBackTransform() {
         return back;
     }
 
-    protected UnaryFunction<To, From> getToTransform() {
+    protected UnaryFunction<From, To> getToTransform() {
         return xform;
     }
 

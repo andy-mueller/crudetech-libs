@@ -8,14 +8,13 @@
 // Contributors:
 //     Andreas Mueller - initial API and implementation
 ////////////////////////////////////////////////////////////////////////////////
-package com.crudetech.geometry.geom2d;
+package com.crudetech.graphics2d.xwt;
 
-public class BezierCurve2d implements Curve2d{
-    public BezierCurve2d(Point2d start, Vector2d startDir, Point2d end, Vector2d endDir) {
+public class GraphicsStream2dStub extends GraphicsStream2d {
+    GraphicsStream2dStub(GraphicsContext pipe) {
+        super(pipe);
     }
-
-    @Override
-    public BezierCurve2d transformBy(Matrix2d xform) {
-        throw new UnsupportedOperationException("transformBy is not supported yet!");
+    public GraphicsStream2dStub(){
+        this(new GraphicsContextStub());     
     }
 }

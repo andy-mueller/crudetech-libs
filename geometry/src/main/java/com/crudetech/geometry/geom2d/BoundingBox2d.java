@@ -14,8 +14,10 @@ import com.crudetech.geometry.geom.Tolerance;
 import com.crudetech.geometry.geom.ToleranceComparable;
 import com.crudetech.lang.ArgumentNullException;
 
-
-public class BoundingBox2d implements ToleranceComparable<BoundingBox2d> {
+/**
+ * A bondingBox defines a rectangular interval in 2d coordinate system.
+ */
+public class BoundingBox2d implements ToleranceComparable<BoundingBox2d>, Transformable2d<BoundingBox2d> {
     private final Point2d lowerLeft;
     private final Point2d upperRight;
 
@@ -28,6 +30,10 @@ public class BoundingBox2d implements ToleranceComparable<BoundingBox2d> {
 
         this.lowerLeft = lowerLeft;
         this.upperRight = upperRight;
+    }
+
+    public BoundingBox2d(double x, double y, double width, double height) {
+        this(new Point2d(x, y), new Point2d(x + width, y + height));
     }
 
     Point2d getBottomLeft() {
@@ -87,5 +93,36 @@ public class BoundingBox2d implements ToleranceComparable<BoundingBox2d> {
 
     public Point2d getUpperRight() {
         return upperRight;
+    }
+
+    @Override
+    public BoundingBox2d transformBy(Matrix2d xform) {
+        return new BoundingBox2d(lowerLeft.transformBy(xform), upperRight.transformBy(xform));
+    }
+
+    public BoundingBox2d add(Point2d point2d) {
+        final double x1 = point2d.getX() < lowerLeft.getX() ? point2d.getX() : lowerLeft.getX();
+        final double y1 = point2d.getY() < lowerLeft.getY() ? point2d.getY() : lowerLeft.getY();
+
+        final double x2 = point2d.getX() > upperRight.getX() ? point2d.getX() : upperRight.getX();
+        final double y2 = point2d.getY() > upperRight.getY() ? point2d.getY() : upperRight.getY();
+
+        return new BoundingBox2d(new Point2d(x1, y1), new Point2d(x2, y2));
+    }
+
+    public boolean contains(Point2d point) {
+        return !doesNotContain(point);
+
+    }
+    private boolean doesNotContain(Point2d point) {
+        return (point.getX() < lowerLeft.getX() || point.getX() > upperRight.getX())
+            || (point.getY() < lowerLeft.getY() || point.getY() > upperRight.getY());
+    }
+
+    public Point2d getUpperLeft() {
+        return new Point2d(lowerLeft.getX(), upperRight.getY());
+    }
+    public Point2d getLowerRight() {
+        return new Point2d(upperRight.getX(), lowerLeft.getY());
     }
 }

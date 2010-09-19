@@ -36,6 +36,8 @@ class SimpleFrame extends JFrame {
     public void paint(Graphics graphics) {
         super.paint(graphics);
 
+        graphics.drawRect(0,0,100,100);
+
         GraphicsStream2d pipe = new GraphicsStream2d(new AwtGraphicsContext((Graphics2D) graphics));
         scene.render(pipe);
     }

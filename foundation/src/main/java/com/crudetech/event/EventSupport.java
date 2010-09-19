@@ -12,7 +12,6 @@ package com.crudetech.event;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 /**
  * Simple type safe helper class to implement events.
@@ -28,7 +27,7 @@ import java.util.List;
  *     return closedEvent;
  *   }
  *   void close(){
- *     closedEvent.fireEvent(e);
+ *     closedEvent.fireEvent(new ClosedEventObject(this) );
  *   }
  * }
  *
@@ -50,7 +49,7 @@ import java.util.List;
  */
 public class EventSupport<TEventObject extends EventObject<?>> implements Event<TEventObject> {
 
-    private final List<EventListener<TEventObject>> listeners = new ArrayList<EventListener<TEventObject>>();
+    private final Collection<EventListener<TEventObject>> listeners = new ArrayList<EventListener<TEventObject>>();
 
     public void addListener(EventListener<TEventObject> listener) {
         synchronized (listeners) {

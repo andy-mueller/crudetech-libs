@@ -16,7 +16,7 @@ import com.crudetech.geometry.geom.ToleranceComparable;
 import com.crudetech.lang.ArgumentNullException;
 
 
-public final class Vector3d implements ToleranceComparable<Vector3d> {
+public final class Vector3d implements ToleranceComparable<Vector3d>, Transformable3d<Vector3d> {
     private final double x;
     private final double y;
     private final double z;
@@ -82,5 +82,10 @@ public final class Vector3d implements ToleranceComparable<Vector3d> {
     @Override
     public int hashCode() {
         return hashCode(Tolerance3d.getGlobalTolerance());
+    }
+
+    @Override
+    public Vector3d transformBy(Matrix3d xform) {
+        return xform.multiply(this);
     }
 }

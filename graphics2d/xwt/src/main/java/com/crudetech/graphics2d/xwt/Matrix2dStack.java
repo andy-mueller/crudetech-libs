@@ -52,9 +52,14 @@ class Matrix2dStack implements CoordinateSystemStack, NotifyingStack<Matrix2d>{
     }
 
     @Override
-    public void pusXForm(Matrix2d xform) {
+    public void pushXForm(Matrix2d xform) {
         Matrix2d peek = peek();
         stack.push(postMultiply(peek, xform));
+    }
+
+    @Override
+    public void pushCoordinateSystem(CoordinateSystem coos) {
+        pushXForm(coos.asMatrix());
     }
 
     @Override
@@ -69,12 +74,12 @@ class Matrix2dStack implements CoordinateSystemStack, NotifyingStack<Matrix2d>{
 
     @Override
     public void pushTranslation(Vector2d translation) {
-        pusXForm(Matrix2d.createTranslation(translation));
+        pushXForm(Matrix2d.createTranslation(translation));
     }
 
     @Override
     public void pushRotationInRadians(double angle) {
-        pusXForm(Matrix2d.createRotationInRadians(angle));
+        pushXForm(Matrix2d.createRotationInRadians(angle));
     }
 
     @Override
@@ -86,8 +91,8 @@ class Matrix2dStack implements CoordinateSystemStack, NotifyingStack<Matrix2d>{
         Matrix2d m = scale.multiply(back);
         m = peek().multiply(m);
 
-        pusXForm(Matrix2d.createScale(scaleX, scaleY));
-//        pusXForm(m);
+        pushXForm(Matrix2d.createScale(scaleX, scaleY));
+//        pushXForm(m);
     }
 
     private Point2d getCurrentLocation() {
@@ -96,7 +101,7 @@ class Matrix2dStack implements CoordinateSystemStack, NotifyingStack<Matrix2d>{
 
     @Override
     public void pushScale(double scaleX, double scaleY, Point2d center) {
-        pusXForm(Matrix2d.createScale(scaleX, scaleY, center));
+        pushXForm(Matrix2d.createScale(scaleX, scaleY, center));
     }
 
     public void pushTranslation(double dx, double dy) {
@@ -108,7 +113,11 @@ class Matrix2dStack implements CoordinateSystemStack, NotifyingStack<Matrix2d>{
         return stack.iterator();
     }
 
-    public void clear() {
-        stack.clear();                
+    void clearWithoutEvents() {
+        stack.clearWithoutEvents();                
+    }
+
+    void addWithoutEvents(Matrix2d... mx) {
+        stack.addWithoutEvents(mx);
     }
 }
