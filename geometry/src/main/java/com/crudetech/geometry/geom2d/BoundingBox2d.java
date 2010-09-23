@@ -11,13 +11,12 @@
 package com.crudetech.geometry.geom2d;
 
 import com.crudetech.geometry.geom.Tolerance;
-import com.crudetech.geometry.geom.ToleranceComparable;
 import com.crudetech.lang.ArgumentNullException;
 
 /**
  * A bondingBox defines a rectangular interval in 2d coordinate system.
  */
-public class BoundingBox2d implements ToleranceComparable<BoundingBox2d>, Transformable2d<BoundingBox2d> {
+public class BoundingBox2d extends AbstractToleranceComparable2d<BoundingBox2d> implements Transformable2d<BoundingBox2d> {
     private final Point2d lowerLeft;
     private final Point2d upperRight;
 
@@ -36,10 +35,6 @@ public class BoundingBox2d implements ToleranceComparable<BoundingBox2d>, Transf
         this(new Point2d(x, y), new Point2d(x + width, y + height));
     }
 
-    Point2d getBottomLeft() {
-        return lowerLeft;
-    }
-
     @SuppressWarnings({"StringConcatenation", "HardCodedStringLiteral", "MagicCharacter"})
     @Override
     public String toString() {
@@ -47,21 +42,6 @@ public class BoundingBox2d implements ToleranceComparable<BoundingBox2d>, Transf
                 "lowerLeft=" + lowerLeft +
                 ", upperRight=" + upperRight +
                 '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        BoundingBox2d that = (BoundingBox2d) o;
-
-        return equals(that, Tolerance2d.getGlobalTolerance());
-    }
-
-    @Override
-    public int hashCode() {
-        return hashCode(Tolerance2d.getGlobalTolerance());
     }
 
     @Override
@@ -101,27 +81,53 @@ public class BoundingBox2d implements ToleranceComparable<BoundingBox2d>, Transf
     }
 
     public BoundingBox2d add(Point2d point2d) {
-        final double x1 = point2d.getX() < lowerLeft.getX() ? point2d.getX() : lowerLeft.getX();
-        final double y1 = point2d.getY() < lowerLeft.getY() ? point2d.getY() : lowerLeft.getY();
+        if (point2d == null) return this;
 
-        final double x2 = point2d.getX() > upperRight.getX() ? point2d.getX() : upperRight.getX();
-        final double y2 = point2d.getY() > upperRight.getY() ? point2d.getY() : upperRight.getY();
+        return add(new Point2d[]{point2d});
+    }
+
+    public BoundingBox2d add(Point2d... points) {
+        double x1 = lowerLeft.getX();
+        double y1 = lowerLeft.getY();
+
+        double x2 = upperRight.getX();
+        double y2 = upperRight.getY();
+
+        for (Point2d pt : points) {
+            x1 = pt.getX() < x1 ? pt.getX() : x1;
+            y1 = pt.getY() < y1 ? pt.getY() : y1;
+
+            x2 = pt.getX() > x2 ? pt.getX() : x2;
+            y2 = pt.getY() > y2 ? pt.getY() : y2;
+        }
 
         return new BoundingBox2d(new Point2d(x1, y1), new Point2d(x2, y2));
+    }
+
+    public BoundingBox2d add(BoundingBox2d... boxes) {
+        if (boxes == null || (boxes.length == 1 && boxes[0] == null))
+            throw new ArgumentNullException("boxes");
+        BoundingBox2d result = this;
+        for (BoundingBox2d bb : boxes) {
+            result = result.add(bb.getLowerLeft(), bb.getUpperLeft(), bb.getLowerRight(), bb.getUpperRight());
+        }
+        return result;
     }
 
     public boolean contains(Point2d point) {
         return !doesNotContain(point);
 
     }
+
     private boolean doesNotContain(Point2d point) {
         return (point.getX() < lowerLeft.getX() || point.getX() > upperRight.getX())
-            || (point.getY() < lowerLeft.getY() || point.getY() > upperRight.getY());
+                || (point.getY() < lowerLeft.getY() || point.getY() > upperRight.getY());
     }
 
     public Point2d getUpperLeft() {
         return new Point2d(lowerLeft.getX(), upperRight.getY());
     }
+
     public Point2d getLowerRight() {
         return new Point2d(upperRight.getX(), lowerLeft.getY());
     }

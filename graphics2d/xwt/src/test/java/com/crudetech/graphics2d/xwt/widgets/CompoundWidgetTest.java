@@ -10,8 +10,12 @@
 ////////////////////////////////////////////////////////////////////////////////
 package com.crudetech.graphics2d.xwt.widgets;
 
+import com.crudetech.geometry.geom.RadianAngles;
 import com.crudetech.geometry.geom2d.BoundingBox2d;
+import com.crudetech.geometry.geom2d.Matrix2d;
 import com.crudetech.geometry.geom2d.Point2d;
+import com.crudetech.graphics2d.xwt.GraphicsStream2d;
+import com.crudetech.graphics2d.xwt.GraphicsStream2dStub;
 import org.junit.Test;
 
 import static com.crudetech.matcher.RangeIsEqual.equalTo;
@@ -21,6 +25,7 @@ import static org.hamcrest.Matchers.not;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsSame.sameInstance;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
 
 public class CompoundWidgetTest {
     @Test
@@ -36,19 +41,45 @@ public class CompoundWidgetTest {
         assertThat(cw.getComponents(), is(equalTo(widgets)));
         assertThat(cw.getComponents(), is(not(sameInstance(widgets))));
     }
+
     @Test
-    public void boundingBoxEnclosesAllSubWidgets(){
-        Widget w1 = new RectangularBorderedWidget(10, 10, RectangularBorderedWidgetDispProps.Default);
+    public void boundingBoxEnclosesAllSubWidgets() {
+        Widget w1 = new RectangularBorderedWidget(20, 20, RectangularBorderedWidgetDispProps.Default);
         w1.getEcs().setLocation(new Point2d(10, 10));
 
-        Widget w2 = new RectangularBorderedWidget(20, 10, RectangularBorderedWidgetDispProps.Default);
+        Widget w2 = new RectangularBorderedWidget(40, 20, RectangularBorderedWidgetDispProps.Default);
         w2.getEcs().setLocation(new Point2d(20, 20));
 
-        Widget w3 = new RectangularBorderedWidget(10,  5, RectangularBorderedWidgetDispProps.Default);
-        w2.getEcs().setLocation(new Point2d(35, 25));
+        Widget w3 = new RectangularBorderedWidget(20, 20, RectangularBorderedWidgetDispProps.Default);
+        w3.getEcs().setLocation(new Point2d(60, 40));
 
-        Widget cw = new CompoundWidget(asList(w1, w2, w3));
+        CompoundWidget cw = new CompoundWidget(asList(w1, w2, w3));
 
-      //  assertThat(cw.getBoundingBox(), is(new BoundingBox2d(10, 10, 35, 20)));
+        assertThat(cw.getBoundingBox(), is(new BoundingBox2d(10, 10, 70, 50)));
+    }
+
+    @Test
+    public void subWidgetIsDawnWithEcsIsOnStreamStackWhenPainted() {
+        Widget sub = new RectangularBorderedWidget(20, 50, RectangularBorderedWidgetDispProps.Default){
+            @Override
+            public void draw(GraphicsStream2d stream) {
+                Matrix2d ecs = getEcs().asMatrix();
+                Matrix2d[] stack = stream.getCoordinateSystemStack().toArray();
+                if(!stack[stack.length-1].multiply(ecs.inverse()).equals(stack[stack.length-2])){
+                    throw new AssertionError();
+                }
+            }
+        };
+        
+        sub.getEcs().setLocationAndRotationInRadians(new Point2d(3, 66), RadianAngles.k150);
+
+        Widget sub2 = spy(new RectangularBorderedWidget(20, 50, RectangularBorderedWidgetDispProps.Default));
+        sub2.getEcs().setLocationAndRotationInRadians(new Point2d(3, 2), RadianAngles.k120);
+
+        CompoundWidget cw = spy(new CompoundWidget(asList(sub, sub2)));
+
+        GraphicsStream2d pipe = new GraphicsStream2dStub();
+
+        cw.draw(pipe);
     }
 }

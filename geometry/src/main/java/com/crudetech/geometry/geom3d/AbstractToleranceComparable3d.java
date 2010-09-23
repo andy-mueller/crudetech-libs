@@ -8,9 +8,15 @@
 // Contributors:
 //     Andreas Mueller - initial API and implementation
 ////////////////////////////////////////////////////////////////////////////////
-package com.crudetech.functional;
+package com.crudetech.geometry.geom3d;
 
+import com.crudetech.geometry.geom.AbstractToleranceComparable;
+import com.crudetech.geometry.geom.Tolerance;
+import com.crudetech.geometry.geom.ToleranceComparable;
 
-public interface BinaryFunction<Arg1, Arg2, Result> {
-    Result execute(Arg1 lhs, Arg2 rhs);    
+public abstract class AbstractToleranceComparable3d<TolComp extends ToleranceComparable<TolComp>> extends AbstractToleranceComparable<TolComp> {
+    @Override
+    protected Tolerance getGlobalTolerance() {
+        return Tolerance3d.getGlobalTolerance();
+    }
 }

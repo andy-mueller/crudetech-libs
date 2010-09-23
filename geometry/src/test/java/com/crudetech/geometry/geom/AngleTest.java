@@ -41,7 +41,6 @@ public class AngleTest {
 
     @Test
     public void testConstantValue() throws NoSuchFieldException, IllegalAccessException {
-
         assertThat((Double) RadianAngles.class.getField("k" + (int) angleInDegrees).get(null), is(equalTo(angleInDegrees * Math.PI / 180, withTol(Tol))));
     }
 }

@@ -10,12 +10,13 @@
 ////////////////////////////////////////////////////////////////////////////////
 package com.crudetech.graphics2d.xwt.widgets;
 
+import com.crudetech.collections.Iterables;
+import com.crudetech.functional.BinaryFunction;
+import com.crudetech.functional.UnaryFunction;
 import com.crudetech.geometry.geom2d.BoundingBox2d;
 import com.crudetech.graphics2d.xwt.GraphicsStream2d;
-
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 
 
 public class CompoundWidget extends AbstractWidget{
@@ -33,12 +34,34 @@ public class CompoundWidget extends AbstractWidget{
 
     @Override
     protected void drawEcs(GraphicsStream2d stream) {
-        throw new UnsupportedOperationException("drawEcs is not supported yet!");
+        for(Widget sub : getComponents()){
+            GraphicsStream2d.RestorePoint rp = stream.createRestorePoint();
+            try{
+                stream.getCoordinateSystemStack().pushCoordinateSystem(sub.getEcs());
+                sub.draw(stream);
+            }
+            finally{
+                rp.restore();
+            }
+        }
     }
 
     @Override
     public BoundingBox2d getBoundingBox() {
-//        Iterator<BoundingBox2d> i = components.iterator();
-        return null;
+        UnaryFunction<Widget, BoundingBox2d> getBoundingBox =   new UnaryFunction<Widget, BoundingBox2d>() {
+            @Override
+            public BoundingBox2d execute(Widget widget) {
+                return widget.getEcs().fromCoordinateSystemToWorld(widget.getBoundingBox());
+            }
+        };
+        Iterable<BoundingBox2d> boxes = Iterables.transform(getComponents(), getBoundingBox);
+
+        BinaryFunction<BoundingBox2d, BoundingBox2d, BoundingBox2d> add = new BinaryFunction<BoundingBox2d, BoundingBox2d, BoundingBox2d>() {
+            @Override
+            public BoundingBox2d execute(BoundingBox2d lhs, BoundingBox2d rhs) {
+                return lhs.add(rhs);
+            }
+        };
+        return Iterables.accumulate(boxes, add);
     }
 }

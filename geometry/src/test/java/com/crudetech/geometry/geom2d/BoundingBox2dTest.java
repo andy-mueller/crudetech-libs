@@ -11,6 +11,7 @@
 package com.crudetech.geometry.geom2d;
 
 import com.crudetech.lang.AbstractRunnable;
+import com.crudetech.lang.ArgumentNullException;
 import org.junit.Test;
 
 import static com.crudetech.matcher.ThrowsException.doesThrow;
@@ -67,6 +68,7 @@ public class BoundingBox2dTest {
         assertThat(newBB.getLowerLeft(), is(new Point2d(0, 0)));
         assertThat(newBB.getUpperRight(), is(new Point2d(5, 5)));
     }
+
     @Test
     public void addingPointOnBoundaryCreatesSameSizeBox() {
         BoundingBox2d bb = new BoundingBox2d(new Point2d(1, 1), new Point2d(5, 5));
@@ -75,8 +77,38 @@ public class BoundingBox2dTest {
         assertThat(newBB.getLowerLeft(), is(new Point2d(1, 1)));
         assertThat(newBB.getUpperRight(), is(new Point2d(5, 5)));
     }
+
     @Test
-    public void boxContainsPoint(){
+    public void addingNullReturnsEquivalentBox() {
+        BoundingBox2d bb = new BoundingBox2d(new Point2d(1, 1), new Point2d(5, 5));
+        BoundingBox2d newBB = bb.add((Point2d) null);
+
+        assertThat(newBB, is(new BoundingBox2d(1, 1, 4, 4)));
+    }
+
+    @Test
+    public void addingNullBoxReturnsEquivalentBox() {
+        final BoundingBox2d bb = new BoundingBox2d(new Point2d(1, 1), new Point2d(5, 5));
+        Runnable doAdd = new Runnable() {
+            @Override
+            public void run() {
+                bb.add((BoundingBox2d) null);
+            }
+        };
+
+        assertThat(doAdd, doesThrow(ArgumentNullException.class));
+    }
+
+    @Test
+    public void addingEmptyBoxArrayReturnsEquivalentBox() {
+        BoundingBox2d bb = new BoundingBox2d(new Point2d(1, 1), new Point2d(5, 5));
+        BoundingBox2d newBB = bb.add(new BoundingBox2d[]{});
+
+        assertThat(newBB, is(new BoundingBox2d(1, 1, 4, 4)));
+    }
+
+    @Test
+    public void boxContainsPoint() {
         BoundingBox2d bb = new BoundingBox2d(new Point2d(1, 1), new Point2d(5, 5));
 
         assertThat(bb.contains(new Point2d(2, 2)), is(true));
@@ -87,5 +119,19 @@ public class BoundingBox2dTest {
 
         assertThat(bb.contains(new Point2d(1, 4)), is(true));
         assertThat(bb.contains(new Point2d(5, 4)), is(true));
+    }
+
+    @Test
+    public void addingBox() {
+//        BoundingBox2d bb1 = new BoundingBox2d(new Point2d(10, 10), new Point2d(30, 30));
+//        BoundingBox2d bb2 = new BoundingBox2d(new Point2d(20, 20), new Point2d(60, 40));
+//        BoundingBox2d bb3 = new BoundingBox2d(new Point2d(60, 40), new Point2d(80, 60));
+        BoundingBox2d bb1 = new BoundingBox2d(10, 10, 20, 20);
+        BoundingBox2d bb2 = new BoundingBox2d(20, 20,40, 20);
+        BoundingBox2d bb3 = new BoundingBox2d(60, 40, 20, 20);
+
+        BoundingBox2d newBB = bb1.add(bb2, bb3);
+
+        assertThat(newBB, is(new BoundingBox2d(10, 10, 70, 50)));
     }
 }

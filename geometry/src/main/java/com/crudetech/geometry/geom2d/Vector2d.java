@@ -13,11 +13,10 @@ package com.crudetech.geometry.geom2d;
 import com.crudetech.geometry.geom.FloatCompare;
 import com.crudetech.geometry.geom.RadianAngles;
 import com.crudetech.geometry.geom.Tolerance;
-import com.crudetech.geometry.geom.ToleranceComparable;
 
 import static java.lang.Math.acos;
 
-public final class Vector2d implements ToleranceComparable<Vector2d>, Transformable2d<Vector2d> {
+public final class Vector2d extends AbstractToleranceComparable2d<Vector2d> implements Transformable2d<Vector2d> {
     private final double x;
     private final double y;
     public static final Vector2d xAxis = new Vector2d(1.0, 0);
@@ -40,15 +39,6 @@ public final class Vector2d implements ToleranceComparable<Vector2d>, Transforma
         return y;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Vector2d vector2d = (Vector2d) o;
-
-        return equals(vector2d, Tolerance2d.getGlobalTolerance());
-    }
 
     @Override
     public int hashCode(Tolerance tol) {
@@ -81,11 +71,6 @@ public final class Vector2d implements ToleranceComparable<Vector2d>, Transforma
         return long2int((long) d);
     }
 
-    @Override
-    public int hashCode() {
-        return hashCode(Tolerance2d.getGlobalTolerance());
-    }
-
     @SuppressWarnings({"StringConcatenation", "HardCodedStringLiteral", "MagicCharacter"})
     @Override
     public String toString() {
@@ -114,23 +99,25 @@ public final class Vector2d implements ToleranceComparable<Vector2d>, Transforma
     public Vector2d negate() {
         return new Vector2d(-x, -y);
     }
-    public double angleTo(Vector2d rhs){
+
+    public double angleTo(Vector2d rhs) {
         return angleTo(rhs, Tolerance2d.getGlobalTolerance());
     }
+
     public double angleTo(Vector2d rhs, Tolerance tol) {
-        final double angle = acos(dot(rhs)/(getLength()*rhs.getLength()));
-        if(FloatCompare.equals(angle, 0.0, tol.getVectorTolerance())) {
+        final double angle = acos(dot(rhs) / (getLength() * rhs.getLength()));
+        if (FloatCompare.equals(angle, 0.0, tol.getVectorTolerance())) {
             return 0.0;
         }
-        final double z = x*rhs.y - y*rhs.x;
-        if(z > 0)
+        final double z = x * rhs.y - y * rhs.x;
+        if (z > 0)
             return angle;
 
         return RadianAngles.k360 - angle;
     }
 
     private double dot(Vector2d rhs) {
-        return x*rhs.x + y*rhs.y;
+        return x * rhs.x + y * rhs.y;
     }
 
     @Override

@@ -83,7 +83,6 @@ public final class Point2d implements ToleranceComparable<Point2d>, Transformabl
 
     /**
      * Computes the hash code based on the global tolerance object.
-     * Computes the hash code based on the global tolerance object.
      * @return
      */
     @Override

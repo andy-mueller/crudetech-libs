@@ -28,7 +28,8 @@ import java.util.NoSuchElementException;
  * @author andreas.b.mueller@freenet.de
  */
 public final class Iterables {
-    private Iterables() {}
+    private Iterables() {
+    }
 
     public static <T> String toString(final Iterable<T> iterable) {
         if (iterable == null)
@@ -46,6 +47,7 @@ public final class Iterables {
         b.append("]");
         return b.toString();
     }
+
     public static <T> int hashCode(final Iterable<T> iterable) {
         if (iterable == null)
             return 0;
@@ -59,7 +61,7 @@ public final class Iterables {
     }
 
     public static <T> boolean contains(Iterable<T> range, T value) {
-        if(range == null) throw new ArgumentNullException("range");
+        if (range == null) throw new ArgumentNullException("range");
         for (T v : range) {
             if (Compare.equals(v, value)) {
                 return true;
@@ -69,7 +71,7 @@ public final class Iterables {
     }
 
     public static boolean contains(Iterable<Double> range, double value) {
-        if(range == null) throw new ArgumentNullException("range");
+        if (range == null) throw new ArgumentNullException("range");
         for (Double v : range) {
             if (Compare.equals(v.doubleValue(), value)) {
                 return true;
@@ -79,7 +81,7 @@ public final class Iterables {
     }
 
     public static boolean contains(Iterable<Float> range, float value) {
-        if(range == null) throw new ArgumentNullException("range");
+        if (range == null) throw new ArgumentNullException("range");
         for (Float v : range) {
             if (Compare.equals(v.doubleValue(), value)) {
                 return true;
@@ -89,15 +91,16 @@ public final class Iterables {
     }
 
     public static <T> boolean isEmpty(final Iterable<T> range) {
-        if(range == null) throw new ArgumentNullException("range");
+        if (range == null) throw new ArgumentNullException("range");
         return !range.iterator().hasNext();
     }
+
     public static <T> T lastOf(final Iterable<T> range) {
-        if(range == null) throw new ArgumentNullException("range");
+        if (range == null) throw new ArgumentNullException("range");
         T last = null;
         Iterator<T> i = range.iterator();
 
-        if(!i.hasNext()) throw new NoSuchElementException();
+        if (!i.hasNext()) throw new NoSuchElementException();
         //noinspection WhileLoopReplaceableByForEach
         while (i.hasNext()) {
             last = i.next();
@@ -106,7 +109,7 @@ public final class Iterables {
     }
 
     public static <T> int size(Iterable<T> range) {
-        if(range == null) throw new ArgumentNullException("range");
+        if (range == null) throw new ArgumentNullException("range");
         int size = 0;
         Iterator<T> i = range.iterator();
         //noinspection WhileLoopReplaceableByForEach
@@ -118,25 +121,26 @@ public final class Iterables {
     }
 
     public static <T> T firstOf(Iterable<T> range) {
-        if(range == null) throw new ArgumentNullException("range");
+        if (range == null) throw new ArgumentNullException("range");
         return range.iterator().next();
     }
-    public static <From, To> Iterable<To> transform(final Iterable<From> from, final UnaryFunction<From, To> xform){
-        if(from == null) throw new ArgumentNullException("from");
-        if(xform == null) throw new ArgumentNullException("xform");
-        
-        return new Iterable<To>() {
+    public static <From, To> Iterable<To> transform(final Iterable<From> from, final UnaryFunction<From, To> xform) {
+        if (from == null) throw new ArgumentNullException("from");
+        if (xform == null) throw new ArgumentNullException("xform");
+
+        return new AbstractIterable<To>() {
             @Override
             public Iterator<To> iterator() {
                 return transform(from.iterator(), xform);
             }
         };
     }
-    public static <From, To> Iterator<To> transform(final Iterator<From> from, final UnaryFunction<From, To> xform){
-        if(from == null) throw new ArgumentNullException("from");
-         if(xform == null) throw new ArgumentNullException("xform");
 
-         return new Iterator<To>() {
+    public static <From, To> Iterator<To> transform(final Iterator<From> from, final UnaryFunction<From, To> xform) {
+        if (from == null) throw new ArgumentNullException("from");
+        if (xform == null) throw new ArgumentNullException("xform");
+
+        return new Iterator<To>() {
             @Override
             public boolean hasNext() {
                 return from.hasNext();
@@ -154,12 +158,12 @@ public final class Iterables {
         };
     }
 
-    public static<T> T accumulate(Iterable<T> range, BinaryFunction<T, T, T> binaryFunction) {
+    public static <T> T accumulate(Iterable<T> range, BinaryFunction<T, T, T> binaryFunction) {
         Iterator<T> it = range.iterator();
-        if(!it.hasNext()) throw new IllegalArgumentException();
+        if (!it.hasNext()) throw new IllegalArgumentException();
         T init = it.next();
 
-        while(it.hasNext()){
+        while (it.hasNext()) {
             init = binaryFunction.execute(init, it.next());
         }
         return init;

@@ -18,7 +18,7 @@ import static java.lang.Math.cos;
 import static java.lang.Math.sin;
 
 
-public final class Matrix2d implements ToleranceComparable<Matrix2d>, Transformable2d<Matrix2d> {
+public final class Matrix2d extends AbstractToleranceComparable2d<Matrix2d> implements Transformable2d<Matrix2d> {
     private static final int Dimension = 3;
     final double m00, m01, m02;
     final double m10, m11, m12;
@@ -124,21 +124,6 @@ public final class Matrix2d implements ToleranceComparable<Matrix2d>, Transforma
         return FloatCompare.equals(toColumnMajorArray(), rhs.toColumnMajorArray(), tol.getVectorTolerance());
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Matrix2d matrix2d = (Matrix2d) o;
-
-        return equals(matrix2d, Tolerance2d.getGlobalTolerance());
-    }
-
-    @Override
-    public int hashCode() {
-        return hashCode(Tolerance2d.getGlobalTolerance());
-    }
-
     public Matrix2d multiply(Matrix2d rhs) {
         return new Matrix2d(
                 (m00 * rhs.m00 + m01 * rhs.m10 + m02 * rhs.m20), (m00 * rhs.m01 + m01 * rhs.m11 + m02 * rhs.m21), (m00 * rhs.m02 + m01 * rhs.m12 + m02 * rhs.m22),
@@ -182,17 +167,20 @@ public final class Matrix2d implements ToleranceComparable<Matrix2d>, Transforma
                 0, 0, 1
         );
     }
+
     public static Matrix2d createTranslationAndRotationInRadians(Vector2d translation, double angle) {
-       return createTranslationAndRotationInRadians(translation.getX(), translation.getY(), angle); 
+        return createTranslationAndRotationInRadians(translation.getX(), translation.getY(), angle);
     }
+
     public static Matrix2d createTranslationAndRotationInRadians(double dx, double dy, double angle) {
         return new Matrix2d(
-                 cos(angle), -sin(angle), dx,
-                 sin(angle), cos(angle), dy,
-                 0, 0, 1
-         );
+                cos(angle), -sin(angle), dx,
+                sin(angle), cos(angle), dy,
+                0, 0, 1
+        );
 
     }
+
     public static Matrix2d createRotationInRadians(double angle) {
         return new Matrix2d(
                 cos(angle), -sin(angle), 0,
@@ -200,6 +188,7 @@ public final class Matrix2d implements ToleranceComparable<Matrix2d>, Transforma
                 0, 0, 1
         );
     }
+
     public static Matrix2d createScaleX(double scaleX) {
         return createScale(scaleX, 1.0);
     }
@@ -220,7 +209,8 @@ public final class Matrix2d implements ToleranceComparable<Matrix2d>, Transforma
         double[] result = multiply(vec.getX(), vec.getY(), 0);
         return new Vector2d(result[0], result[1]);
     }
-     public Point2d multiply(Point2d pt) {
+
+    public Point2d multiply(Point2d pt) {
         double[] result = multiply(pt.getX(), pt.getY(), 1);
         return new Point2d(result[0], result[1]);
     }
