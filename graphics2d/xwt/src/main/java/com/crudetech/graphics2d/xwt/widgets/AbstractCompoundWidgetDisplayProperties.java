@@ -10,10 +10,10 @@
 ////////////////////////////////////////////////////////////////////////////////
 package com.crudetech.graphics2d.xwt.widgets;
 
-import com.crudetech.collections.Iterables;
-
 import java.util.Iterator;
 
+import static com.crudetech.collections.Iterables.cast;
+import static com.crudetech.collections.Iterables.concat;
 import static java.util.Arrays.asList;
 
 public class AbstractCompoundWidgetDisplayProperties implements WidgetDisplayProperties {
@@ -29,12 +29,18 @@ public class AbstractCompoundWidgetDisplayProperties implements WidgetDisplayPro
 
     @Override
     public Info getPropertyInfo(String key) {
-        throw new UnsupportedOperationException("getPropertyInfo is not supported yet!");
+        for (WidgetDisplayProperties prop : props) {
+            Info i = prop.getPropertyInfo(key);
+            if(i != null){
+                return i;
+            }
+        }
+        return null;
     }
 
     @Override
     public Iterator<WidgetDisplayProperties.Info> iterator() {
-        Iterable<Iterable<Info>> infos = Iterables.cast(props);
-        return Iterables.concat(infos).iterator();
+        Iterable<Iterable<Info>> infos = cast(props);
+        return concat(infos).iterator();
     }
 }

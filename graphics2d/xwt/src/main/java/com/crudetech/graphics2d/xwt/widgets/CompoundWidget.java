@@ -15,8 +15,11 @@ import com.crudetech.functional.BinaryFunction;
 import com.crudetech.functional.UnaryFunction;
 import com.crudetech.geometry.geom2d.BoundingBox2d;
 import com.crudetech.graphics2d.xwt.GraphicsStream2d;
+
 import java.util.ArrayList;
 import java.util.Collection;
+
+import static com.crudetech.collections.Iterables.accumulate;
 
 
 public class CompoundWidget extends AbstractWidget{
@@ -62,6 +65,6 @@ public class CompoundWidget extends AbstractWidget{
                 return lhs.add(rhs);
             }
         };
-        return Iterables.accumulate(boxes, add);
+        return accumulate(boxes, add);
     }
 }
