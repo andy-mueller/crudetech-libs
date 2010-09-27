@@ -19,7 +19,7 @@ import com.crudetech.graphics2d.xwt.GraphicsStream2d;
 
 public abstract class AbstractWidget implements Widget{
     private final CoordinateSystem ecs = new CoordinateSystem(Point2d.Origin, RadianAngles.k0);
-    private WidgetDisplayProperties dispProps = new WidgetDisplayProperties();
+    private WidgetDisplayProperties dispProps = new AbstractWidgetDisplayProperties(){};
     @Override
     public CoordinateSystem getEcs() {
         return ecs;

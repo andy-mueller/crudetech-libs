@@ -18,10 +18,13 @@ import java.awt.*;
 
 
 class SimpleFrame extends JFrame {
-    private final TestScene scene = new TestScene();
+
     public static void main(String[] args) {
         final SimpleFrame mainFrame = new SimpleFrame();
         mainFrame.setSize(500, 600);
+
+        mainFrame.setRootPane(new JRootPane() {
+        });
 
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -33,10 +36,13 @@ class SimpleFrame extends JFrame {
     }
 
     @Override
-    public void paint(Graphics graphics) {
-        super.paint(graphics);
+    public void paint(Graphics g) {
+        super.paint(g);
+        Graphics2D graphics = (Graphics2D) g;
 
-        graphics.drawRect(0,0,100,100);
+        graphics.translate(25, 40);
+
+        TestScene scene = new TestScene(getWidth() - 2*25, getHeight() - 2*40);
 
         GraphicsStream2d pipe = new GraphicsStream2d(new AwtGraphicsContext((Graphics2D) graphics));
         scene.render(pipe);

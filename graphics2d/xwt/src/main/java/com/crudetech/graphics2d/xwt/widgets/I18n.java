@@ -25,4 +25,8 @@ class I18n {
     static String getString(String key) {
         return resourceBundle.getString(key);
     }
+
+    public static String Text() {
+        return resourceBundle.getString("Text");        
+    }
 }

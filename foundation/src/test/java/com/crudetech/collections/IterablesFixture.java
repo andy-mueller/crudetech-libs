@@ -11,9 +11,9 @@
 package com.crudetech.collections;
 
 import com.crudetech.functional.BinaryFunction;
+import com.crudetech.functional.UnaryFunction;
 import com.crudetech.lang.ArgumentNullException;
 import com.crudetech.lang.Compare;
-import com.crudetech.functional.UnaryFunction;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -173,5 +173,55 @@ public class IterablesFixture {
             }
         };
         assertThat(Iterables.accumulate(input, add), is(10));
+    }
+    @Test
+    public void concatCreatesOneIterable(){
+        Iterable<Integer> i1 = asList(0,1,2,3);
+        Iterable<Integer> i2 = asList(4,5,6);
+        Iterable<Integer> i3 = asList(7,8,9);
+
+        Iterable<Integer> result = Iterables.concat(i1, i2, i3);
+
+        assertThat(Compare.equals(result, asList(0, 1, 2, 3, 4, 5, 6, 7, 8, 9)), is(true));
+    }
+    @Test
+    public void concatWithMidleEmpty(){
+        Iterable<Integer> i1 = asList(0,1,2,3);
+        Iterable<Integer> i2 = asList();
+        Iterable<Integer> i3 = asList(7,8,9);
+
+        Iterable<Integer> result = Iterables.concat(i1, i2, i3);
+
+        assertThat(Compare.equals(result, asList(0, 1, 2, 3, 7, 8, 9)), is(true));
+    }
+    @Test
+    public void concatWithMiddleNull(){
+        Iterable<Integer> i1 = asList(0,1,2,3);
+        Iterable<Integer> i2 = null;
+        Iterable<Integer> i3 = asList(7,8,9);
+
+        Iterable<Integer> result = Iterables.concat(i1, i2, i3);
+
+        assertThat(Compare.equals(result, asList(0, 1, 2, 3, 7, 8, 9)), is(true));
+    }
+    @Test
+    public void concatWithFirstEmpty(){
+        Iterable<Integer> i1 = asList();
+        Iterable<Integer> i2 = asList(4,5,6);
+        Iterable<Integer> i3 = asList(7,8,9);
+
+        Iterable<Integer> result = Iterables.concat(i1, i2, i3);
+
+        assertThat(Compare.equals(result, asList(4, 5, 6, 7, 8, 9)), is(true));
+    }
+    @Test
+    public void concatWithLastEmpty(){
+        Iterable<Integer> i1 = asList(0,1,2,3);
+        Iterable<Integer> i2 = asList(4,5,6);
+        Iterable<Integer> i3 = asList();
+
+        Iterable<Integer> result = Iterables.concat(i1, i2, i3);
+
+        assertThat(Compare.equals(result, asList(0, 1, 2, 3, 4, 5, 6)), is(true));
     }
 }

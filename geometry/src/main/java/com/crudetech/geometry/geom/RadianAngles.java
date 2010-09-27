@@ -41,4 +41,7 @@ public final class RadianAngles {
 
     private RadianAngles() {
     }
+    public static double angleOf(double angleInDegrees){
+        return angleInDegrees * Math.PI / 180;       
+    }
 }

@@ -8,13 +8,24 @@
 // Contributors:
 //     Andreas Mueller - initial API and implementation
 ////////////////////////////////////////////////////////////////////////////////
-package com.crudetech.graphics2d.xwt.widgets;
+package com.crudetech.collections;
 
-public interface WidgetDisplayProperties extends Iterable<WidgetDisplayProperties.Info> {
-    Info getPropertyInfo(String key);
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 
-    public static interface Info{
-        public WidgetDisplayProperty getProperty();
-        public String getDisplayName();
+class EmptyIterator<T> implements Iterator<T> {
+    @Override
+    public boolean hasNext() {
+        return false;
+    }
+
+    @Override
+    public T next() {
+        throw new NoSuchElementException();
+    }
+
+    @Override
+    public void remove() {
+        throw new UnsupportedOperationException("remove is not supported yet!");
     }
 }

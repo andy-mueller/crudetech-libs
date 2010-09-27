@@ -23,8 +23,6 @@ public class RectangularBorderedWidgetDispPropsTest {
 
         WidgetDisplayProperties.Info i = p.iterator().next();
 
-        assertThat(i.getDisplayName(), is("The Border"));
-
-        System.out.println(getClass().getCanonicalName().replace('.', '/'));
+        assertThat(i.getDisplayName(), is("Border"));
     }
 }

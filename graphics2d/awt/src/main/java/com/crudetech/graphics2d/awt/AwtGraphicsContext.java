@@ -20,12 +20,13 @@ import com.crudetech.graphics2d.xwt.GraphicsContext;
 import com.crudetech.graphics2d.xwt.Pen;
 
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 
 import static com.crudetech.graphics2d.awt.Convert.*;
 
 
-public class AwtGraphicsContext implements GraphicsContext{
+public class AwtGraphicsContext implements GraphicsContext {
     private final Graphics2D pipe;
 
     public AwtGraphicsContext(Graphics2D pipe) {
@@ -75,39 +76,40 @@ public class AwtGraphicsContext implements GraphicsContext{
 
     @Override
     public void drawString(String string, double x, double y) {
-        pipe.drawString(string, (float)x, (float)y);
+        pipe.drawString(string, (float) x, (float) y);
     }
 
     @Override
     public void drawString(String string, BoundingBox2d bounds, double padding) {
-        //TextLayout layout = new TextLayout(s, getFontStack().peek(), getGraphics().getFontRenderContext());
-         FontMetrics metrics = pipe.getFontMetrics(pipe.getFont());
+        FontMetrics metrics = pipe.getFontMetrics(pipe.getFont());
 
-         final double stringWidth = metrics.stringWidth(string);
-         final double stringHeight = metrics.getHeight();
+        final double stringWidth = metrics.stringWidth(string);
+        final double stringHeight = metrics.getHeight();
 
-         // calculate scale, so that bb fits into bounds - padding
-         final double sx = bounds.getWidth() / (stringWidth + padding);
-         final double sy = bounds.getHeight() / (stringHeight + padding);
+        // calculate scale, so that bb fits into bounds - padding
+        final double sx = bounds.getWidth() / (stringWidth + padding);
+        final double sy = bounds.getHeight() / (stringHeight + padding);
 
-         final double scale = Math.min(sx, sy);
+        final double scale = Math.min(sx, sy);
 
-         //position b inside bounds
-         final double x = bounds.getLowerLeft().getX() + ((bounds.getWidth() - stringWidth * scale) / 2);
-         final double y = bounds.getUpperRight().getY() + (bounds.getHeight() - (bounds.getHeight() - stringHeight * scale) / 2);
+        //position b inside bounds
+        final double x = bounds.getLowerLeft().getX() + ((bounds.getWidth() - stringWidth * scale) / 2);
+        final double y = bounds.getUpperRight().getY() + (bounds.getHeight() - (bounds.getHeight() - stringHeight * scale) / 2);
 
-//         AffineTransform peek = getXFormStack().peek();
-//         getXFormStack().pushScale(new Point2D.Double(x + peek.getTranslateX(), y + peek.getTranslateY()), scale, scale);
-//         try {
-//             getGraphics().drawString(s, (float) x, (float) y);
-//         } finally {
-//             getXFormStack().pop();
-//         }
+        AffineTransform peek = (AffineTransform) pipe.getTransform().clone();
+        peek.scale(scale, scale);
+
+        pipe.setTransform(peek);
+        try {
+            pipe.drawString(string, (float) x, (float) y);
+        } finally {
+            pipe.setTransform(peek);
+        }
     }
 
     @Override
     public void drawLine(Point2d start, Point2d end) {
-        pipe.drawLine((int)start.getX(), (int)start.getY(), (int)end.getX(), (int)end.getY());
+        pipe.drawLine((int) start.getX(), (int) start.getY(), (int) end.getX(), (int) end.getY());
     }
 
     @Override
@@ -119,6 +121,7 @@ public class AwtGraphicsContext implements GraphicsContext{
     public void drawRectangle(BoundingBox2d rect) {
         drawShape(new Rectangle2D.Double(rect.getLowerLeft().getX(), rect.getLowerLeft().getY(), rect.getWidth(), rect.getHeight()));
     }
+
     private void drawShape(Shape s) {
         pipe.draw(s);
     }

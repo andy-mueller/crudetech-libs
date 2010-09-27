@@ -11,12 +11,14 @@
 package com.crudetech.collections;
 
 import com.crudetech.functional.BinaryFunction;
+import com.crudetech.functional.UnaryFunction;
 import com.crudetech.lang.ArgumentNullException;
 import com.crudetech.lang.Compare;
-import com.crudetech.functional.UnaryFunction;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+
+import static java.util.Arrays.asList;
 
 /**
  * This class is very similar to {@link java.util.Arrays} except that it
@@ -167,5 +169,22 @@ public final class Iterables {
             init = binaryFunction.execute(init, it.next());
         }
         return init;
+    }
+
+    public static <T> Iterable<T> concat(Iterable<T>... iterables) {
+        if(iterables == null) throw new ArgumentNullException("iterables");
+        return new ConcatIterable<T>(asList(iterables));
+    }
+    public static <T> Iterable<T> concat(Iterable<Iterable<T>> iterables) {
+        if(iterables == null) throw new ArgumentNullException("iterables");
+        return new ConcatIterable<T>(iterables);
+    }
+    public static <From, To> Iterable<To> cast(Iterable<From> from){
+        return transform(from, new UnaryFunction<From, To>() {
+            @Override
+            public To execute(From from) {
+                return (To)from;
+            }
+        });
     }
 }

@@ -10,11 +10,21 @@
 ////////////////////////////////////////////////////////////////////////////////
 package com.crudetech.graphics2d.xwt.widgets;
 
-public interface WidgetDisplayProperties extends Iterable<WidgetDisplayProperties.Info> {
-    Info getPropertyInfo(String key);
+import com.crudetech.graphics2d.xwt.Brush;
+import com.crudetech.graphics2d.xwt.Font;
 
-    public static interface Info{
-        public WidgetDisplayProperty getProperty();
-        public String getDisplayName();
+public class TextWidgetDispProps extends AbstractWidgetDisplayProperties {
+    private static final String TextProp = "TextWidgetDispProps.TextProp";
+
+    public TextWidgetDispProps(Brush textBrush, Font textFont) {
+        putProperty(TextProp, I18n.Text(), new WidgetDisplayProperty(null, textBrush, textFont));
+    }
+
+    Brush getTextBrush() {
+        return getProperty(TextProp).getBrush();
+    }
+
+    Font getFont() {
+        return getProperty(TextProp).getFont();
     }
 }

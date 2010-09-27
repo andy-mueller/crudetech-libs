@@ -59,7 +59,7 @@ public class CompoundWidgetTest {
     }
 
     @Test
-    public void subWidgetIsDawnWithEcsIsOnStreamStackWhenPainted() {
+    public void subWidgetIsDrawnWithEcsIsOnStreamStackWhenPainted() {
         Widget sub = new RectangularBorderedWidget(20, 50, RectangularBorderedWidgetDispProps.Default){
             @Override
             public void draw(GraphicsStream2d stream) {
@@ -76,7 +76,7 @@ public class CompoundWidgetTest {
         Widget sub2 = spy(new RectangularBorderedWidget(20, 50, RectangularBorderedWidgetDispProps.Default));
         sub2.getEcs().setLocationAndRotationInRadians(new Point2d(3, 2), RadianAngles.k120);
 
-        CompoundWidget cw = spy(new CompoundWidget(asList(sub, sub2)));
+        CompoundWidget cw = new CompoundWidget(asList(sub, sub2));
 
         GraphicsStream2d pipe = new GraphicsStream2dStub();
 

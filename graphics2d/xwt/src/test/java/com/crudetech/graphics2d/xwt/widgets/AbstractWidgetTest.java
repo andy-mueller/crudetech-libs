@@ -26,9 +26,7 @@ import static com.crudetech.matcher.RangeIsEqual.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.sameInstance;
 import static org.hamcrest.core.Is.is;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 
 public class AbstractWidgetTest {
@@ -62,7 +60,7 @@ public class AbstractWidgetTest {
     public void setDispProps() {
         AbstractWidget w = new WidgetStub();
 
-        WidgetDisplayProperties props = new WidgetDisplayProperties();
+        WidgetDisplayProperties props = new AbstractWidgetDisplayProperties(){};
         w.setDisplayProperties(props);
 
         assertThat(w.getDisplayProperties(), is(sameInstance(props)));

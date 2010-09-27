@@ -21,10 +21,10 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 
 
-public class WidgetDisplayPropertiesTest {
+public class AbstractWidgetDisplayPropertiesTest {
     @Test
     public void addedPropIsAccessible() {
-        WidgetDisplayProperties props = new WidgetDisplayProperties();
+        AbstractWidgetDisplayProperties props = new AbstractWidgetDisplayProperties(){};
 
         WidgetDisplayProperty prop = new WidgetDisplayProperty(new Pen(3), SolidBrush.Red, new Font("Arial", FontStyle.Italic, 3));
         props.putProperty("Key", "Display Name", prop);
@@ -34,7 +34,7 @@ public class WidgetDisplayPropertiesTest {
 
     @Test
     public void accessingUnknownPropertyThrows() {
-        final WidgetDisplayProperties props = new WidgetDisplayProperties();
+        final AbstractWidgetDisplayProperties props = new AbstractWidgetDisplayProperties(){};
 
         Runnable doAccess = new Runnable() {
             @Override
@@ -48,7 +48,7 @@ public class WidgetDisplayPropertiesTest {
 
     @Test
     public void iteratingProps() {
-        WidgetDisplayProperties props = new WidgetDisplayProperties();
+        AbstractWidgetDisplayProperties props = new AbstractWidgetDisplayProperties(){};
 
         WidgetDisplayProperty prop = new WidgetDisplayProperty(new Pen(3), SolidBrush.Red, new Font("Arial", FontStyle.Italic, 3));
         props.putProperty("Key", "Display Name", prop);

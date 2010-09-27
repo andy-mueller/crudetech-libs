@@ -16,7 +16,7 @@ import com.crudetech.graphics2d.xwt.Pen;
 import com.crudetech.graphics2d.xwt.SolidBrush;
 
 
-public class RectangularBorderedWidgetDispProps extends WidgetDisplayProperties{
+public class RectangularBorderedWidgetDispProps extends AbstractWidgetDisplayProperties {
     private static final String BorderProp = "RectangularBorderedWidgetDispProps.BorderProp";
     public static RectangularBorderedWidgetDispProps Default =
             new RectangularBorderedWidgetDispProps(new Pen(1.0f), new SolidBrush(Color.Black));
@@ -25,11 +25,11 @@ public class RectangularBorderedWidgetDispProps extends WidgetDisplayProperties{
         putProperty(BorderProp, I18n.Border(), new WidgetDisplayProperty(borderPen, borderBrush, null));
     }
 
-    public Pen getBorderPen() {
+    Pen getBorderPen() {
         return getProperty(BorderProp).getPen();
     }
 
-    public Brush getBorderBrush() {
+    Brush getBorderBrush() {
         return getProperty(BorderProp).getBrush();
     }
 }
