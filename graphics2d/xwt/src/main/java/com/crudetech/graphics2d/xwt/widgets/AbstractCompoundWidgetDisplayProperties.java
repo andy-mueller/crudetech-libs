@@ -30,12 +30,21 @@ public class AbstractCompoundWidgetDisplayProperties implements WidgetDisplayPro
     @Override
     public Info getPropertyInfo(String key) {
         for (WidgetDisplayProperties prop : props) {
-            Info i = prop.getPropertyInfo(key);
-            if(i != null){
-                return i;
+            if(prop.hasProperty(key)){
+                return prop.getPropertyInfo(key);
             }
         }
-        return null;
+        throw new IllegalArgumentException();
+    }
+
+    @Override
+    public boolean hasProperty(String key) {
+        for (WidgetDisplayProperties prop : props) {
+            if(prop.hasProperty(key)){
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override

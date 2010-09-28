@@ -12,6 +12,7 @@ package com.crudetech.graphics2d.xwt.widgets;
 
 public interface WidgetDisplayProperties extends Iterable<WidgetDisplayProperties.Info> {
     Info getPropertyInfo(String key);
+    boolean hasProperty(String key);
 
     public static interface Info{
         public WidgetDisplayProperty getProperty();

@@ -44,6 +44,7 @@ public abstract class AbstractWidgetDisplayProperties implements WidgetDisplayPr
             return displayProperty;
         }
 
+
         public String getDisplayName() {
             return displayName;
         }
@@ -72,6 +73,11 @@ public abstract class AbstractWidgetDisplayProperties implements WidgetDisplayPr
     @Override
     public Iterator<Info> iterator() {
         return properties.values().iterator();
+    }
+
+    @Override
+    public boolean hasProperty(String key) {
+        return properties.containsKey(key);
     }
 
     public WidgetDisplayProperty getProperty(String key) {
