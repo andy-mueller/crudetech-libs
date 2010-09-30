@@ -20,7 +20,9 @@ class I18n {
     }
 
     private static ResourceBundle resourceBundle =
-            ResourceBundle.getBundle(I18n.class.getCanonicalName().replace('.', '/'));
+//           ResourceBundle.getBundle("com.crudetech.graphics2d.xwt.widgets.I18n");
+//            ResourceBundle.getBundle(I18n.class.getCanonicalName());
+    ResourceBundle.getBundle(I18n.class.getCanonicalName().replace('.', '/'));
 
     static String getString(String key) {
         return resourceBundle.getString(key);

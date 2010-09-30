@@ -15,6 +15,7 @@ import com.crudetech.functional.UnaryFunction;
 import com.crudetech.lang.ArgumentNullException;
 import com.crudetech.lang.Compare;
 
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -126,6 +127,7 @@ public final class Iterables {
         if (range == null) throw new ArgumentNullException("range");
         return range.iterator().next();
     }
+
     public static <From, To> Iterable<To> transform(final Iterable<From> from, final UnaryFunction<From, To> xform) {
         if (from == null) throw new ArgumentNullException("from");
         if (xform == null) throw new ArgumentNullException("xform");
@@ -172,19 +174,28 @@ public final class Iterables {
     }
 
     public static <T> Iterable<T> concat(Iterable<T>... iterables) {
-        if(iterables == null) throw new ArgumentNullException("iterables");
+        if (iterables == null) throw new ArgumentNullException("iterables");
         return new ConcatIterable<T>(asList(iterables));
     }
+
     public static <T> Iterable<T> concat(Iterable<Iterable<T>> iterables) {
-        if(iterables == null) throw new ArgumentNullException("iterables");
+        if (iterables == null) throw new ArgumentNullException("iterables");
         return new ConcatIterable<T>(iterables);
     }
-    public static <From, To> Iterable<To> cast(Iterable<From> from){
+
+    public static <From, To> Iterable<To> cast(Iterable<From> from) {
         return transform(from, new UnaryFunction<From, To>() {
             @Override
             public To execute(From from) {
-                return (To)from;
+                return (To) from;
             }
         });
+    }
+
+    public static <T, Col extends Collection<T>> Col copy(Iterable<T> src, Col target) {
+        for (T item : src) {
+            target.add(item);
+        }
+        return target;
     }
 }

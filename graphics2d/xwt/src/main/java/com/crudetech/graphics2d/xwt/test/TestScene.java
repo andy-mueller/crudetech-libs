@@ -12,10 +12,7 @@ package com.crudetech.graphics2d.xwt.test;
 
 import com.crudetech.geometry.geom2d.Point2d;
 import com.crudetech.graphics2d.xwt.*;
-import com.crudetech.graphics2d.xwt.widgets.RectangularBorderedWidget;
-import com.crudetech.graphics2d.xwt.widgets.RectangularBorderedWidgetDispProps;
-import com.crudetech.graphics2d.xwt.widgets.TextWidget;
-import com.crudetech.graphics2d.xwt.widgets.TextWidgetDispProps;
+import com.crudetech.graphics2d.xwt.widgets.*;
 
 /**
  * A very simple test scene that can be used to visually expect the your xwt implementation.
@@ -33,6 +30,24 @@ public class TestScene {
 
         drawRectangularWidget(pipe);
         drawTextWidget(pipe);
+        drawBorderedTextWidget(pipe);
+    }
+
+    private void drawBorderedTextWidget(GraphicsStream2d pipe) {
+        TextWidgetDispProps textProps = new TextWidgetDispProps(new SolidBrush(Color.Green), new Font("Arial", FontStyle.Italic, 24));
+        RectangularBorderedWidgetDispProps borderProps = new RectangularBorderedWidgetDispProps(new Pen(2f), new SolidBrush(Color.Blue));
+
+        RectangularBorderedTextWidgetDispProps props = new RectangularBorderedTextWidgetDispProps(borderProps, textProps);
+
+        RectangularBorderedTextWidget txt = new RectangularBorderedTextWidget("Hallo Welt!", 60, 30, props);
+        txt.getEcs().setLocation(new Point2d(200, 10));
+
+        GraphicsStream2d.RestorePoint rp = pipe.createRestorePoint();
+        try {
+            txt.draw(pipe);
+        } finally {
+            rp.restore();
+        }
     }
 
     private void drawTextWidget(GraphicsStream2d pipe) {

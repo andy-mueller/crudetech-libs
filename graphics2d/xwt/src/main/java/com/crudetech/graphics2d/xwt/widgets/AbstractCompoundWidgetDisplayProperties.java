@@ -10,21 +10,25 @@
 ////////////////////////////////////////////////////////////////////////////////
 package com.crudetech.graphics2d.xwt.widgets;
 
+import com.crudetech.collections.Iterables;
+
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import static com.crudetech.collections.Iterables.cast;
 import static com.crudetech.collections.Iterables.concat;
 import static java.util.Arrays.asList;
 
 public class AbstractCompoundWidgetDisplayProperties implements WidgetDisplayProperties {
-    private final Iterable<WidgetDisplayProperties> props;
+    private final List<WidgetDisplayProperties> props;
 
     public AbstractCompoundWidgetDisplayProperties(WidgetDisplayProperties... prop) {
         this(asList(prop));
     }
 
     public AbstractCompoundWidgetDisplayProperties(Iterable<WidgetDisplayProperties> props) {
-        this.props = props;
+        this.props = Iterables.copy(props, new ArrayList<WidgetDisplayProperties>());
     }
 
     @Override
@@ -51,5 +55,8 @@ public class AbstractCompoundWidgetDisplayProperties implements WidgetDisplayPro
     public Iterator<WidgetDisplayProperties.Info> iterator() {
         Iterable<Iterable<Info>> infos = cast(props);
         return concat(infos).iterator();
+    }
+    protected WidgetDisplayProperties getPropertiesAt(int pos){
+        return props.get(pos);
     }
 }

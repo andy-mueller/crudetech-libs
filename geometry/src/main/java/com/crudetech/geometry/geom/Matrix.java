@@ -37,10 +37,10 @@ public class Matrix {
     }
 
     public static int getColumnMajorOffset(int row, int column, int numRows) {
-        if (row >= numRows) throw new ArgumentOutOfBoundsException();
-        if (row < 0) throw new ArgumentOutOfBoundsException();
-        if (column >= numRows) throw new ArgumentOutOfBoundsException();
-        if (column < 0) throw new ArgumentOutOfBoundsException();
+        if (row >= numRows) throw new ArgumentOutOfBoundsException("row");
+        if (row < 0) throw new ArgumentOutOfBoundsException("row");
+        if (column >= numRows) throw new ArgumentOutOfBoundsException("column");
+        if (column < 0) throw new ArgumentOutOfBoundsException("column");
 
 
         return row + column * numRows;

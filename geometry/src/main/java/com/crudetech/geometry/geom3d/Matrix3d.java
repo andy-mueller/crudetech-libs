@@ -231,7 +231,7 @@ public final class Matrix3d implements ToleranceComparable<Matrix3d> {
                     case 3:
                         return m03;
                     default:
-                        throw new ArgumentOutOfBoundsException();
+                        throw new ArgumentOutOfBoundsException("matrixColumn");
                 }
             case 1:
                 switch (matrixColumn.getColumnIndex()) {
@@ -244,7 +244,7 @@ public final class Matrix3d implements ToleranceComparable<Matrix3d> {
                     case 3:
                         return m13;
                     default:
-                        throw new ArgumentOutOfBoundsException();
+                        throw new ArgumentOutOfBoundsException("matrixColumn");
                 }
             case 2:
                 switch (matrixColumn.getColumnIndex()) {
@@ -257,7 +257,7 @@ public final class Matrix3d implements ToleranceComparable<Matrix3d> {
                     case 3:
                         return m23;
                     default:
-                        throw new ArgumentOutOfBoundsException();
+                        throw new ArgumentOutOfBoundsException("matrixColumn");
                 }
             case 3:
                 switch (matrixColumn.getColumnIndex()) {
@@ -270,10 +270,10 @@ public final class Matrix3d implements ToleranceComparable<Matrix3d> {
                     case 3:
                         return m33;
                     default:
-                        throw new ArgumentOutOfBoundsException();
+                        throw new ArgumentOutOfBoundsException("matrixColumn");
                 }
             default:
-                throw new ArgumentOutOfBoundsException();
+                throw new ArgumentOutOfBoundsException("matrixRow");
         }
     }
 

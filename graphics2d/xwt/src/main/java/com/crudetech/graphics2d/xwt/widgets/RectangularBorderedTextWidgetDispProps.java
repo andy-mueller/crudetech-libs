@@ -16,10 +16,10 @@ public class RectangularBorderedTextWidgetDispProps extends AbstractCompoundWidg
     }
 
     public TextWidgetDispProps getTextProperties() {
-        throw new UnsupportedOperationException("getTextProperties is not supported yet!");
+        return (TextWidgetDispProps) getPropertiesAt(1);
     }
 
     public RectangularBorderedWidgetDispProps getBorderProperties() {
-        throw new UnsupportedOperationException("getBorderProperties is not supported yet!");
+        return (RectangularBorderedWidgetDispProps) getPropertiesAt(0);
     }
 }

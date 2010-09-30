@@ -10,21 +10,23 @@
 ////////////////////////////////////////////////////////////////////////////////
 package com.crudetech.lang;
 
+import java.text.MessageFormat;
 
 
-public class ArgumentOutOfBoundsException extends IllegalArgumentException{
-    public ArgumentOutOfBoundsException() {
+public class ArgumentOutOfBoundsException extends IllegalArgumentException {
+    public ArgumentOutOfBoundsException(String argument) {
+        super(MessageFormat.format("The argument {0} was out of bounds.", argument));
     }
 
-    public ArgumentOutOfBoundsException(String s) {
-        super(s);
+    public ArgumentOutOfBoundsException(String argument, String msg) {
+        super(MessageFormat.format("The argument {0} was out of bounds. \n{1}", argument, msg));
     }
 
-    public ArgumentOutOfBoundsException(String s, Throwable throwable) {
-        super(s, throwable);
+    public ArgumentOutOfBoundsException(String argument, String msg, Throwable throwable) {
+        super(MessageFormat.format("The argument {0} was out of bounds. \n{1}", argument, msg), throwable);
     }
 
-    public ArgumentOutOfBoundsException(Throwable throwable) {
-        super(throwable);
+    public ArgumentOutOfBoundsException(String argument, Throwable throwable) {
+        super(MessageFormat.format("The argument {0} was out of bounds.", argument), throwable);
     }
 }

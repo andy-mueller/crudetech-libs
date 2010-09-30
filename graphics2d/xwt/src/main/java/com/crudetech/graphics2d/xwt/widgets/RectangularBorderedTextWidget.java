@@ -19,7 +19,7 @@ public class RectangularBorderedTextWidget extends CompoundWidget{
 
     private static Iterable<Widget> createSubWidgets(String text, double width, double height, RectangularBorderedTextWidgetDispProps props) {
         return Arrays.<Widget>asList(
-                new TextWidget(text,width,height,props.getTextProperties()),
+                new TextWidget(text,width,height,props.getTextProperties()), // TODO: This is not good
                 new RectangularBorderedWidget(width,height,props.getBorderProperties())
         );
     }

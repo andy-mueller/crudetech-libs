@@ -76,7 +76,7 @@ public final class Matrix2d extends AbstractToleranceComparable2d<Matrix2d> impl
                     case 2:
                         return m02;
                     default:
-                        throw new ArgumentOutOfBoundsException();
+                        throw new ArgumentOutOfBoundsException("column");
                 }
             case 1:
                 switch (column.getColumnIndex()) {
@@ -87,7 +87,7 @@ public final class Matrix2d extends AbstractToleranceComparable2d<Matrix2d> impl
                     case 2:
                         return m12;
                     default:
-                        throw new ArgumentOutOfBoundsException();
+                        throw new ArgumentOutOfBoundsException("column");
                 }
             case 2:
                 switch (column.getColumnIndex()) {
@@ -98,10 +98,10 @@ public final class Matrix2d extends AbstractToleranceComparable2d<Matrix2d> impl
                     case 2:
                         return m22;
                     default:
-                        throw new ArgumentOutOfBoundsException();
+                        throw new ArgumentOutOfBoundsException("column");
                 }
             default:
-                throw new ArgumentOutOfBoundsException();
+                throw new ArgumentOutOfBoundsException("row");
         }
     }
 
