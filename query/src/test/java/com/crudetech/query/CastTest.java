@@ -13,6 +13,7 @@ package com.crudetech.query;
 import org.junit.Test;
 
 import static com.crudetech.matcher.RangeIsEqual.equalTo;
+import static com.crudetech.matcher.ThrowsException.doesThrow;
 import static com.crudetech.query.Query.from;
 import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.is;
@@ -32,10 +33,17 @@ public class CastTest {
     public void castFails() {
         Iterable<Integer> expected = asList(0, 2, 7, 5);
 
-        Iterable<Long> actual = from(expected).cast(Long.class);
+        final Iterable<Long> actual = from(expected).cast(Long.class);
 
-//        long first = actual.iterator().next();
-//        for(long l : actual){}
-        assertThat(actual, is(equalTo((Iterable) expected)));
+
+        Runnable accessBadCast = new Runnable() {
+            @Override
+            public void run() {
+                Long ll = actual.iterator().next();
+            }
+        };
+
+
+        assertThat(accessBadCast, doesThrow(ClassCastException.class));
     }
 }
