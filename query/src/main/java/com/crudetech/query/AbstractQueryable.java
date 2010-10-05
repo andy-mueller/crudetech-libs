@@ -17,6 +17,7 @@ import com.crudetech.functional.UnaryFunction;
 import com.crudetech.lang.ArgumentNullException;
 import com.crudetech.lang.ArgumentOutOfBoundsException;
 
+import java.lang.reflect.Array;
 import java.util.Iterator;
 
 
@@ -135,5 +136,16 @@ abstract class AbstractQueryable<T> extends AbstractIterable<T> implements Query
             }
         };
         return select(cast);
+    }
+
+    @Override
+    public T[] toArray(Class<T> clazz) {
+         T[] rv = (T[]) Array.newInstance(clazz, Iterables.size(this));
+        int pos = 0;
+
+        for(T item : this){
+            rv[pos++] = item;
+        }
+        return rv;
     }
 }

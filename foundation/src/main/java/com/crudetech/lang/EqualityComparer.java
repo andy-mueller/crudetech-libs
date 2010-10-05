@@ -18,4 +18,16 @@ package com.crudetech.lang;
 public interface EqualityComparer<T> {
     boolean equals(T lhs, T rhs);
     int hashCode(T item);
+
+    public static final EqualityComparer<Object> Standard = new EqualityComparer<Object>() {
+        @Override
+        public boolean equals(Object lhs, Object rhs) {
+            return lhs != null ? lhs.equals(rhs) : lhs == rhs;
+        }
+
+        @Override
+        public int hashCode(Object item) {
+            return item == null ? 0 : item.hashCode();
+        }
+    };
 }

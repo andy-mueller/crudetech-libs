@@ -35,6 +35,12 @@ final public class Compare {
         }
         return lhs.equals(rhs);
     }
+    public static <T> boolean equals(final T lhs, final T rhs, EqualityComparer<T> comp) {
+        if (lhs == null || rhs == null) {
+            return lhs == rhs;
+        }
+        return comp.equals(lhs, rhs);
+    }
 
     /**
      * Compares to double values for equality within a given
@@ -71,18 +77,35 @@ final public class Compare {
      *         corresponding item in rhs. FALSE otherwise.
      */
     public static boolean equals(final Iterable lhs, final Iterable rhs) {
+        return equalsIt(lhs, rhs, EqualityComparer.Standard);
+    }
+
+    /**
+     *  Compares two {@link Iterable}s by comparing each item using
+     * the provided {@link com.crudetech.lang.EqualityComparer} implementation.
+     * @param lhs The first range to be compared.
+     * @param rhs The second range to be compared.
+     * @param comp The comparer to be used for comparisons.
+     * @param <T>
+     * @return  TRUE if each item in lhs  equals the
+     *         corresponding item in rhs. FALSE otherwise.
+     */
+    public static <T> boolean equals(final Iterable<T> lhs, final Iterable<T> rhs, EqualityComparer<T> comp) {
+       return equalsIt(lhs, rhs, comp);
+    }
+    private static <T> boolean equalsIt(final Iterable<T> lhs, final Iterable<T> rhs, EqualityComparer<T> comp) {
         if (lhs == null || rhs == null) {
             return lhs == rhs;
         }
 
-        Iterator i1 = lhs.iterator();
-        Iterator i2 = rhs.iterator();
+        Iterator<T> i1 = lhs.iterator();
+        Iterator<T> i2 = rhs.iterator();
 
         boolean b1, b2;
         while ((b1 = i1.hasNext()) & (b2 = i2.hasNext())) {
-            Object t1 = i1.next();
-            Object t2 = i2.next();
-            if (!Compare.equals(t1, t2)) {
+            T t1 = i1.next();
+            T t2 = i2.next();
+            if (! comp.equals(t1, t2)) {
                 break;
             }
         }

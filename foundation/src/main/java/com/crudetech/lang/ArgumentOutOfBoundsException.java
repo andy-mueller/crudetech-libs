@@ -12,7 +12,9 @@ package com.crudetech.lang;
 
 import java.text.MessageFormat;
 
-
+/**
+ * This exception is thrown when a given argument is not within its expected bounds.
+ */
 public class ArgumentOutOfBoundsException extends IllegalArgumentException {
     public ArgumentOutOfBoundsException(String argument) {
         super(MessageFormat.format("The argument {0} was out of bounds.", argument));

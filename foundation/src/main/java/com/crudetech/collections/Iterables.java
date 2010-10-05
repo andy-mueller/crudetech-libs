@@ -14,6 +14,7 @@ import com.crudetech.functional.BinaryFunction;
 import com.crudetech.functional.UnaryFunction;
 import com.crudetech.lang.ArgumentNullException;
 import com.crudetech.lang.Compare;
+import com.crudetech.lang.EqualityComparer;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -52,13 +53,16 @@ public final class Iterables {
     }
 
     public static <T> int hashCode(final Iterable<T> iterable) {
+        return hashCode(iterable, (EqualityComparer<T>) EqualityComparer.Standard);
+    }
+    public static <T> int hashCode(final Iterable<T> iterable, EqualityComparer<T> comp) {
         if (iterable == null)
             return 0;
 
         int result = 1;
 
-        for (Object element : iterable)
-            result = 31 * result + (element == null ? 0 : element.hashCode());
+        for (T element : iterable)
+            result = 31 * result + (element == null ? 0 : comp.hashCode(element));
 
         return result;
     }

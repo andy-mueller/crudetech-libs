@@ -95,5 +95,18 @@ public class AbstractQueryableTest {
 
         assertThat(firstThrows, doesThrow(IllegalStateException.class));
     }
+
+    @Test
+    public void toArrayCreatesSimilarRange(){
+        Queryable<Integer> range = from(1,2,3,4);
+
+        assertThat(Arrays.equals(range.toArray(Integer.class), new Number[]{1,2,3,4}), is(true));
+    }
+    @Test
+    public void toArrayOnEmptyRangeCreatesEmptyArray(){
+        Queryable<Integer> range = from(new Integer[]{});
+
+        assertThat(range.toArray(Integer.class).length, is(0));
+    }
 }
 

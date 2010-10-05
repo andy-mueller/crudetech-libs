@@ -40,4 +40,6 @@ public interface Queryable<T> extends Iterable<T>{
 
         Queryable<T> to(int last);
     }
+
+    T[] toArray(Class<T> clazz);
 }
