@@ -10,10 +10,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 package com.crudetech.graphics2d.xwt;
 
-import com.crudetech.geometry.geom2d.BezierCurve2d;
-import com.crudetech.geometry.geom2d.BoundingBox2d;
-import com.crudetech.geometry.geom2d.Matrix2d;
-import com.crudetech.geometry.geom2d.Point2d;
+import com.crudetech.geometry.geom2d.*;
 
 class GraphicsContextStub implements GraphicsContext {
     private Font font = new Font("Arial", FontStyle.Bold, 12);
@@ -88,6 +85,15 @@ class GraphicsContextStub implements GraphicsContext {
 
     @Override
     public void drawPolyLine(Iterable<Point2d> pts) {
+    }
+
+    @Override
+    public void drawPolygon(Polygon2d polygon) {
+
+    }
+
+    @Override
+    public void fillPolygon(Polygon2d polygon) {
     }
 
     public void drawEllipse(BoundingBox2d boundingBox2d) {

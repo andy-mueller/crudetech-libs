@@ -34,6 +34,14 @@ public class Polygon2dTest {
         assertThat(result, is(equalTo(new Point2d(0,0), new Point2d(10,0), new Point2d(10,10))));
     }
     @Test
+    public void numCorners(){
+        Iterable<Point2d> pts = asList(new Point2d(0,0), new Point2d(10,0), new Point2d(10,10), new Point2d(0,0));
+        Polygon2d poly = new Polygon2d(pts);
+
+        assertThat(poly.getNumberOfCorners(), is(3));
+    }
+    
+    @Test
     public void polygonIsConstructedByAnUnclosedRangeOfPoints(){
         Iterable<Point2d> pts = asList(new Point2d(0,0), new Point2d(10,0), new Point2d(10,10));
         Polygon2d poly = new Polygon2d(pts);
@@ -58,6 +66,4 @@ public class Polygon2dTest {
     }
 
     //ctor checks intersection
-
-    //equality check
 }

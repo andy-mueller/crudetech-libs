@@ -131,6 +131,14 @@ public class GraphicsStream2d {
         return new RestorePoint();
     }
 
+    public void drawPolygon(Polygon2d polygon2d) {
+        pipe.drawPolygon(polygon2d);
+    }
+
+    public void fillPolygon(Polygon2d polygon2d) {
+        pipe.fillPolygon(polygon2d);
+    }
+
     public class RestorePoint {
         private final Matrix2d[] xforms = coosStack.toArray();
         private final Pen[] pens = penStack.toArray(Pen.class);

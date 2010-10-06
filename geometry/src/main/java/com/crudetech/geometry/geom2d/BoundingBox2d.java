@@ -70,6 +70,9 @@ public class BoundingBox2d extends AbstractToleranceComparable2d<BoundingBox2d> 
     public Point2d getLowerLeft() {
         return lowerLeft;
     }
+    public Point2d getLocation() {
+        return lowerLeft;
+    }
 
     public Point2d getUpperRight() {
         return upperRight;

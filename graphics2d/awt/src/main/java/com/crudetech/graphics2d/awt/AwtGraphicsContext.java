@@ -10,10 +10,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 package com.crudetech.graphics2d.awt;
 
-import com.crudetech.geometry.geom2d.BezierCurve2d;
-import com.crudetech.geometry.geom2d.BoundingBox2d;
-import com.crudetech.geometry.geom2d.Matrix2d;
-import com.crudetech.geometry.geom2d.Point2d;
+import com.crudetech.geometry.geom2d.*;
 import com.crudetech.graphics2d.xwt.Brush;
 import com.crudetech.graphics2d.xwt.Font;
 import com.crudetech.graphics2d.xwt.GraphicsContext;
@@ -150,5 +147,28 @@ public class AwtGraphicsContext implements GraphicsContext {
     @Override
     public void drawPolyLine(Iterable<Point2d> pts) {
         throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void drawPolygon(Polygon2d polygon) {
+        pipe.draw(convertPolygon(polygon));
+    }
+    private static Shape convertPolygon(Polygon2d polygon){
+        int[] x = new int[polygon.getNumberOfCorners()];
+        int[] y = new int[polygon.getNumberOfCorners()];
+
+        int pos = 0;
+        for(Point2d pt : polygon.getCornerPoints()){
+            x[pos] = (int) pt.getX();
+            y[pos] = (int) pt.getY();
+            ++pos;
+        }
+
+        return new Polygon(x, y, x.length);
+    }
+
+    @Override
+    public void fillPolygon(Polygon2d polygon) {
+        pipe.fill(convertPolygon(polygon));
     }
 }

@@ -52,7 +52,7 @@ public class BoundingBox2dTest {
     }
 
     @Test
-    public void addingPoinTopRightCreatesExtendedBox() {
+    public void addingPointTopRightCreatesExtendedBox() {
         BoundingBox2d bb = new BoundingBox2d(new Point2d(1, 1), new Point2d(5, 5));
         BoundingBox2d newBB = bb.add(new Point2d(6, 6));
 
@@ -123,9 +123,6 @@ public class BoundingBox2dTest {
 
     @Test
     public void addingBox() {
-//        BoundingBox2d bb1 = new BoundingBox2d(new Point2d(10, 10), new Point2d(30, 30));
-//        BoundingBox2d bb2 = new BoundingBox2d(new Point2d(20, 20), new Point2d(60, 40));
-//        BoundingBox2d bb3 = new BoundingBox2d(new Point2d(60, 40), new Point2d(80, 60));
         BoundingBox2d bb1 = new BoundingBox2d(10, 10, 20, 20);
         BoundingBox2d bb2 = new BoundingBox2d(20, 20,40, 20);
         BoundingBox2d bb3 = new BoundingBox2d(60, 40, 20, 20);
@@ -133,5 +130,11 @@ public class BoundingBox2dTest {
         BoundingBox2d newBB = bb1.add(bb2, bb3);
 
         assertThat(newBB, is(new BoundingBox2d(10, 10, 70, 50)));
+    }
+    @Test
+    public void locationIsLowerLeft(){
+        BoundingBox2d bb = new BoundingBox2d(10, 10, 20, 20);
+
+        assertThat(bb.getLocation(), is(new Point2d(10, 10)));
     }
 }

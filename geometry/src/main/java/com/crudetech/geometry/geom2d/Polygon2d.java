@@ -62,4 +62,8 @@ public class Polygon2d extends AbstractToleranceComparable2d<Polygon2d> implemen
     public Iterable<Point2d> getCornerPoints() {
         return points;
     }
+
+    public int getNumberOfCorners() {
+        return points.size();
+    }
 }

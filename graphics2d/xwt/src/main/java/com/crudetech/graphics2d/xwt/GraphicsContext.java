@@ -11,10 +11,7 @@
 
 package com.crudetech.graphics2d.xwt;
 
-import com.crudetech.geometry.geom2d.BezierCurve2d;
-import com.crudetech.geometry.geom2d.BoundingBox2d;
-import com.crudetech.geometry.geom2d.Matrix2d;
-import com.crudetech.geometry.geom2d.Point2d;
+import com.crudetech.geometry.geom2d.*;
 
 public interface GraphicsContext {
     Matrix2d getTransform();
@@ -44,4 +41,7 @@ public interface GraphicsContext {
     void drawBezier(BezierCurve2d bezier);
 
     void drawPolyLine(Iterable<Point2d> pts);
+
+    void drawPolygon(Polygon2d polygon);
+    void fillPolygon(Polygon2d polygon);
 }
