@@ -15,6 +15,7 @@ import java.util.Arrays;
 public class RectangularBorderedTextWidget extends CompoundWidget{
     public RectangularBorderedTextWidget(String text, double width, double height, RectangularBorderedTextWidgetDispProps props) {
         super(createSubWidgets(text, width, height, props));
+        setDisplayProperties(props);
     }
 
     private static Iterable<Widget> createSubWidgets(String text, double width, double height, RectangularBorderedTextWidgetDispProps props) {
@@ -24,5 +25,7 @@ public class RectangularBorderedTextWidget extends CompoundWidget{
         );
     }
 
-
+    public String getText(){
+        return ((TextWidget)getComponents().iterator().next()).getText();        
+    }
 }

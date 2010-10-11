@@ -10,17 +10,20 @@
 ////////////////////////////////////////////////////////////////////////////////
 package com.crudetech.graphics2d.xwt;
 
-import static com.crudetech.matcher.Verify.verifyThat;
-import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.IsNull.notNullValue;
+import com.crudetech.lang.ArgumentNullException;
 
 
 public class SolidBrush implements Brush{
-    public static SolidBrush Red = new SolidBrush(Color.Red);
+    public static Brush Red = new SolidBrush(Color.Red);
+    public static Brush Green = new SolidBrush(Color.Green);
+    public static Brush Blue = new SolidBrush(Color.Blue);
+    public static Brush Black = new SolidBrush(Color.Black);
+    public static Brush White= new SolidBrush(Color.White);
+
     private final Color color;
 
     public SolidBrush(Color color) {
-        verifyThat(color, is(notNullValue()));
+        if(color == null) throw new ArgumentNullException("color");
         
         this.color = color;
     }

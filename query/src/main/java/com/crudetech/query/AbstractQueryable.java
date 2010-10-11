@@ -64,7 +64,13 @@ abstract class AbstractQueryable<T> extends AbstractIterable<T> implements Query
     public Queryable<T> slice(final int start, final int amount) {
         if (start < 0) throw new ArgumentOutOfBoundsException("start");
         if (amount < 0) throw new ArgumentOutOfBoundsException("amount");
-        return wrap(new SliceIterator<T>(AbstractQueryable.this.iterator(), start, amount));
+
+        return new AbstractQueryable<T>() {
+            @Override
+            public Iterator<T> iterator() {
+                return new SliceIterator<T>(AbstractQueryable.this.iterator(), start, amount);
+            }
+        };
     }
 
     @Override
@@ -73,19 +79,16 @@ abstract class AbstractQueryable<T> extends AbstractIterable<T> implements Query
     }
 
     @Override
-    public Queryable<T> where(UnaryFunction<T, Boolean> filter) {
+    public Queryable<T> where(final UnaryFunction<T, Boolean> filter) {
         if (filter == null) throw new ArgumentNullException("filter");
-        return wrap(new WhereIterator<T>(filter, AbstractQueryable.this.iterator()));
-    }
-
-    private static <U> Queryable<U> wrap(final Iterator<U> i) {
-        return new AbstractQueryable<U>() {
+        return new AbstractQueryable<T>() {
             @Override
-            public Iterator<U> iterator() {
-                return i;
+            public Iterator<T> iterator() {
+                return new WhereIterator<T>(filter, AbstractQueryable.this.iterator());
             }
         };
     }
+
 
     @Override
     public boolean any() {
@@ -119,6 +122,7 @@ abstract class AbstractQueryable<T> extends AbstractIterable<T> implements Query
         }
         return iterator().next();
     }
+
     @Override
     public T firstOr(T defaultValue) {
         if (!any()) {
@@ -129,10 +133,10 @@ abstract class AbstractQueryable<T> extends AbstractIterable<T> implements Query
 
     @Override
     public <U> Queryable<U> cast(Class<U> targetClass) {
-        UnaryFunction<T,  U> cast = new UnaryFunction<T, U>() {
+        UnaryFunction<T, U> cast = new UnaryFunction<T, U>() {
             @Override
             public U execute(T t) {
-                return (U)t;
+                return (U) t;
             }
         };
         return select(cast);
@@ -140,10 +144,10 @@ abstract class AbstractQueryable<T> extends AbstractIterable<T> implements Query
 
     @Override
     public T[] toArray(Class<T> clazz) {
-         T[] rv = (T[]) Array.newInstance(clazz, Iterables.size(this));
+        T[] rv = (T[]) Array.newInstance(clazz, Iterables.size(this));
         int pos = 0;
 
-        for(T item : this){
+        for (T item : this) {
             rv[pos++] = item;
         }
         return rv;

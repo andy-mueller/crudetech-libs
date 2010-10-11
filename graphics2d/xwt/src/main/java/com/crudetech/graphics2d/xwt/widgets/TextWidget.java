@@ -39,4 +39,8 @@ public class TextWidget extends RectangularWidget{
             rp.restore();
         }
     }
+
+    public String getText() {
+        return text;
+    }
 }

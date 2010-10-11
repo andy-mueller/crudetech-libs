@@ -20,11 +20,11 @@ public class TextWidgetDispProps extends AbstractWidgetDisplayProperties {
         putProperty(TextProp, I18n.Text(), new WidgetDisplayProperty(null, textBrush, textFont));
     }
 
-    Brush getTextBrush() {
+    public Brush getTextBrush() {
         return getProperty(TextProp).getBrush();
     }
 
-    Font getFont() {
+    public Font getFont() {
         return getProperty(TextProp).getFont();
     }
 }

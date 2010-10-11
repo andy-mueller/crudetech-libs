@@ -62,7 +62,7 @@ public class TestScene {
         }
     }
     private void drawBorderedTextWidget(GraphicsStream2d pipe) {
-        TextWidgetDispProps textProps = new TextWidgetDispProps(new SolidBrush(Color.Green), new Font("Arial", FontStyle.Italic, 24));
+        TextWidgetDispProps textProps = new TextWidgetDispProps(new SolidBrush(Color.Red), new Font("Arial", FontStyle.Italic, 54));
         RectangularBorderedWidgetDispProps borderProps = new RectangularBorderedWidgetDispProps(new Pen(2f), new SolidBrush(Color.Blue));
 
         RectangularBorderedTextWidgetDispProps props = new RectangularBorderedTextWidgetDispProps(borderProps, textProps);

@@ -25,11 +25,11 @@ public class RectangularBorderedWidgetDispProps extends AbstractWidgetDisplayPro
         putProperty(BorderProp, I18n.Border(), new WidgetDisplayProperty(borderPen, borderBrush, null));
     }
 
-    Pen getBorderPen() {
+    public Pen getBorderPen() {
         return getProperty(BorderProp).getPen();
     }
 
-    Brush getBorderBrush() {
+    public Brush getBorderBrush() {
         return getProperty(BorderProp).getBrush();
     }
 }

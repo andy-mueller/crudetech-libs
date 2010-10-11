@@ -17,7 +17,6 @@ import com.crudetech.graphics2d.xwt.GraphicsContext;
 import com.crudetech.graphics2d.xwt.Pen;
 
 import java.awt.*;
-import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 
 import static com.crudetech.graphics2d.awt.Convert.*;
@@ -89,18 +88,18 @@ public class AwtGraphicsContext implements GraphicsContext {
 
         final double scale = Math.min(sx, sy);
 
+        java.awt.Font oldFont = pipe.getFont();
+        java.awt.Font scaledFont = oldFont.deriveFont((float)(oldFont.getSize2D()*scale));
+
         //position b inside bounds
-        final double x = bounds.getLowerLeft().getX() + ((bounds.getWidth() - stringWidth * scale) / 2);
-        final double y = bounds.getUpperRight().getY() + (bounds.getHeight() - (bounds.getHeight() - stringHeight * scale) / 2);
+        final double x = bounds.getLocation().getX() + (bounds.getWidth() - stringWidth * scale)/2;
+        final double y = bounds.getLocation().getY() + bounds.getHeight() - (bounds.getHeight() - scaledFont.getSize2D())/2;
 
-        AffineTransform peek = (AffineTransform) pipe.getTransform().clone();
-        peek.scale(scale, scale);
-
-        pipe.setTransform(peek);
+        pipe.setFont(scaledFont);
         try {
             pipe.drawString(string, (float) x, (float) y);
         } finally {
-            pipe.setTransform(peek);
+            pipe.setFont(oldFont);
         }
     }
 
@@ -122,11 +121,13 @@ public class AwtGraphicsContext implements GraphicsContext {
     private void drawShape(Shape s) {
         pipe.draw(s);
     }
-
+    private void fillShape(Shape s) {
+        pipe.fill(s);
+    }
 
     @Override
     public void fillRectangle(BoundingBox2d rect) {
-        throw new UnsupportedOperationException();
+        fillShape(new Rectangle2D.Double(rect.getLowerLeft().getX(), rect.getLowerLeft().getY(), rect.getWidth(), rect.getHeight()));
     }
 
     @Override

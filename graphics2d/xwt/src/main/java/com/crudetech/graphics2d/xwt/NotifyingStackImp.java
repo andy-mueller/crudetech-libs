@@ -15,12 +15,9 @@ import com.crudetech.collections.ListStack;
 import com.crudetech.event.Event;
 import com.crudetech.event.EventObject;
 import com.crudetech.event.EventSupport;
+import com.crudetech.lang.ArgumentNullException;
 
 import java.util.Iterator;
-
-import static com.crudetech.matcher.Verify.verifyThat;
-import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.IsNull.notNullValue;
 
 
 class NotifyingStackImp<T> implements NotifyingStack<T>, LightweightStack<T> {
@@ -101,7 +98,7 @@ class NotifyingStackImp<T> implements NotifyingStack<T>, LightweightStack<T> {
     }
 
     public void addWithoutEvents(T... items) {
-        verifyThat(items, is(notNullValue()));
+        if(items == null) throw new ArgumentNullException("items");
         for(T item : items){
             theStack.push(item);
         }

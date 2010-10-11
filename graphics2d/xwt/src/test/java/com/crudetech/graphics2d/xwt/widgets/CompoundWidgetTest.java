@@ -59,13 +59,13 @@ public class CompoundWidgetTest {
     }
 
     @Test
-    public void subWidgetIsDrawnWithEcsIsOnStreamStackWhenPainted() {
+    public void subWidgetIsDrawnWithoutEcsIsOnStreamStackWhenPainted() {
         Widget sub = new RectangularBorderedWidget(20, 50, RectangularBorderedWidgetDispProps.Default){
             @Override
             public void draw(GraphicsStream2d stream) {
                 Matrix2d ecs = getEcs().asMatrix();
                 Matrix2d[] stack = stream.getCoordinateSystemStack().toArray();
-                if(!stack[stack.length-1].multiply(ecs.inverse()).equals(stack[stack.length-2])){
+                if(stack[stack.length-1].multiply(ecs.inverse()).equals(stack[stack.length-2])){
                     throw new AssertionError();
                 }
             }

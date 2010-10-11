@@ -40,7 +40,6 @@ public class CompoundWidget extends AbstractWidget{
         for(Widget sub : getComponents()){
             GraphicsStream2d.RestorePoint rp = stream.createRestorePoint();
             try{
-                stream.getCoordinateSystemStack().pushCoordinateSystem(sub.getEcs());
                 sub.draw(stream);
             }
             finally{

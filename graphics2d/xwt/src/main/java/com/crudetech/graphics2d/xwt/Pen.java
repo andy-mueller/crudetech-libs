@@ -10,12 +10,9 @@
 ////////////////////////////////////////////////////////////////////////////////
 package com.crudetech.graphics2d.xwt;
 
-import java.util.Arrays;
+import com.crudetech.lang.ArgumentNullException;
 
-import static com.crudetech.matcher.OrderMatcher.greaterThan;
-import static com.crudetech.matcher.Verify.verifyThat;
-import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.IsNull.notNullValue;
+import java.util.Arrays;
 
 public final class Pen {
     private final float[] dashPattern;
@@ -26,9 +23,9 @@ public final class Pen {
     private final float miterLimit;
 
     public Pen(float lineWidth, Cap endCap, Join lineJoin, float miterLimit, float[] dashPattern, float dashPhase) {
-        verifyThat(endCap, is(notNullValue()));
-        verifyThat(lineJoin, is(notNullValue()));
-        verifyThat(miterLimit, is(greaterThan(0.0f)));
+        if(endCap == null) throw new ArgumentNullException("endCap");
+        if(lineJoin == null) throw new ArgumentNullException("lineJoin");
+        if(miterLimit <= 0) throw new IllegalArgumentException();
 
         this.lineWidth = lineWidth;
         this.endCap = endCap;

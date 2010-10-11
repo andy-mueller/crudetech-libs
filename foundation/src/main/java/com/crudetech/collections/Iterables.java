@@ -55,6 +55,7 @@ public final class Iterables {
     public static <T> int hashCode(final Iterable<T> iterable) {
         return hashCode(iterable, (EqualityComparer<T>) EqualityComparer.Standard);
     }
+
     public static <T> int hashCode(final Iterable<T> iterable, EqualityComparer<T> comp) {
         if (iterable == null)
             return 0;
@@ -171,6 +172,14 @@ public final class Iterables {
         if (!it.hasNext()) throw new IllegalArgumentException();
         T init = it.next();
 
+        return accumulate(init, it, binaryFunction);
+    }
+
+    public static <T> T accumulate(T init, Iterable<T> range, BinaryFunction<T, T, T> binaryFunction) {
+        return accumulate(init, range.iterator(), binaryFunction);
+    }
+
+    private static <T> T accumulate(T init, Iterator<T> it, BinaryFunction<T, T, T> binaryFunction) {
         while (it.hasNext()) {
             init = binaryFunction.execute(init, it.next());
         }

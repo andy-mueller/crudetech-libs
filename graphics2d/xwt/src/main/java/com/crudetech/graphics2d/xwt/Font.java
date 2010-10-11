@@ -10,11 +10,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 package com.crudetech.graphics2d.xwt;
 
-import static com.crudetech.matcher.StringNullOrEmptyMatcher.notNullOrEmpty;
-import static com.crudetech.matcher.Verify.verifyThat;
-import static org.hamcrest.Matchers.greaterThan;
-import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.IsNull.notNullValue;
 
 
 public class Font {
@@ -23,10 +18,11 @@ public class Font {
     private final int size;
 
     public Font(String family, FontStyle style, int size) {
-        verifyThat(family, is(notNullOrEmpty()));
-        verifyThat(style, is(notNullValue()));
-        verifyThat(size, is(greaterThan(0)));
-        
+        if(family == null || family.equals("")) throw new IllegalArgumentException();
+        if(style == null) throw new IllegalArgumentException();
+        if(size <= 0) throw new IllegalArgumentException();
+
+          
         this.family = family;
         this.style = style;
         this.size = size;

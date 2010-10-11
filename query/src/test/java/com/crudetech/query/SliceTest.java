@@ -87,6 +87,16 @@ public class SliceTest {
 
         assertThat(coll5, is(equalTo(expected)));
     }
+    @Test
+    public void sliceThroughOneElement() {
+        Iterable<Integer> collection = Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
+
+        Iterable<Integer> coll5 = from(collection).slice(1).to(2);
+
+        Iterable<Integer> expected = Arrays.asList(1);
+
+        assertThat(coll5, is(equalTo(expected)));
+    }
 
     @Test
     public void take() {
