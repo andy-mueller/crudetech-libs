@@ -4,7 +4,7 @@
 
     <groupId>com.crudetech</groupId>
     <artifactId>com.crudetech</artifactId>
-    <version>0.2</version>
+    <version>0.3-SNAPSHOT</version>
     <name>com.crudetech</name>
 
     <packaging>pom</packaging>
@@ -49,10 +49,10 @@
         </license>
     </licenses>
     <scm>
-        <connection>scm:svn:http://crudetech-libs.googlecode.com/svn/java/com.crudetech/tags/com.crudetech-0.2</connection>
-        <developerConnection>scm:svn:https://crudetech-libs.googlecode.com/svn/java/com.crudetech/tags/com.crudetech-0.2
+        <connection>scm:svn:http://crudetech-libs.googlecode.com/svn/java/com.crudetech/trunk</connection>
+        <developerConnection>scm:svn:https://crudetech-libs.googlecode.com/svn/java/com.crudetech/trunk
         </developerConnection>
-        <url>http://code.google.com/p/crudetech-libs/source/browse/#svn/java/com.crudetech/tags/com.crudetech-0.2</url><!--The # is NOT a typo!-->
+        <url>http://code.google.com/p/crudetech-libs/source/browse/#svn/java/com.crudetech/trunk</url><!--The # is NOT a typo!-->
     </scm>
     <distributionManagement>
         <repository>
