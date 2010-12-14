@@ -6,7 +6,7 @@
 // http://www.eclipse.org/legal/epl-v10.html
 //
 // Contributors:
-//     Andreas Mueller - initial API and implementation
+// Andreas Mueller - initial API and implementation
 ////////////////////////////////////////////////////////////////////////////////
 package com.crudetech.event;
 
@@ -14,7 +14,7 @@ package com.crudetech.event;
  * A type safe interface that represents an event. You can add and remove
  * listeners an will be notified when the event occurs.
  * <p>
- * You will use this interface through the {@EventSupport} class.
+ * To provide events, you will  this interface through the {@EventSupport} class.
  * Please refer to the {@link EventSupport} documentation for details on
  * how to use the type safe event mechanism.
  */

@@ -6,7 +6,7 @@
 // http://www.eclipse.org/legal/epl-v10.html
 //
 // Contributors:
-//     Andreas Mueller - initial API and implementation
+// Andreas Mueller - initial API and implementation
 ////////////////////////////////////////////////////////////////////////////////
 package com.crudetech.query;
 
@@ -25,7 +25,7 @@ abstract class AbstractQueryable<T> extends AbstractIterable<T> implements Query
     public abstract Iterator<T> iterator();
 
     @Override
-    public <U> Queryable<U> select(final UnaryFunction<T, U> select) {
+    public <U> Queryable<U> select(final UnaryFunction<? super T, U> select) {
         if (select == null) throw new ArgumentNullException("select");
         return new AbstractQueryable<U>() {
             @Override
@@ -36,7 +36,7 @@ abstract class AbstractQueryable<T> extends AbstractIterable<T> implements Query
     }
 
     @Override
-    public <U> Queryable<U> select(final BinaryFunction<T, Integer, U> select) {
+    public <U> Queryable<U> select(final BinaryFunction<? super T, Integer, U> select) {
         if (select == null) throw new ArgumentNullException("select");
         return new AbstractQueryable<U>() {
             @Override
@@ -79,7 +79,7 @@ abstract class AbstractQueryable<T> extends AbstractIterable<T> implements Query
     }
 
     @Override
-    public Queryable<T> where(final UnaryFunction<T, Boolean> filter) {
+    public Queryable<T> where(final UnaryFunction<? super T, Boolean> filter) {
         if (filter == null) throw new ArgumentNullException("filter");
         return new AbstractQueryable<T>() {
             @Override
@@ -136,7 +136,8 @@ abstract class AbstractQueryable<T> extends AbstractIterable<T> implements Query
         UnaryFunction<T, U> cast = new UnaryFunction<T, U>() {
             @Override
             public U execute(T t) {
-                return (U) t;
+                @SuppressWarnings("unchecked") U u = (U)t;
+                return u;
             }
         };
         return select(cast);
@@ -144,6 +145,7 @@ abstract class AbstractQueryable<T> extends AbstractIterable<T> implements Query
 
     @Override
     public T[] toArray(Class<T> clazz) {
+        @SuppressWarnings("unchecked")
         T[] rv = (T[]) Array.newInstance(clazz, Iterables.size(this));
         int pos = 0;
 

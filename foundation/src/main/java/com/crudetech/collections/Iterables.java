@@ -6,7 +6,7 @@
 // http://www.eclipse.org/legal/epl-v10.html
 //
 // Contributors:
-//     Andreas Mueller - initial API and implementation
+// Andreas Mueller - initial API and implementation
 ////////////////////////////////////////////////////////////////////////////////
 package com.crudetech.collections;
 
@@ -16,9 +16,7 @@ import com.crudetech.lang.ArgumentNullException;
 import com.crudetech.lang.Compare;
 import com.crudetech.lang.EqualityComparer;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 import static java.util.Arrays.asList;
 
@@ -26,7 +24,7 @@ import static java.util.Arrays.asList;
  * This class is very similar to {@link java.util.Arrays} except that it
  * works for {@link Iterable}s. In addition it also provides some very simple algorithms.
  * If you wish to do more complex operations consider the
- * com.crudetech.query, google collections or the apache commons packages. This
+ * com.crudetech.query library, google collections or the apache commons packages. This
  * class is intended to serve as a very basic utility set.
  *
  * @author andreas.b.mueller@freenet.de
@@ -35,7 +33,7 @@ public final class Iterables {
     private Iterables() {
     }
 
-    public static <T> String toString(final Iterable<T> iterable) {
+    public static <T> CharSequence toString(final Iterable<T> iterable) {
         if (iterable == null)
             return "null";
 
@@ -47,13 +45,17 @@ public final class Iterables {
             b.append(", ");
         }
 
-        b.delete(b.length() - 2, b.length());
+        if (b.length() >= 2) {
+            b.delete(b.length() - 2, b.length());
+        }
         b.append("]");
-        return b.toString();
+        return b;
     }
 
     public static <T> int hashCode(final Iterable<T> iterable) {
-        return hashCode(iterable, (EqualityComparer<T>) EqualityComparer.Standard);
+        @SuppressWarnings("unchecked")
+        EqualityComparer<T> comparer = (EqualityComparer<T>) EqualityComparer.Standard;
+        return hashCode(iterable, comparer);
     }
 
     public static <T> int hashCode(final Iterable<T> iterable, EqualityComparer<T> comp) {
@@ -133,7 +135,7 @@ public final class Iterables {
         return range.iterator().next();
     }
 
-    public static <From, To> Iterable<To> transform(final Iterable<From> from, final UnaryFunction<From, To> xform) {
+    public static <From, To> Iterable<To> transform(final Iterable<From> from, final UnaryFunction<? super From, To> xform) {
         if (from == null) throw new ArgumentNullException("from");
         if (xform == null) throw new ArgumentNullException("xform");
 
@@ -145,7 +147,7 @@ public final class Iterables {
         };
     }
 
-    public static <From, To> Iterator<To> transform(final Iterator<From> from, final UnaryFunction<From, To> xform) {
+    public static <From, To> Iterator<To> transform(final Iterator<From> from, final UnaryFunction<? super From, To> xform) {
         if (from == null) throw new ArgumentNullException("from");
         if (xform == null) throw new ArgumentNullException("xform");
 
@@ -200,15 +202,20 @@ public final class Iterables {
         return transform(from, new UnaryFunction<From, To>() {
             @Override
             public To execute(From from) {
-                return (To) from;
+                @SuppressWarnings("unchecked")
+                To to = (To) from;
+                return to;
             }
         });
     }
 
-    public static <T, Col extends Collection<T>> Col copy(Iterable<T> src, Col target) {
+    public static <T, Col extends Collection<? super T>> Col copy(Iterable<T> src, Col target) {
         for (T item : src) {
             target.add(item);
         }
         return target;
+    }
+    public static <T> List<T> copy(Iterable<T> src) {
+        return copy(src, new ArrayList<T>());
     }
 }

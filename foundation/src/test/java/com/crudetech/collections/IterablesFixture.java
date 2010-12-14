@@ -6,7 +6,7 @@
 // http://www.eclipse.org/legal/epl-v10.html
 //
 // Contributors:
-//     Andreas Mueller - initial API and implementation
+// Andreas Mueller - initial API and implementation
 ////////////////////////////////////////////////////////////////////////////////
 package com.crudetech.collections;
 
@@ -33,7 +33,7 @@ public class IterablesFixture {
         Integer[] ints = new Integer[]{0,1,2,3,4};
         Iterable<Integer> it = Arrays.asList(ints);
 
-        assertThat(Arrays.toString(ints), is(equalTo(Iterables.toString(it))));
+        assertThat(Arrays.toString(ints), is(equalTo(Iterables.toString(it).toString())));
     }
     @Test
     public void hashcodeIsSimilarToArraysClass(){

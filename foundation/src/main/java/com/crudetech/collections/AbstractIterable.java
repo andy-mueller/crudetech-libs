@@ -6,7 +6,7 @@
 // http://www.eclipse.org/legal/epl-v10.html
 //
 // Contributors:
-//     Andreas Mueller - initial API and implementation
+// Andreas Mueller - initial API and implementation
 ////////////////////////////////////////////////////////////////////////////////
 package com.crudetech.collections;
 
@@ -34,6 +34,6 @@ public abstract class AbstractIterable<T> implements Iterable<T> {
     @SuppressWarnings({"StringConcatenation", "HardCodedStringLiteral", "MagicCharacter"})
     @Override
     public String toString() {
-        return Iterables.toString(this);
+        return Iterables.toString(this).toString();
     }
 }

@@ -6,12 +6,12 @@
 // http://www.eclipse.org/legal/epl-v10.html
 //
 // Contributors:
-//     Andreas Mueller - initial API and implementation
+// Andreas Mueller - initial API and implementation
 ////////////////////////////////////////////////////////////////////////////////
 package com.crudetech.collections;
 
-import com.crudetech.lang.EqualityComparer;
 import com.crudetech.functional.UnaryFunction;
+import com.crudetech.lang.EqualityComparer;
 
 import java.util.AbstractMap;
 import java.util.Collection;
@@ -62,17 +62,20 @@ public class EqualityComparableMap<K, V> implements Map<K, V> {
 
     @Override
     public boolean containsKey(Object o) {
-        return wrapped.containsKey(new EqualityComparable(equComp, o));
+        return wrapped.containsKey(new EqualityComparable<K>(equComp, keyCast(o)));
     }
 
     @Override
     public boolean containsValue(Object o) {
         return wrapped.containsValue(o);
     }
-
+    private K keyCast(Object o){
+        @SuppressWarnings("unchecked") K tmp = (K)o;
+        return tmp;
+    }
     @Override
     public V get(Object o) {
-        EqualityComparable<K> key = new EqualityComparable<K>(equComp, (K) o);
+        EqualityComparable<K> key = new EqualityComparable<K>(equComp, keyCast(o));
         return wrapped.get(key);
     }
 
@@ -83,12 +86,12 @@ public class EqualityComparableMap<K, V> implements Map<K, V> {
 
     @Override
     public V remove(Object o) {
-        return wrapped.remove(new EqualityComparable<K>(equComp, (K) o));
+        return wrapped.remove(new EqualityComparable<K>(equComp, keyCast(o)));
     }
 
     @Override
     public void putAll(Map<? extends K, ? extends V> map) {
-        for (Entry<K, V> e : entrySet()) {
+        for (Entry<? extends K, ? extends V> e : map.entrySet()) {
             put(e.getKey(), e.getValue());
         }
     }
@@ -100,19 +103,19 @@ public class EqualityComparableMap<K, V> implements Map<K, V> {
 
     @Override
     public Set<K> keySet() {
-        UnaryFunction<EqualityComparable<K>, K> xform = new UnaryFunction<EqualityComparable<K>, K>() {
+        UnaryFunction<EqualityComparable<K>, K> unwrapKey = new UnaryFunction<EqualityComparable<K>, K>() {
             @Override
             public K execute(EqualityComparable<K> entry) {
                 return entry.getWrapped();
             }
         };
-        UnaryFunction<K, EqualityComparable<K>> back = new UnaryFunction<K, EqualityComparable<K>>() {
+            UnaryFunction<K, EqualityComparable<K>> wrapKey = new UnaryFunction<K, EqualityComparable<K>>() {
             @Override
             public EqualityComparable<K> execute(K key) {
                 return new EqualityComparable<K>(equComp, key);
             }
         };
-        return new XFormSet<K, EqualityComparable<K>>(wrapped.keySet(), xform, back);
+        return new SetView<K, EqualityComparable<K>>(wrapped.keySet(), unwrapKey, wrapKey);
     }
 
     @Override
@@ -123,20 +126,20 @@ public class EqualityComparableMap<K, V> implements Map<K, V> {
     @Override
     public Set<Entry<K, V>> entrySet() {
 
-        UnaryFunction<Entry<EqualityComparable<K>, V>, Entry<K, V>> xform = new UnaryFunction<Entry<EqualityComparable<K>, V>, Entry<K, V>>() {
+        UnaryFunction<Entry<EqualityComparable<K>, V>, Entry<K, V>> wrapKey = new UnaryFunction<Entry<EqualityComparable<K>, V>, Entry<K, V>>() {
             @Override
             public Entry<K, V> execute(Entry<EqualityComparable<K>, V> entry) {
                 return new AbstractMap.SimpleEntry<K, V>(entry.getKey().getWrapped(), entry.getValue());
             }
         };
 
-        UnaryFunction<Entry<K, V>, Entry<EqualityComparable<K>, V>> back = new UnaryFunction<Entry<K, V>, Entry<EqualityComparable<K>, V>>() {
+        UnaryFunction<Entry<K, V>, Entry<EqualityComparable<K>, V>> unwrapKey = new UnaryFunction<Entry<K, V>, Entry<EqualityComparable<K>, V>>() {
             @Override
             public Entry<EqualityComparable<K>, V> execute(Entry<K, V> entry) {
                 return new AbstractMap.SimpleEntry<EqualityComparable<K>, V>(new EqualityComparable<K>(equComp, entry.getKey()), entry.getValue());
             }
         };
 
-        return new XFormSet<Entry<K, V>, Entry<EqualityComparable<K>, V>>(wrapped.entrySet(), xform, back);
+        return new SetView<Entry<K, V>, Entry<EqualityComparable<K>, V>>(wrapped.entrySet(), wrapKey, unwrapKey);
     }
 }

@@ -6,7 +6,7 @@
 // http://www.eclipse.org/legal/epl-v10.html
 //
 // Contributors:
-//     Andreas Mueller - initial API and implementation
+// Andreas Mueller - initial API and implementation
 ////////////////////////////////////////////////////////////////////////////////
 package com.crudetech.event;
 
@@ -14,7 +14,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 /**
- * Simple type safe helper class to implement events.
+ * Simple type safe helper class to implement events. The class is thread safe. Please note
+ * that if an instance of this  class is used from one thread only, the JVM will remove all synchronization. Therefore
+ * no unnecessary performance burden is imposed on the user.
+ * <p>
  * <pre>
  * class Window{
  *   static class ClosedEventObject extends EventObject<Window>{

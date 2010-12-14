@@ -6,7 +6,7 @@
 // http://www.eclipse.org/legal/epl-v10.html
 //
 // Contributors:
-//     Andreas Mueller - initial API and implementation
+// Andreas Mueller - initial API and implementation
 ////////////////////////////////////////////////////////////////////////////////
 package com.crudetech.query;
 
@@ -15,15 +15,15 @@ import com.crudetech.functional.UnaryFunction;
 
 
 public interface Queryable<T> extends Iterable<T>{
-    <U> Queryable<U> select(UnaryFunction<T, U> select);
+    <U> Queryable<U> select(UnaryFunction<? super T, U> select);
 
-    <U> Queryable<U> select(BinaryFunction<T, Integer, U> select);
+    <U> Queryable<U> select(BinaryFunction<? super T, Integer, U> select);
 
     SliceFluent<T> slice(int start);
 
     Queryable<T> take(int amount);
 
-    Queryable<T> where(UnaryFunction<T, Boolean> filter);
+    Queryable<T> where(UnaryFunction<? super T, Boolean> filter);
 
     T lastOr(T defaultItem);
     T last();

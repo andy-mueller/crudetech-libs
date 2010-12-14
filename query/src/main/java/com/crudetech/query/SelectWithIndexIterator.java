@@ -6,7 +6,7 @@
 // http://www.eclipse.org/legal/epl-v10.html
 //
 // Contributors:
-//     Andreas Mueller - initial API and implementation
+// Andreas Mueller - initial API and implementation
 ////////////////////////////////////////////////////////////////////////////////
 package com.crudetech.query;
 
@@ -17,10 +17,10 @@ import java.util.Iterator;
 
 class SelectWithIndexIterator<From, To> implements Iterator<To> {
     private final Iterator<From> inner;
-    private final BinaryFunction<From, Integer, To> select;
+    private final BinaryFunction<? super From, Integer, To> select;
     private int idx = 0;
 
-    public SelectWithIndexIterator(Iterator<From> inner, BinaryFunction<From, Integer, To> select) {
+    public SelectWithIndexIterator(Iterator<From> inner, BinaryFunction<? super From, Integer, To> select) {
         this.inner = inner;
         this.select = select;
     }

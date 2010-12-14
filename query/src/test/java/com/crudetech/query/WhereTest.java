@@ -6,7 +6,7 @@
 // http://www.eclipse.org/legal/epl-v10.html
 //
 // Contributors:
-//     Andreas Mueller - initial API and implementation
+// Andreas Mueller - initial API and implementation
 ////////////////////////////////////////////////////////////////////////////////
 package com.crudetech.query;
 
@@ -16,10 +16,12 @@ import org.junit.Test;
 
 import java.util.Arrays;
 
+import static com.crudetech.matcher.RangeHasSize.hasSizeOf;
 import static com.crudetech.matcher.RangeHasSize.isEmpty;
 import static com.crudetech.matcher.RangeIsEqual.equalTo;
 import static com.crudetech.matcher.ThrowsException.doesThrow;
 import static com.crudetech.query.Query.from;
+import static java.util.Arrays.asList;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 
@@ -29,6 +31,7 @@ public class WhereTest {
     private final static UnaryFunction<Integer, Boolean> lessThan5 = new UnaryFunction<Integer, Boolean>() {
 
         public Boolean execute(Integer arg) {
+            if(arg == null) return false;
             return arg < 5;
         }
     };
@@ -68,5 +71,39 @@ public class WhereTest {
             }
         };
         assertThat(whereWithNull, doesThrow(ArgumentNullException.class));        
+    }
+
+    @Test
+    public void whereOnSequencesContainingNull(){
+        Iterable<Integer> range = asList(1, 9, null, 4, 2, null, 7);
+
+        Iterable<Integer> result = from(range).where(lessThan5);
+
+        assertThat(result, is(equalTo(1, 4, 2)));
+    }
+    @Test
+    public void whereOnSequencesContainingAnsStartingWithNull(){
+        Iterable<Integer> range = asList(null, 1, 9, null, 4, 2, null, 7);
+
+        Iterable<Integer> result = from(range).where(lessThan5);
+
+
+        assertThat(range, hasSizeOf(8));
+        assertThat(result, is(equalTo(1, 4, 2)));
+    }
+
+    @Test
+    public void whereOnSequencesContainingNullAndCheckingForNull(){
+        Iterable<Integer> range = asList(null, 4, 2, null, 7, null);
+
+        UnaryFunction<Object,Boolean> isNull = new UnaryFunction<Object, Boolean>() {
+            @Override
+            public Boolean execute(Object integer) {
+                return integer == null;
+            }
+        };
+        Iterable<Integer> result = from(range).where(isNull);
+
+        assertThat(result, is(equalTo(new Integer[]{null, null, null})));
     }
 }

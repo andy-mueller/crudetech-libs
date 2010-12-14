@@ -1,10 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+<!-- Copyright (c) 2010, Andreas Mueller. -->
+<!-- All rights reserved. This program and the accompanying materials -->
+<!-- are made available under the terms of the Eclipse Public License v1.0 -->
+<!-- which accompanies this distribution, and is available at -->
+<!-- http://www.eclipse.org/legal/epl-v10.html -->
+<!-- -->
+<!-- Contributors: -->
+<!-- Andreas Mueller - initial API and implementation -->
+<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.crudetech</groupId>
     <artifactId>com.crudetech</artifactId>
     <version>0.3-SNAPSHOT</version>
+
     <name>com.crudetech</name>
 
     <packaging>pom</packaging>
@@ -52,7 +64,8 @@
         <connection>scm:svn:http://crudetech-libs.googlecode.com/svn/java/com.crudetech/trunk</connection>
         <developerConnection>scm:svn:https://crudetech-libs.googlecode.com/svn/java/com.crudetech/trunk
         </developerConnection>
-        <url>http://code.google.com/p/crudetech-libs/source/browse/#svn/java/com.crudetech/trunk</url><!--The # is NOT a typo!-->
+        <url>http://code.google.com/p/crudetech-libs/source/browse/#svn/java/com.crudetech/trunk</url>
+        <!--The # is NOT a typo!-->
     </scm>
     <distributionManagement>
         <repository>
@@ -88,11 +101,6 @@
                             <descriptorRef>src</descriptorRef>
                         </descriptorRefs>
                     </configuration>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-source-plugin</artifactId>
-                    <version>2.1.1</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>

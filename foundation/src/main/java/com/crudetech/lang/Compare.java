@@ -6,7 +6,7 @@
 // http://www.eclipse.org/legal/epl-v10.html
 //
 // Contributors:
-//     Andreas Mueller - initial API and implementation
+// Andreas Mueller - initial API and implementation
 ////////////////////////////////////////////////////////////////////////////////
 package com.crudetech.lang;
 
@@ -35,6 +35,7 @@ final public class Compare {
         }
         return lhs.equals(rhs);
     }
+
     public static <T> boolean equals(final T lhs, final T rhs, EqualityComparer<T> comp) {
         if (lhs == null || rhs == null) {
             return lhs == rhs;
@@ -42,9 +43,17 @@ final public class Compare {
         return comp.equals(lhs, rhs);
     }
 
+    public static boolean equals(final CharSequence lhs, final CharSequence rhs) {
+        if (lhs == null || rhs == null) {
+            return lhs == rhs;
+        }
+        return lhs.toString().equals(rhs.toString());
+    }
+
     /**
      * Compares to double values for equality within a given
      * tolerance.
+     *
      * @param lhs The first value to compare.
      * @param rhs The second value to compare.
      * @param tol The tolerance in between which two values are considered
@@ -59,6 +68,7 @@ final public class Compare {
     /**
      * Compares to double values for equality within a
      * tolerance of 1e-6.
+     *
      * @param lhs The first value to compare.
      * @param rhs The second value to compare.
      * @return TRUE, if both values are equal within the given tolerance,
@@ -76,23 +86,26 @@ final public class Compare {
      * @return TRUE if each item in lhs  equals the
      *         corresponding item in rhs. FALSE otherwise.
      */
+    @SuppressWarnings("unchecked")
     public static boolean equals(final Iterable lhs, final Iterable rhs) {
         return equalsIt(lhs, rhs, EqualityComparer.Standard);
     }
 
     /**
-     *  Compares two {@link Iterable}s by comparing each item using
+     * Compares two {@link Iterable}s by comparing each item using
      * the provided {@link com.crudetech.lang.EqualityComparer} implementation.
-     * @param lhs The first range to be compared.
-     * @param rhs The second range to be compared.
+     *
+     * @param lhs  The first range to be compared.
+     * @param rhs  The second range to be compared.
      * @param comp The comparer to be used for comparisons.
      * @param <T>
-     * @return  TRUE if each item in lhs  equals the
+     * @return TRUE if each item in lhs  equals the
      *         corresponding item in rhs. FALSE otherwise.
      */
     public static <T> boolean equals(final Iterable<T> lhs, final Iterable<T> rhs, EqualityComparer<T> comp) {
-       return equalsIt(lhs, rhs, comp);
+        return equalsIt(lhs, rhs, comp);
     }
+
     private static <T> boolean equalsIt(final Iterable<T> lhs, final Iterable<T> rhs, EqualityComparer<T> comp) {
         if (lhs == null || rhs == null) {
             return lhs == rhs;
@@ -105,7 +118,7 @@ final public class Compare {
         while ((b1 = i1.hasNext()) & (b2 = i2.hasNext())) {
             T t1 = i1.next();
             T t2 = i2.next();
-            if (! comp.equals(t1, t2)) {
+            if (!comp.equals(t1, t2)) {
                 break;
             }
         }
@@ -115,10 +128,11 @@ final public class Compare {
     /**
      * Returns the hash code of the given object using {@link Object#hashCode()}
      * or 0 if the passed in reference is null.
+     *
      * @param o The object reference.
      * @return The hash cod eof the object or 0 if the reference is null.
      */
-    public static int hashCode(Object o){
+    public static int hashCode(Object o) {
         return o != null ? o.hashCode() : 0;
     }
 }

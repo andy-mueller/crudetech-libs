@@ -6,7 +6,7 @@
 // http://www.eclipse.org/legal/epl-v10.html
 //
 // Contributors:
-//     Andreas Mueller - initial API and implementation
+// Andreas Mueller - initial API and implementation
 ////////////////////////////////////////////////////////////////////////////////
 package com.crudetech.query;
 
@@ -18,22 +18,22 @@ import java.util.NoSuchElementException;
 
 class WhereIterator<T> implements Iterator<T> {
 
-    public WhereIterator(UnaryFunction<T, Boolean> selector, Iterator<T> inner) {
-        super();
+    public WhereIterator(UnaryFunction<? super T, Boolean> selector, Iterator<T> inner) {
         this.selector = selector;
         this.inner = inner;
         moveNext();
     }
-    private final UnaryFunction<T, Boolean> selector;
+    private final UnaryFunction<? super T, Boolean> selector;
     private final Iterator<T> inner;
+    private T next;
+    private boolean hasNext = true;
 
     public boolean hasNext() {
-        return next != null;
+        return hasNext;
     }
-    private T next;
 
     public T next() {
-        if (next != null) {
+        if (hasNext()) {
             T cur = next;
             moveNext();
             return cur;
@@ -53,6 +53,6 @@ class WhereIterator<T> implements Iterator<T> {
                 return;
             }
         }
-        next = null;
+        hasNext = false;
     }
 }
