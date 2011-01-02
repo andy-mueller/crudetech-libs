@@ -9,13 +9,12 @@
 <!-- Contributors: -->
 <!-- Andreas Mueller - initial API and implementation -->
 <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.crudetech</groupId>
     <artifactId>com.crudetech</artifactId>
-    <version>0.3-SNAPSHOT</version>
+    <version>0.3</version>
 
     <name>com.crudetech</name>
 
@@ -61,10 +60,10 @@
         </license>
     </licenses>
     <scm>
-        <connection>scm:svn:http://crudetech-libs.googlecode.com/svn/java/com.crudetech/trunk</connection>
-        <developerConnection>scm:svn:https://crudetech-libs.googlecode.com/svn/java/com.crudetech/trunk
+        <connection>scm:svn:http://crudetech-libs.googlecode.com/svn/java/com.crudetech/tags/com.crudetech-0.3</connection>
+        <developerConnection>scm:svn:https://crudetech-libs.googlecode.com/svn/java/com.crudetech/tags/com.crudetech-0.3
         </developerConnection>
-        <url>http://code.google.com/p/crudetech-libs/source/browse/#svn/java/com.crudetech/trunk</url>
+        <url>http://code.google.com/p/crudetech-libs/source/browse/#svn/java/com.crudetech/tags/com.crudetech-0.3</url>
         <!--The # is NOT a typo!-->
     </scm>
     <distributionManagement>
