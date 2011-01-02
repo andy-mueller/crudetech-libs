@@ -4,7 +4,7 @@
     <parent>
         <artifactId>com.crudetech</artifactId>
         <groupId>com.crudetech</groupId>
-        <version>0.4-SNAPSHOT</version>
+        <version>0.3-SNAPSHOT</version>
     </parent>
 
     <packaging>jar</packaging>
