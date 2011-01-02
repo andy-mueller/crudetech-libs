@@ -13,6 +13,8 @@ package com.crudetech.query;
 import com.crudetech.functional.BinaryFunction;
 import com.crudetech.functional.UnaryFunction;
 
+import java.util.List;
+
 
 public interface Queryable<T> extends Iterable<T>{
     <U> Queryable<U> select(UnaryFunction<? super T, U> select);
@@ -35,6 +37,7 @@ public interface Queryable<T> extends Iterable<T>{
 
     <U> Queryable<U> cast(Class<U> targetClass);
 
+
     public interface SliceFluent<T> {
         Queryable<T> amount(int amount);
 
@@ -42,4 +45,5 @@ public interface Queryable<T> extends Iterable<T>{
     }
 
     T[] toArray(Class<T> clazz);
+    List<T> toList();
 }

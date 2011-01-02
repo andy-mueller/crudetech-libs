@@ -18,7 +18,11 @@ import com.crudetech.lang.ArgumentNullException;
 import com.crudetech.lang.ArgumentOutOfBoundsException;
 
 import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
+
+import static com.crudetech.collections.Iterables.copy;
 
 
 abstract class AbstractQueryable<T> extends AbstractIterable<T> implements Queryable<T> {
@@ -153,5 +157,15 @@ abstract class AbstractQueryable<T> extends AbstractIterable<T> implements Query
             rv[pos++] = item;
         }
         return rv;
+    }
+
+    @Override
+    public List<T> toList() {
+        ArrayList<T> targetList = new ArrayList<T>();
+
+        copy(this, targetList);
+
+        targetList.trimToSize();
+        return targetList;
     }
 }

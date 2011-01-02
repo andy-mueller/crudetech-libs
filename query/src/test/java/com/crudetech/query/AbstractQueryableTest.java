@@ -14,13 +14,15 @@ import org.junit.Test;
 
 import java.util.Arrays;
 
+import static com.crudetech.matcher.RangeHasSize.isEmpty;
+import static com.crudetech.matcher.RangeIsEqual.equalTo;
 import static com.crudetech.matcher.ThrowsException.doesThrow;
 import static com.crudetech.query.Query.from;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 public class AbstractQueryableTest {
-@Test
+    @Test
     public void lastOrDefault() {
         final Iterable<Integer> src = Arrays.asList(0, 1, 2, 3, 4);
 
@@ -43,8 +45,9 @@ public class AbstractQueryableTest {
         final int last = from(Empty).lastOr(0);
         assertThat(last, is(0));
     }
+
     @Test
-    public void lastThrowOnEmptyRange(){
+    public void lastThrowOnEmptyRange() {
         Runnable lastThrowsOnEmptyRange = new Runnable() {
             @Override
             public void run() {
@@ -53,6 +56,7 @@ public class AbstractQueryableTest {
         };
         assertThat(lastThrowsOnEmptyRange, doesThrow(IllegalStateException.class));
     }
+
     @Test
     public void anyOnEmptyRange() {
         assertThat(from(Empty).any(), is(false));
@@ -62,6 +66,7 @@ public class AbstractQueryableTest {
     public void any() {
         assertThat(from(0, 1, 2, 3, 4).any(), is(true));
     }
+
     @Test
     public void firstOrDefault() {
         final Iterable<Integer> src = Arrays.asList(0, 1, 2, 3, 4);
@@ -97,16 +102,32 @@ public class AbstractQueryableTest {
     }
 
     @Test
-    public void toArrayCreatesSimilarRange(){
-        Queryable<Integer> range = from(1,2,3,4);
+    public void toArrayCreatesSimilarRange() {
+        Queryable<Integer> range = from(1, 2, 3, 4);
 
-        assertThat(Arrays.equals(range.toArray(Integer.class), new Number[]{1,2,3,4}), is(true));
+        assertThat(Arrays.equals(range.toArray(Integer.class), new Number[]{1, 2, 3, 4}), is(true));
     }
+
     @Test
-    public void toArrayOnEmptyRangeCreatesEmptyArray(){
-        Queryable<Integer> range = from(new Integer[]{});
+    public void toArrayOnEmptyRangeCreatesEmptyArray() {
+        Queryable<Integer> range = from(Empty);
 
         assertThat(range.toArray(Integer.class).length, is(0));
+    }
+
+    @Test
+    public void toListCreatesSimilarRange() {
+        Queryable<Integer> range = from(1, 2, 3, 4);
+
+        assertThat(range.toList(), is(equalTo(1, 2, 3, 4)));
+    }
+
+    @Test
+    public void toListOnEmptyRangeCreatesEmptyList() {
+        Queryable<Integer> range = from(Empty);
+
+        assertThat(range.toList().size(), is(0));
+        assertThat(range.toList(), isEmpty());
     }
 }
 

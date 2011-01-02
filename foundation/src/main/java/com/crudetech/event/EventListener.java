@@ -12,7 +12,7 @@ package com.crudetech.event;
 
 /**
  * A strong typed version of the {@link java.util.EventListener} interface. It features a generic
- * callback method.
+ * finished method.
  * Please refer to the {@link EventSupport} documentation for details on
  * how to use the type safe event mechanism.
  */
