@@ -52,7 +52,7 @@ public class ListStack<T> implements LightweightStack<T> {
     }
 
     public ListStack() {
-        this.inner = new ArrayList<T>();
+        this(new ArrayList<T>());
     }
 
     @Override
@@ -70,6 +70,7 @@ public class ListStack<T> implements LightweightStack<T> {
 
     @Override
     public T[] toArray(Class<T> clazz) {
+        @SuppressWarnings("unchecked")
         T[] a = (T[]) Array.newInstance(clazz, inner.size());
         int pos = 0;
         for (T t : inner) {

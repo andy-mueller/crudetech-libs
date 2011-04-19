@@ -28,6 +28,13 @@ import static org.junit.Assert.assertTrue;
 
 
 public class IterablesFixture {
+    private UnaryFunction<Integer,Boolean> lessThan4 = new UnaryFunction<Integer, Boolean>() {
+        @Override
+        public Boolean execute(Integer i) {
+            return i < 4;
+        }
+    };
+
     @Test
     public void toStringIsSimilarToArraysClass(){
         Integer[] ints = new Integer[]{0,1,2,3,4};
@@ -175,6 +182,19 @@ public class IterablesFixture {
         assertThat(Iterables.accumulate(input, add), is(10));
     }
     @Test
+    public void accumulateConcats(){
+        Iterable<Integer> input = asList(1, 2, 3, 4);
+
+        BinaryFunction<String, Integer, String> add = new BinaryFunction<String, Integer, String>() {
+            @Override
+            public String execute(String str, Integer i2) {
+                return str + "," + i2;
+            }
+        };
+        assertThat(Iterables.accumulate("0", input, add), is("0,1,2,3,4"));
+    }
+
+    @Test
     public void concatCreatesOneIterable(){
         Iterable<Integer> i1 = asList(0,1,2,3);
         Iterable<Integer> i2 = asList(4,5,6);
@@ -185,7 +205,7 @@ public class IterablesFixture {
         assertThat(Compare.equals(result, asList(0, 1, 2, 3, 4, 5, 6, 7, 8, 9)), is(true));
     }
     @Test
-    public void concatWithMidleEmpty(){
+    public void concatWithMiddleEmpty(){
         Iterable<Integer> i1 = asList(0,1,2,3);
         Iterable<Integer> i2 = asList();
         Iterable<Integer> i3 = asList(7,8,9);

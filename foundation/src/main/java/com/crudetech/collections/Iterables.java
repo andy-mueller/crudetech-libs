@@ -135,7 +135,7 @@ public final class Iterables {
         return range.iterator().next();
     }
 
-    public static <From, To> Iterable<To> transform(final Iterable<From> from, final UnaryFunction<? super From, To> xform) {
+    public static <From, To> Iterable<To> transform(final Iterable<From> from, final UnaryFunction<? super From, ? extends To> xform) {
         if (from == null) throw new ArgumentNullException("from");
         if (xform == null) throw new ArgumentNullException("xform");
 
@@ -147,7 +147,7 @@ public final class Iterables {
         };
     }
 
-    public static <From, To> Iterator<To> transform(final Iterator<From> from, final UnaryFunction<? super From, To> xform) {
+    public static <From, To> Iterator<To> transform(final Iterator<From> from, final UnaryFunction<? super From, ? extends To> xform) {
         if (from == null) throw new ArgumentNullException("from");
         if (xform == null) throw new ArgumentNullException("xform");
 
@@ -169,7 +169,7 @@ public final class Iterables {
         };
     }
 
-    public static <T> T accumulate(Iterable<T> range, BinaryFunction<T, T, T> binaryFunction) {
+    public static <T> T accumulate(Iterable<T> range, BinaryFunction<? super T, ? super T, ? extends T> binaryFunction) {
         Iterator<T> it = range.iterator();
         if (!it.hasNext()) throw new IllegalArgumentException();
         T init = it.next();
@@ -177,11 +177,11 @@ public final class Iterables {
         return accumulate(init, it, binaryFunction);
     }
 
-    public static <T> T accumulate(T init, Iterable<T> range, BinaryFunction<T, T, T> binaryFunction) {
+    public static <T, U> U accumulate(U init, Iterable<T> range, BinaryFunction<? super U, ? super T, ? extends U> binaryFunction) {
         return accumulate(init, range.iterator(), binaryFunction);
     }
 
-    private static <T> T accumulate(T init, Iterator<T> it, BinaryFunction<T, T, T> binaryFunction) {
+    private static <T, U> U accumulate(U init, Iterator<T> it, BinaryFunction<? super U, ? super T, ? extends U> binaryFunction) {
         while (it.hasNext()) {
             init = binaryFunction.execute(init, it.next());
         }

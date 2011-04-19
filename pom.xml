@@ -22,7 +22,7 @@
 
     <url>http://code.google.com/p/crudetech-libs</url>
     <properties>
-        <junit.version>4.5</junit.version>
+        <junit.version>4.8.2</junit.version>
         <easymock.version>2.5.2</easymock.version>
         <easymock.ext.version>2.4</easymock.ext.version>
         <hamcrest.version>1.1</hamcrest.version>

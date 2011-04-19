@@ -17,7 +17,11 @@ import java.util.AbstractCollection;
 import java.util.Collection;
 import java.util.Iterator;
 
-
+/**
+ * A collection implementation that offers a projective view on another collection.
+ * @param <TView>
+ * @param <TModel>
+ */
 public class CollectionView<TView, TModel> extends AbstractCollection<TView> {
     private final UnaryFunction<TModel, TView> modelToView;
     private final UnaryFunction<TView, TModel> viewToModel;
