@@ -74,11 +74,12 @@ public class Categories extends Suite {
 
         @Override
         public boolean shouldRun(Description description) {
-//            for(Description child : description.getChildren()){
-//                if(shouldRun(child)){
-//                    return true;
-//                }
-//            }
+            // code for categories on methods
+            for(Description child : description.getChildren()){
+                if(shouldRun(child)){
+                    return true;
+                }
+            }
 
             Collection<Class<?>> categories = getCategories(description);
 
@@ -103,9 +104,15 @@ public class Categories extends Suite {
             return atLeastOneIsIncluded(categories, exclusions);
         }
 
-        private static boolean atLeastOneIsIncluded(Collection<?> in, Collection<?> of) {
-            for (Object exclusion : of) {
-                if (in.contains(exclusion)) {
+        private static boolean atLeastOneIsIncluded(Collection<Class<?>> in, Collection<Class<?>> of) {
+            for (Class<?> ofItem : of) {
+                // code for inheriting categories
+//                for(Class<?> inItem : in){
+//                    if(inItem.isAssignableFrom(ofItem)){
+//                        return true;
+//                    }
+//                }
+                if (in.contains(ofItem)) {
                     return true;
                 }
             }
@@ -129,7 +136,15 @@ public class Categories extends Suite {
         }
 
         private Set<Class<?>> getCategories(Class<?> clazz){
-            return getCategories(clazz != null ? clazz.getAnnotation(Category.class) : null);
+            if(clazz == null){
+                return Collections.emptySet();
+            }
+            Set<Class<?>> categories = getCategories(clazz != null ? clazz.getAnnotation(Category.class) : null);
+            categories.addAll(getCategories(clazz.getSuperclass()));
+            for(Class<?> i : clazz.getInterfaces()){
+                categories.addAll(getCategories(i));
+            }
+            return categories;
         }
         private Set<Class<?>> getCategories(Category cat) {
             if (isNull(cat)) {

@@ -34,7 +34,7 @@ public class CategoriesTest {
     @Test
     public void classPathSearchFindsAllTestForPattern() throws Exception {
         Class<?>[] allTest = Categories.allTestClassesInClassPathMatchingPattern(TestClassPattern);
-        assertThat(allTest.length, is(5));
+        assertThat(allTest.length, is(8));
     }
 
     @Test
@@ -45,9 +45,9 @@ public class CategoriesTest {
         assertThat(CategoryTestStub.getExecutionCount(RemoteStub.class), is(0));
     }
 
-    private void runTest(Class<?> slowCategorySuiteClass) {
+    private void runTest(Class<?> testClass) {
         JUnitCore jUnitCore = new JUnitCore();
-        assertThat(jUnitCore.run(slowCategorySuiteClass).getRunCount(), is(greaterThan(0)));
+        assertThat(jUnitCore.run(testClass).getRunCount(), is(greaterThanOrEqualTo(1)));
     }
 
 
@@ -103,5 +103,24 @@ public class CategoriesTest {
         runTest(ParameterizedCategorySuite.class);
 
         assertThat(CategoryTestStub.getExecutionCount(ParameterizedStub.class), is(2));
+    }
+
+    @Test
+    public void categoriesAreInherited() {
+        runTest(SomeCategory1InheritedSuite.class);
+        assertThat(CategoryTestStub.getExecutionCount(SomeCategory1InheritedStub.class), is(1));
+    }
+    @Test
+    public void inheritedCategoriesMerge() {
+        runTest(SomeCategory2Suite.class);
+        assertThat(CategoryTestStub.getExecutionCount(SomeCategory1InheritedStub.class), is(1));
+        assertThat(CategoryTestStub.getExecutionCount(SomeCategory1Stub.class), is(0));
+    }
+
+    @Test
+    public void  categoriesWorkOnTestMethods(){
+        runTest(CategoryOnMethodsSuite.class);
+
+        assertThat(CategoryTestStub.getExecutionCount(CategoryOnMethodStub.class), is(1));
     }
 }

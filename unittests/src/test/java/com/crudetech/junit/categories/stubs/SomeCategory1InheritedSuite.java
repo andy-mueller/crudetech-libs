@@ -8,15 +8,16 @@
 // Contributors:
 //      Andreas Mueller - initial API and implementation
 ////////////////////////////////////////////////////////////////////////////////
-package com.crudetech.junit.categories;
+package com.crudetech.junit.categories.stubs;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import com.crudetech.junit.categories.Categories;
+import com.crudetech.junit.categories.CategoriesTest;
+import com.crudetech.junit.categories.IncludeCategory;
+import com.crudetech.junit.categories.TestNamePattern;
+import org.junit.runner.RunWith;
 
-@Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.TYPE, ElementType.METHOD})
-public @interface Category {
-    Class<?>[] value();
+@RunWith(Categories.class)
+@IncludeCategory(SomeCategory1.class)
+@TestNamePattern(CategoriesTest.TestClassPattern)
+public class SomeCategory1InheritedSuite {
 }
