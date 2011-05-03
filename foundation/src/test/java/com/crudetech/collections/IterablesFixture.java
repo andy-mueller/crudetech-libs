@@ -20,6 +20,7 @@ import java.util.Arrays;
 import java.util.NoSuchElementException;
 
 import static java.util.Arrays.asList;
+import static java.util.Collections.emptyList;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -28,13 +29,6 @@ import static org.junit.Assert.assertTrue;
 
 
 public class IterablesFixture {
-    private UnaryFunction<Integer,Boolean> lessThan4 = new UnaryFunction<Integer, Boolean>() {
-        @Override
-        public Boolean execute(Integer i) {
-            return i < 4;
-        }
-    };
-
     @Test
     public void toStringIsSimilarToArraysClass(){
         Integer[] ints = new Integer[]{0,1,2,3,4};
@@ -42,6 +36,7 @@ public class IterablesFixture {
 
         assertThat(Arrays.toString(ints), is(equalTo(Iterables.toString(it).toString())));
     }
+
     @Test
     public void hashcodeIsSimilarToArraysClass(){
         Integer[] ints = new Integer[]{0,1,2,3,4};
@@ -69,7 +64,7 @@ public class IterablesFixture {
     }
     @Test
     public void sizeOnEmptyRange(){
-        Iterable<Integer> range = Arrays.asList();
+        Iterable<Integer> range = emptyList();
 
         assertThat(Iterables.size(range), is(0));
     }
@@ -88,7 +83,7 @@ public class IterablesFixture {
     }
     @Test(expected = NoSuchElementException.class)
     public void lastOfEmptyRange(){
-        final Iterable<Integer> range = Arrays.asList();
+        final Iterable<Integer> range = emptyList();
 
         Iterables.lastOf(range);
     }
@@ -106,7 +101,7 @@ public class IterablesFixture {
     }
     @Test(expected = NoSuchElementException.class)
     public void firstOfEmptyRange(){
-        final Iterable<Integer> range = Arrays.asList();
+        final Iterable<Integer> range = emptyList();
 
         Iterables.firstOf(range);
     }
@@ -118,7 +113,7 @@ public class IterablesFixture {
     }
     @Test
     public void isEmpty(){
-        Iterable<Integer> range = Arrays.asList();
+        Iterable<Integer> range = emptyList();
 
         assertThat(Iterables.isEmpty(range), is(true));
     }
@@ -138,7 +133,7 @@ public class IterablesFixture {
     }
     @Test
     public void transformWithEmptyReturnsEmptyRange(){
-        Iterable<Double> input = asList();
+        Iterable<Double> input = emptyList();
         UnaryFunction<Double, Integer> cast = new UnaryFunction<Double, Integer>() {
             @Override
             public Integer execute(Double aDouble) {
@@ -148,11 +143,10 @@ public class IterablesFixture {
 
         Iterable<Integer> result = Iterables.transform(input, cast);
 
-        assertTrue(Compare.equals(result, asList()));
+        assertTrue(Compare.equals(result, emptyList()));
     }
     @Test(expected = ArgumentNullException.class)
     public void transformWithNullThrows(){
-        Iterable<Double> input = asList();
         UnaryFunction<Double, Integer> cast = new UnaryFunction<Double, Integer>() {
             @Override
             public Integer execute(Double aDouble) {
@@ -164,7 +158,7 @@ public class IterablesFixture {
    }
     @Test(expected = ArgumentNullException.class)
     public void transformWithNullFunctorThrows(){
-        Iterable<Double> input = asList();
+        Iterable<Double> input = emptyList();
 
 
         Iterables.transform(input, null);
@@ -204,10 +198,11 @@ public class IterablesFixture {
 
         assertThat(Compare.equals(result, asList(0, 1, 2, 3, 4, 5, 6, 7, 8, 9)), is(true));
     }
+
     @Test
     public void concatWithMiddleEmpty(){
         Iterable<Integer> i1 = asList(0,1,2,3);
-        Iterable<Integer> i2 = asList();
+        Iterable<Integer> i2 = emptyList();
         Iterable<Integer> i3 = asList(7,8,9);
 
         Iterable<Integer> result = Iterables.concat(i1, i2, i3);
@@ -224,9 +219,10 @@ public class IterablesFixture {
 
         assertThat(Compare.equals(result, asList(0, 1, 2, 3, 7, 8, 9)), is(true));
     }
+
     @Test
     public void concatWithFirstEmpty(){
-        Iterable<Integer> i1 = asList();
+        Iterable<Integer> i1 = emptyList();
         Iterable<Integer> i2 = asList(4,5,6);
         Iterable<Integer> i3 = asList(7,8,9);
 
@@ -238,7 +234,7 @@ public class IterablesFixture {
     public void concatWithLastEmpty(){
         Iterable<Integer> i1 = asList(0,1,2,3);
         Iterable<Integer> i2 = asList(4,5,6);
-        Iterable<Integer> i3 = asList();
+        Iterable<Integer> i3 = emptyList();
 
         Iterable<Integer> result = Iterables.concat(i1, i2, i3);
 

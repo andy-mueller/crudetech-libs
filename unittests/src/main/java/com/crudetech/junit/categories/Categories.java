@@ -87,12 +87,9 @@ public class Categories extends Suite {
                 return categoriesAreNotExcluded(categories);
             }
 
-            if (categoriesAreExcluded(categories)) {
-                return false;
-            }
+            return categoriesAreNotExcluded(categories)
+                && categoriesAreIncluded(categories);
 
-            boolean shouldRun = categoriesAreIncluded(categories);
-            return shouldRun;
         }
 
         private boolean categoriesAreIncluded(Collection<Class<?>> categories) {
@@ -139,7 +136,7 @@ public class Categories extends Suite {
             if(clazz == null){
                 return Collections.emptySet();
             }
-            Set<Class<?>> categories = getCategories(clazz != null ? clazz.getAnnotation(Category.class) : null);
+            Set<Class<?>> categories = getCategories(clazz.getAnnotation(Category.class));
             categories.addAll(getCategories(clazz.getSuperclass()));
             for(Class<?> i : clazz.getInterfaces()){
                 categories.addAll(getCategories(i));

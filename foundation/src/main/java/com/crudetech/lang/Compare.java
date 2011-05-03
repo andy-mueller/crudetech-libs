@@ -37,6 +37,9 @@ final public class Compare {
     }
 
     public static <T> boolean equals(final T lhs, final T rhs, EqualityComparer<T> comp) {
+        if(comp == null){
+            throw new ArgumentNullException("comp");
+        }
         if (lhs == null || rhs == null) {
             return lhs == rhs;
         }
@@ -47,7 +50,18 @@ final public class Compare {
         if (lhs == null || rhs == null) {
             return lhs == rhs;
         }
-        return lhs.toString().equals(rhs.toString());
+
+        int l1 = lhs.length();
+        int l2 = rhs.length();
+        if(l1 != l2){
+            return false;
+        }
+        for(int idx = 0; idx < l1; ++idx){
+            if(lhs.charAt(idx) != rhs.charAt(idx)){
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
@@ -86,8 +100,7 @@ final public class Compare {
      * @return TRUE if each item in lhs  equals the
      *         corresponding item in rhs. FALSE otherwise.
      */
-    @SuppressWarnings("unchecked")
-    public static boolean equals(final Iterable lhs, final Iterable rhs) {
+    public static boolean equals(final Iterable<?> lhs, final Iterable<?> rhs) {
         return equalsIt(lhs, rhs, EqualityComparer.Standard);
     }
 
@@ -102,17 +115,17 @@ final public class Compare {
      * @return TRUE if each item in lhs  equals the
      *         corresponding item in rhs. FALSE otherwise.
      */
-    public static <T> boolean equals(final Iterable<T> lhs, final Iterable<T> rhs, EqualityComparer<T> comp) {
+    public static <T> boolean equals(final Iterable<? extends T> lhs, final Iterable<? extends T> rhs, EqualityComparer<T> comp) {
         return equalsIt(lhs, rhs, comp);
     }
 
-    private static <T> boolean equalsIt(final Iterable<T> lhs, final Iterable<T> rhs, EqualityComparer<T> comp) {
+    private static <T> boolean equalsIt(final Iterable<? extends T> lhs, final Iterable<? extends T> rhs, EqualityComparer<T> comp) {
         if (lhs == null || rhs == null) {
             return lhs == rhs;
         }
 
-        Iterator<T> i1 = lhs.iterator();
-        Iterator<T> i2 = rhs.iterator();
+        Iterator<? extends T> i1 = lhs.iterator();
+        Iterator<? extends T> i2 = rhs.iterator();
 
         boolean b1, b2;
         while ((b1 = i1.hasNext()) & (b2 = i2.hasNext())) {

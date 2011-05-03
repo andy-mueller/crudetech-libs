@@ -33,14 +33,14 @@ public final class Iterables {
     private Iterables() {
     }
 
-    public static <T> CharSequence toString(final Iterable<T> iterable) {
+    public static CharSequence toString(final Iterable<?> iterable) {
         if (iterable == null)
             return "null";
 
         StringBuilder b = new StringBuilder();
         b.append("[");
 
-        for (T t : iterable) {
+        for (Object t : iterable) {
             b.append(t);
             b.append(", ");
         }
@@ -52,13 +52,11 @@ public final class Iterables {
         return b;
     }
 
-    public static <T> int hashCode(final Iterable<T> iterable) {
-        @SuppressWarnings("unchecked")
-        EqualityComparer<T> comparer = (EqualityComparer<T>) EqualityComparer.Standard;
-        return hashCode(iterable, comparer);
+    public static int hashCode(final Iterable<?> iterable) {
+        return hashCode(iterable, EqualityComparer.Standard);
     }
 
-    public static <T> int hashCode(final Iterable<T> iterable, EqualityComparer<T> comp) {
+    public static <T> int hashCode(final Iterable<? extends T> iterable, EqualityComparer<T> comp) {
         if (iterable == null)
             return 0;
 
@@ -70,9 +68,9 @@ public final class Iterables {
         return result;
     }
 
-    public static <T> boolean contains(Iterable<T> range, T value) {
+    public static boolean contains(Iterable<?> range, Object value) {
         if (range == null) throw new ArgumentNullException("range");
-        for (T v : range) {
+        for (Object v : range) {
             if (Compare.equals(v, value)) {
                 return true;
             }
@@ -80,6 +78,15 @@ public final class Iterables {
         return false;
     }
 
+    public static boolean contains(Iterable<Double> range, double value, double tolerance) {
+        if (range == null) throw new ArgumentNullException("range");
+        for (Double v : range) {
+            if (Compare.equals(v.doubleValue(), value, tolerance)) {
+                return true;
+            }
+        }
+        return false;
+    }
     public static boolean contains(Iterable<Double> range, double value) {
         if (range == null) throw new ArgumentNullException("range");
         for (Double v : range) {
@@ -99,10 +106,22 @@ public final class Iterables {
         }
         return false;
     }
+    public static boolean contains(Iterable<Float> range, float value, float tolerance) {
+        if (range == null) throw new ArgumentNullException("range");
+        for (Float v : range) {
+            if (Compare.equals(v.doubleValue(), value, tolerance)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     public static <T> boolean isEmpty(final Iterable<T> range) {
         if (range == null) throw new ArgumentNullException("range");
         return !range.iterator().hasNext();
+    }
+    public static <T> boolean isNotEmpty(final Iterable<T> range) {
+        return !isEmpty(range);
     }
 
     public static <T> T lastOf(final Iterable<T> range) {
@@ -188,6 +207,19 @@ public final class Iterables {
         return init;
     }
 
+    public static <T> Iterable<T> concat(Iterable<T> i1, Iterable<T> i2) {
+        return concat(asList(i1, i2));
+    }
+    public static <T> Iterable<T> concat(Iterable<T> i1, Iterable<T> i2, Iterable<T> i3) {
+        return concat(asList(i1, i2, i3));
+    }
+    public static <T> Iterable<T> concat(Iterable<T> i1, Iterable<T> i2, Iterable<T> i3, Iterable<T> i4) {
+        return concat(asList(i1, i2, i3, i4));
+    }
+    public static <T> Iterable<T> concat(Iterable<T> i1, Iterable<T> i2, Iterable<T> i3, Iterable<T> i4, Iterable<T> i5) {
+        return concat(asList(i1, i2, i3, i4, i5));
+    }
+
     public static <T> Iterable<T> concat(Iterable<T>... iterables) {
         if (iterables == null) throw new ArgumentNullException("iterables");
         return new ConcatIterable<T>(asList(iterables));
@@ -215,6 +247,7 @@ public final class Iterables {
         }
         return target;
     }
+
     public static <T> List<T> copy(Iterable<T> src) {
         return copy(src, new ArrayList<T>());
     }

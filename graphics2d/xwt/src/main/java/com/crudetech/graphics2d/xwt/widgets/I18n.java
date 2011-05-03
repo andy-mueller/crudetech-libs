@@ -10,25 +10,20 @@
 ////////////////////////////////////////////////////////////////////////////////
 package com.crudetech.graphics2d.xwt.widgets;
 
-import java.util.ResourceBundle;
+import com.crudetech.i18n.I18nBase;
 
 
-class I18n {
-//    static String Border = getString("Border");
-    static String Border(){
-      return getString("Border");  
+class I18n extends I18nBase{
+    private static final I18n Instance = new I18n();
+
+    public I18n() {
+        super(I18n.class.getCanonicalName().replace('.', '/'));
     }
-
-    private static ResourceBundle resourceBundle =
-//           ResourceBundle.getBundle("com.crudetech.graphics2d.xwt.widgets.I18n");
-//            ResourceBundle.getBundle(I18n.class.getCanonicalName());
-    ResourceBundle.getBundle(I18n.class.getCanonicalName().replace('.', '/'));
-
-    static String getString(String key) {
-        return resourceBundle.getString(key);
+    static String Border(){
+      return Instance.getString("Border");
     }
 
     public static String Text() {
-        return resourceBundle.getString("Text");        
+        return Instance.getString("Text");
     }
 }
