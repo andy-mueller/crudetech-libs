@@ -24,6 +24,7 @@ public class I18nBaseTest {
         I18n() {
             super("i18ntest/i18n");
         }
+
         I18n(ResourceBundleControlProvider rb) {
             super("i18ntest/i18n", rb);
         }
@@ -92,6 +93,20 @@ public class I18nBaseTest {
             assertThat(result, is("xml:Test successful!"));
         } finally {
             englishXml.reset();
+        }
+    }
+
+    static class ImplicitBaseNameI18n extends I18nBase {
+    }
+    @Test
+    public void noBaseNameUsesClassName() {
+        I18nBase.LocaleProviderOverride germanXml = new I18nBase.LocaleProviderOverride(LocaleProvider.German);
+        try {
+            I18nBase i18n = new ImplicitBaseNameI18n();
+            String result = i18n.getString("testString");
+            assertThat(result, is("xml-classname:Test erfolgreich!"));
+        } finally {
+            germanXml.reset();
         }
     }
 

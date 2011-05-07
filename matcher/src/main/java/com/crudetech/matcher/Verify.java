@@ -1,12 +1,12 @@
 ////////////////////////////////////////////////////////////////////////////////
-// Copyright (c) 2010, Andreas Mueller.
+// Copyright (c) 2011, Andreas Mueller.
 // All rights reserved. This program and the accompanying materials
 // are made available under the terms of the Eclipse Public License v1.0
 // which accompanies this distribution, and is available at
 // http://www.eclipse.org/legal/epl-v10.html
 //
 // Contributors:
-//     Andreas Mueller - initial API and implementation
+//      Andreas Mueller - initial API and implementation
 ////////////////////////////////////////////////////////////////////////////////
 package com.crudetech.matcher;
 
@@ -42,7 +42,7 @@ public class Verify {
      *                values.
      */
     public static <T> void  verifyThat(T actual, Matcher<? super T> matcher) {
-        verifyThat("", actual, matcher);
+        verifyThat("argument", actual, matcher);
     }
 
     /**
@@ -57,21 +57,21 @@ public class Verify {
      * }
      * </pre>
      *
-     * @param reason Additional information about the error.
+     * @param argumentName The argument name.
      * @param <T> The static type accepted by the matcher (this can flag obvious
      *            compile-time problems such as {@code verifyThat(1, is("a"))}.
      * @param actual The computed value being compared.
      * @param matcher An expression, built of {@link Matcher}s, specifying allowed
      *                values.
      */
-    public static <T> void verifyThat(String reason, T actual, Matcher<? super T> matcher) {
+    public static <T> void verifyThat(String argumentName, T actual, Matcher<? super T> matcher) {
         if (!matcher.matches(actual)) {
             Description description = new StringDescription();
-            description.appendText(reason);
+            description.appendText(argumentName);
             description.appendText("\nExpected: ");
             matcher.describeTo(description);
             description.appendText("\n     got: ").appendValue(actual).appendText("\n");
-            throw new java.lang.IllegalArgumentException(description.toString());
+            throw new IllegalArgumentException(description.toString());
         }
     }
 }

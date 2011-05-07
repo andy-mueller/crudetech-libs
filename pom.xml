@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
-<!-- Copyright (c) 2010, Andreas Mueller. -->
+<!-- Copyright (c) 2011, Andreas Mueller. -->
 <!-- All rights reserved. This program and the accompanying materials -->
 <!-- are made available under the terms of the Eclipse Public License v1.0 -->
 <!-- which accompanies this distribution, and is available at -->
 <!-- http://www.eclipse.org/legal/epl-v10.html -->
 <!-- -->
 <!-- Contributors: -->
-<!-- Andreas Mueller - initial API and implementation -->
+<!--      Andreas Mueller - initial API and implementation -->
 <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.crudetech</groupId>
@@ -25,7 +26,7 @@
         <junit.version>4.8.2</junit.version>
         <easymock.version>2.5.2</easymock.version>
         <easymock.ext.version>2.4</easymock.ext.version>
-        <hamcrest.version>1.1</hamcrest.version>
+        <hamcrest.version>1.3.0RC2</hamcrest.version>
         <maven.overview.plugin.version>1.6</maven.overview.plugin.version>
         <maven.depgraph.plugin>1.2</maven.depgraph.plugin>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -188,6 +189,12 @@
                 <groupId>junit</groupId>
                 <artifactId>junit-dep</artifactId>
                 <version>${junit.version}</version>
+                <!--<exclusions>-->
+                    <!--<exclusion>-->
+                        <!--<groupId>org.hamcrest</groupId>-->
+                        <!--<artifactId>hamcrest-core</artifactId>-->
+                    <!--</exclusion>-->
+                <!--</exclusions>-->
             </dependency>
             <dependency>
                 <groupId>org.easymock</groupId>
@@ -206,26 +213,4 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-    <dependencies>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit-dep</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.easymock</groupId>
-            <artifactId>easymock</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.easymock</groupId>
-            <artifactId>easymockclassextension</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.hamcrest</groupId>
-            <artifactId>hamcrest-all</artifactId>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
 </project>

@@ -1,23 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <artifactId>com.crudetech</artifactId>
-    <groupId>com.crudetech</groupId>
-    <version>0.5-SNAPSHOT</version>
-  </parent>
-  
-  <packaging>jar</packaging>
+<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+<!-- Copyright (c) 2011, Andreas Mueller. -->
+<!-- All rights reserved. This program and the accompanying materials -->
+<!-- are made available under the terms of the Eclipse Public License v1.0 -->
+<!-- which accompanies this distribution, and is available at -->
+<!-- http://www.eclipse.org/legal/epl-v10.html -->
+<!-- -->
+<!-- Contributors: -->
+<!--      Andreas Mueller - initial API and implementation -->
+<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <artifactId>com.crudetech</artifactId>
+        <groupId>com.crudetech</groupId>
+        <version>0.5-SNAPSHOT</version>
+    </parent>
 
-	<artifactId>foundation</artifactId>
- 
-	<name>${project.groupId}.${project.artifactId}</name>
- 
-	<build>
+    <packaging>jar</packaging>
+
+    <artifactId>foundation</artifactId>
+
+    <name>${project.groupId}.${project.artifactId}</name>
+
+    <build>
         <finalName>${project.groupId}.${project.artifactId}</finalName>
     </build>
-  
-	<dependencies>
+
+    <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>unittests</artifactId>
@@ -27,10 +38,26 @@
         <dependency>
             <groupId>org.hamcrest</groupId>
             <artifactId>hamcrest-all</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit-dep</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.easymock</groupId>
+            <artifactId>easymock</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.easymock</groupId>
+            <artifactId>easymockclassextension</artifactId>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-all</artifactId>
         </dependency>
-	</dependencies>
+    </dependencies>
 </project>
