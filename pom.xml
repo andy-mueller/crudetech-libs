@@ -64,6 +64,7 @@
         <connection>scm:svn:http://crudetech-libs.googlecode.com/svn/java/com.crudetech/trunk</connection>
         <developerConnection>scm:svn:https://crudetech-libs.googlecode.com/svn/java/com.crudetech/trunk
         </developerConnection>
+        <!--The # is NOT a typo!-->
         <url>http://code.google.com/p/crudetech-libs/source/browse/#svn/java/com.crudetech/trunk</url>
         <!--The # is NOT a typo!-->
     </scm>

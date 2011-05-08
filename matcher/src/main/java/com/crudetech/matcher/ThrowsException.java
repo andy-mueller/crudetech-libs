@@ -88,8 +88,8 @@ public class ThrowsException extends TypeSafeDiagnosingMatcher<Runnable> {
             runnable.run();
         } catch (Exception lastException) {
             boolean ex = exceptionClazz.isAssignableFrom(lastException.getClass());
-            boolean cause = (!UnspecifiedCauseExceptionType.class.isAssignableFrom(causeClazz) && lastException.getCause() != null) ? causeClazz.isAssignableFrom(lastException.getCause().getClass()) : true;
-            boolean msg = !message.equals(UnspecifiedMessage) ? message.equals(lastException.getMessage()) : true;
+            boolean cause = causeMatches(lastException);
+            boolean msg = message.equals(UnspecifiedMessage) || message.equals(lastException.getMessage());
             boolean didThrowCorrect = ex && cause && msg;
             if(!didThrowCorrect){
                 mismatchDescription.appendText(toString(lastException));
@@ -98,6 +98,26 @@ public class ThrowsException extends TypeSafeDiagnosingMatcher<Runnable> {
         }
         mismatchDescription.appendText("<Nothing>");
         return false;
+    }
+
+    private boolean causeMatches(Exception e) {
+        return noCause(e) || causeTypeMatches(e);
+    }
+
+    private boolean noCause(Exception e) {
+        return !(isNotUnspecifiedCause() && hasCause(e));
+    }
+
+    private boolean hasCause(Exception e) {
+        return e.getCause() != null;
+    }
+
+    private boolean isNotUnspecifiedCause() {
+        return !UnspecifiedCauseExceptionType.class.isAssignableFrom(causeClazz);
+    }
+
+    private boolean causeTypeMatches(Exception e) {
+        return causeClazz.isAssignableFrom(e.getCause().getClass());
     }
 
     @Override
