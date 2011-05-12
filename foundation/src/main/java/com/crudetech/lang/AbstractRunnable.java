@@ -37,6 +37,7 @@ import static com.crudetech.lang.SneakyThrow.sneakyThrow;
  *     }
  *
  * }</pre>
+ * Hoewver, the compiler will  not force yu to catch the exception!
  */
 public abstract class AbstractRunnable implements Runnable {
     @Override

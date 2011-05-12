@@ -1,12 +1,12 @@
 ////////////////////////////////////////////////////////////////////////////////
-// Copyright (c) 2010, Andreas Mueller.
+// Copyright (c) 2011, Andreas Mueller.
 // All rights reserved. This program and the accompanying materials
 // are made available under the terms of the Eclipse Public License v1.0
 // which accompanies this distribution, and is available at
 // http://www.eclipse.org/legal/epl-v10.html
 //
 // Contributors:
-//     Andreas Mueller - initial API and implementation
+//      Andreas Mueller - initial API and implementation
 ////////////////////////////////////////////////////////////////////////////////
 package com.crudetech.query;
 
@@ -14,7 +14,7 @@ import org.junit.Test;
 
 import java.util.Arrays;
 
-import static com.crudetech.matcher.RangeHasSize.isEmpty;
+import static com.crudetech.matcher.RangeIsEmpty.isEmpty;
 import static com.crudetech.matcher.RangeIsEqual.equalTo;
 import static com.crudetech.matcher.ThrowsException.doesThrow;
 import static com.crudetech.query.Query.from;

@@ -1,12 +1,12 @@
 ////////////////////////////////////////////////////////////////////////////////
-// Copyright (c) 2010, Andreas Mueller.
+// Copyright (c) 2011, Andreas Mueller.
 // All rights reserved. This program and the accompanying materials
 // are made available under the terms of the Eclipse Public License v1.0
 // which accompanies this distribution, and is available at
 // http://www.eclipse.org/legal/epl-v10.html
 //
 // Contributors:
-//     Andreas Mueller - initial API and implementation
+//      Andreas Mueller - initial API and implementation
 ////////////////////////////////////////////////////////////////////////////////
 package com.crudetech.query;
 
@@ -14,10 +14,10 @@ import com.crudetech.collections.Pair;
 import com.crudetech.functional.BinaryFunction;
 import com.crudetech.functional.UnaryFunction;
 import com.crudetech.lang.ArgumentNullException;
+import com.crudetech.matcher.RangeIsEmpty;
 import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 
-import static com.crudetech.matcher.RangeHasSize.isEmpty;
 import static com.crudetech.matcher.RangeIsEqual.equalTo;
 import static com.crudetech.matcher.ThrowsException.doesThrow;
 import static com.crudetech.query.Query.from;
@@ -50,7 +50,7 @@ public class SelectTest {
 
         Iterable<Integer> i2 = from(collection).select(float2Int);
 
-        assertThat(i2, isEmpty());
+        assertThat(i2, RangeIsEmpty.isEmpty());
     }
 
     @Test
