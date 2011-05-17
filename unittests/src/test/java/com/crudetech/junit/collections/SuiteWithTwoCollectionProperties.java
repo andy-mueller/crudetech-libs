@@ -10,13 +10,19 @@
 ////////////////////////////////////////////////////////////////////////////////
 package com.crudetech.junit.collections;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import org.junit.runner.RunWith;
 
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.FIELD)
-public @interface Factory {
-    Class<? extends CollectionProperty>[] value();
+@RunWith(CollectionsSuite.class)
+public class SuiteWithTwoCollectionProperties {
+    public static class Prop1 extends TestTracker {
+        public Prop1(Object o){}
+    }
+    public static class Prop2 extends TestTracker {
+        public Prop2(Object o){}
+    }
+
+    @CollectionProperty(SuiteWithTwoCollectionProperties.Prop1.class)
+    public static Object factory1 = new Object();
+    @CollectionProperty(SuiteWithTwoCollectionProperties.Prop2.class)
+    public static Object factory2 = new Object();
 }

@@ -11,16 +11,9 @@
 package com.crudetech.junit.collections;
 
 
-import java.lang.annotation.*;
+public class Mutable {
 
-public class Mutable implements CollectionProperty {
-    @Override
-    public Class<? extends Annotation> getFactoryClass() {
-        return Factory.class;
+    public interface Factory<T> {
     }
 
-    @Retention(RetentionPolicy.RUNTIME)
-    @Target(ElementType.FIELD)
-    public @interface Factory {
-    }
 }

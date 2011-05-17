@@ -12,22 +12,23 @@ package com.crudetech.junit.collections;
 
 import org.junit.runner.RunWith;
 
-import java.util.Collection;
-
-import static java.util.Arrays.asList;
-
 @RunWith(CollectionsSuite.class)
-public class ArrayAdapterTestSuite {
-    @CollectionProperty(Unmodifiable.class)
-    public static Unmodifiable.Factory<Integer> unmodifiableFactory = new Unmodifiable.Factory<Integer>() {
-        @Override
-        public Collection<Integer> createCollection() {
-            return asList(0,1,2);
+public class SuiteWithIncompatibleFactoryInstance {
+    public static class Prop1 extends TestTracker {
+        public Prop1(Object o){}
+    }
+    public static class Prop2 extends TestTracker {
+        private final Factory f;
+        interface Factory{
         }
+        public Prop2(Factory f){
+            this.f = f;
+            int j=0;
+        }
+     }
 
-        @Override
-        public Integer createUniqueItem(int id) {
-            return id;
-        }
-    };
+    @CollectionProperty(SuiteWithIncompatibleFactoryInstance.Prop1.class)
+    public static Object factory1 = new Object();
+    @CollectionProperty(SuiteWithIncompatibleFactoryInstance.Prop2.class)
+    public static Object factory2 = new Object(){};
 }

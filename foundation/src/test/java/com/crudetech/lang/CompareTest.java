@@ -13,6 +13,7 @@ package com.crudetech.lang;
 import org.junit.Test;
 
 import static java.util.Arrays.asList;
+import static java.util.Collections.emptyList;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
@@ -72,14 +73,14 @@ public class CompareTest {
     }
     @Test
     public void equalsIterablesIsTrueOnEmptyRanges(){
-        Iterable<Integer> lhs = asList();
-        Iterable<Integer> rhs = asList();
+        Iterable<Integer> lhs = emptyList();
+        Iterable<Integer> rhs = emptyList();
 
         assertThat(Compare.equals(lhs, rhs, equalsAbs), is(true));
     }
     @Test
     public void equalsIterablesIsFalseOnOneEmptyRange(){
-        Iterable<Integer> lhs = asList();
+        Iterable<Integer> lhs = emptyList();
         Iterable<Integer> rhs = asList(0,1,2);
 
         assertThat(Compare.equals(lhs, rhs, equalsAbs), is(false));
@@ -87,7 +88,7 @@ public class CompareTest {
     @Test
     public void equalsIterablesIsFalseOnSecondEmptyRange(){
         Iterable<Integer> lhs = asList(0,1,2);
-        Iterable<Integer> rhs = asList();
+        Iterable<Integer> rhs = emptyList();
 
         assertThat(Compare.equals(lhs, rhs, equalsAbs), is(false));
     }

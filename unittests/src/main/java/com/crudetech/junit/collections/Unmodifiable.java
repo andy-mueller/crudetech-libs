@@ -10,10 +10,36 @@
 ////////////////////////////////////////////////////////////////////////////////
 package com.crudetech.junit.collections;
 
-public class Unmodifiable implements CollectionProperty{
-    @Override
-    public Class<?> getFactoryClass() {
-        return UnmodifiableFactory.class;
+import org.junit.Test;
+
+import java.util.Collection;
+
+public class Unmodifiable<T> {
+    private final Factory<T> factory;
+
+    public Unmodifiable(Factory<T> factory) {
+        this.factory = factory;
     }
 
+    public interface Factory<T> {
+        Collection<T> createCollection();
+
+        T createUniqueItem(int id);
+    }
+
+    @Test(expected = UnsupportedOperationException.class)
+    public void addIsUnsupported() {
+        Collection<T> unmodifyable = factory.createCollection();
+        unmodifyable.add(factory.createUniqueItem(42));
+    }
+    @Test(expected = UnsupportedOperationException.class)
+    public void clearThrowsUnsupportedOperationException(){
+        Collection<T> unmodifyable = factory.createCollection();
+        unmodifyable.clear();
+    }
+    @Test(expected = UnsupportedOperationException.class)
+    public void removeThrowsUnsupportedOperationException(){
+        Collection<T> unmodifyable = factory.createCollection();
+        unmodifyable.remove(factory.createUniqueItem(42));
+    }
 }

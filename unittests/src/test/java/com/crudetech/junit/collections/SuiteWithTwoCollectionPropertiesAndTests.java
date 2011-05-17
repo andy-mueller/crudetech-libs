@@ -10,8 +10,19 @@
 ////////////////////////////////////////////////////////////////////////////////
 package com.crudetech.junit.collections;
 
+import org.junit.runner.RunWith;
 
-public class FixedSize<T> {
-    public interface Factory<T> {
+@RunWith(CollectionsSuite.class)
+public class SuiteWithTwoCollectionPropertiesAndTests extends TestTracker{
+    public static class Prop1 extends TestTracker {
+        public Prop1(Object o){}
     }
+    public static class Prop2 extends TestTracker {
+        public Prop2(Object o){}
+    }
+
+    @CollectionProperty(SuiteWithTwoCollectionPropertiesAndTests.Prop1.class)
+    public static Object factory1 = new Object();
+    @CollectionProperty(SuiteWithTwoCollectionPropertiesAndTests.Prop2.class)
+    public static Object factory2 = new Object();
 }
