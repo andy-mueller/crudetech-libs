@@ -1,17 +1,25 @@
 ////////////////////////////////////////////////////////////////////////////////
-// Copyright (c) 2010, Andreas Mueller.
+// Copyright (c) 2011, Andreas Mueller.
 // All rights reserved. This program and the accompanying materials
 // are made available under the terms of the Eclipse Public License v1.0
 // which accompanies this distribution, and is available at
 // http://www.eclipse.org/legal/epl-v10.html
 //
 // Contributors:
-//     Andreas Mueller - initial API and implementation
+//      Andreas Mueller - initial API and implementation
 ////////////////////////////////////////////////////////////////////////////////
 package com.crudetech.geometry.geom2d;
 
 import com.crudetech.geometry.geom.RadianAngles;
+import com.crudetech.geometry.geom3d.Tolerance3d;
+import com.crudetech.junit.feature.Equivalent;
+import com.crudetech.junit.feature.Feature;
+import com.crudetech.junit.feature.FeaturesSuite;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.crudetech.geometry.geom.Matrix.column;
 import static com.crudetech.geometry.geom.Matrix.row;
@@ -24,6 +32,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 
 
+@RunWith(FeaturesSuite.class)
 public class Matrix2dTest {
     @Test
     public void defaultCtorCreatesIdentityMatrix() {
@@ -357,5 +366,35 @@ public class Matrix2dTest {
 
         assertThat(actual, is(new Point2d(2, 4)));
     }
+
+    @Feature(Equivalent.class)
+    public static Equivalent.Factory<Matrix2d> mxFactory = new Equivalent.Factory<Matrix2d>() {
+        private final double[][] rawMx = new double[][]{
+                {3, 4, 32},
+                {4, 1, 45},
+                {3, 333, 4}
+
+        };
+        @Override
+        public Matrix2d createItem() {
+            return new Matrix2d(rawMx.clone());
+        }
+
+        @Override
+        public List<Matrix2d> createOtherItems() {
+            List<Matrix2d> others = new ArrayList<Matrix2d>();
+            others.add(Matrix2d.Identity);
+
+            for(int i = 0; i < 3; ++i){
+                for(int j = 0; j < 3; ++j){
+                    double[][] data = rawMx.clone();
+                    data[i][j] += Tolerance3d.getGlobalTolerance().getVectorTolerance();
+                    others.add(new Matrix2d(data));
+                }
+
+            }
+            return others;
+        }
+    };
 
 }

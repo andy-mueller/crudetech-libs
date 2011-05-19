@@ -8,7 +8,7 @@
 // Contributors:
 //      Andreas Mueller - initial API and implementation
 ////////////////////////////////////////////////////////////////////////////////
-package com.crudetech.junit.collections;
+package com.crudetech.junit.feature;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -19,7 +19,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 
-public class CollectionSuiteFixture {
+public class FeaturesSuiteFixture {
     private Result runTest(Class<?> testClass) {
         JUnitCore core = new JUnitCore();
         return core.run(testClass);

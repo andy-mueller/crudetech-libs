@@ -8,7 +8,7 @@
 // Contributors:
 //      Andreas Mueller - initial API and implementation
 ////////////////////////////////////////////////////////////////////////////////
-package com.crudetech.junit.collections;
+package com.crudetech.junit.feature;
 
 import org.junit.runner.Runner;
 import org.junit.runners.BlockJUnit4ClassRunner;
@@ -20,8 +20,8 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CollectionsSuite extends Suite {
-    public CollectionsSuite(Class<?> klass) throws InitializationError {
+public class FeaturesSuite extends Suite {
+    public FeaturesSuite(Class<?> klass) throws InitializationError {
         super(klass, extracAndCreateRunners(klass));
     }
 
@@ -32,9 +32,9 @@ public class CollectionsSuite extends Suite {
             if (factory == null) {
                 throw new InitializationError("Field declarations must not be null!!");
             }
-            CollectionProperty prop = field.getAnnotation(CollectionProperty.class);
+            Feature prop = field.getAnnotation(Feature.class);
             Class<?> test = prop.value();
-            runners.add(new CollectionsSuiteRunner(test, factory));
+            runners.add(new FeaturesSuiteRunner(test, factory));
         }
         addSuiteIfItContainsTests(klass, runners);
         return runners;
@@ -69,7 +69,7 @@ public class CollectionsSuite extends Suite {
             if (!Modifier.isStatic(field.getModifiers())) {
                 continue;
             }
-            if (!field.isAnnotationPresent(CollectionProperty.class)) {
+            if (!field.isAnnotationPresent(Feature.class)) {
                 continue;
             }
 

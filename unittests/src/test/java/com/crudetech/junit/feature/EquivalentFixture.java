@@ -8,28 +8,27 @@
 // Contributors:
 //      Andreas Mueller - initial API and implementation
 ////////////////////////////////////////////////////////////////////////////////
-package com.crudetech.junit.collections;
+package com.crudetech.junit.feature;
 
-import com.crudetech.junit.feature.Feature;
-import com.crudetech.junit.feature.FeaturesSuite;
 import org.junit.runner.RunWith;
 
-import java.util.Collection;
+import java.util.List;
 
 import static java.util.Arrays.asList;
 
 @RunWith(FeaturesSuite.class)
-public class ArrayAdapterTestSuite {
-    @Feature(Unmodifiable.class)
-    public static Unmodifiable.Factory<Integer> unmodifiableFactory = new Unmodifiable.Factory<Integer>() {
+public class EquivalentFixture {
+
+    @Feature(Equivalent.class)
+    public static Equivalent.Factory<Integer> factory = new Equivalent.Factory<Integer>() {
         @Override
-        public Collection<Integer> createCollection() {
-            return asList(0,1,2);
+        public Integer createItem() {
+            return new Integer(42);
         }
 
         @Override
-        public Integer createUniqueItem(int id) {
-            return id;
+        public List<Integer> createOtherItems() {
+            return asList(84, 126, 168);
         }
     };
 }

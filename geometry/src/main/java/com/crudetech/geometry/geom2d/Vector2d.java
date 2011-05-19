@@ -1,12 +1,12 @@
 ////////////////////////////////////////////////////////////////////////////////
-// Copyright (c) 2010, Andreas Mueller.
+// Copyright (c) 2011, Andreas Mueller.
 // All rights reserved. This program and the accompanying materials
 // are made available under the terms of the Eclipse Public License v1.0
 // which accompanies this distribution, and is available at
 // http://www.eclipse.org/legal/epl-v10.html
 //
 // Contributors:
-//     Andreas Mueller - initial API and implementation
+//      Andreas Mueller - initial API and implementation
 ////////////////////////////////////////////////////////////////////////////////
 package com.crudetech.geometry.geom2d;
 
@@ -42,18 +42,7 @@ public final class Vector2d extends AbstractToleranceComparable2d<Vector2d> impl
 
     @Override
     public int hashCode(Tolerance tol) {
-        double tolFactor = 1 / tol.getVectorTolerance();
-        int result = !FloatCompare.equals(x, 0.0, tol.getVectorTolerance()) ? double2int(x * tolFactor) : 0;
-        result = 31 * result + (!FloatCompare.equals(y, 0.0, tol.getVectorTolerance()) ? double2int(y * tolFactor) : 0);
-        return result;
-
-//        int result;
-//        long temp;
-//        temp = !FloatCompare.equals(x, 0.0, getTolerance()) ? Double.doubleToLongBits(x) : 0L;
-//        result = (int) (temp ^ (temp >>> 32));
-//        temp = !FloatCompare.equals(y, 0.0, getTolerance()) ? Double.doubleToLongBits(y) : 0L;
-//        result = 31 * result + (int) (temp ^ (temp >>> 32));
-//        return result;
+        return FloatCompare.hashCode(new double[]{x, y}, tol.getVectorTolerance());
     }
 
     public boolean equals(Vector2d rhs, Tolerance tol) {

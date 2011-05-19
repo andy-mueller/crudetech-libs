@@ -8,21 +8,22 @@
 // Contributors:
 //      Andreas Mueller - initial API and implementation
 ////////////////////////////////////////////////////////////////////////////////
-package com.crudetech.junit.collections;
+package com.crudetech.junit.feature;
 
 import org.junit.runner.RunWith;
 
-@RunWith(CollectionsSuite.class)
-public class SuiteWithTwoCollectionProperties {
+@RunWith(FeaturesSuite.class)
+public class SuiteWithNullFactoryInstance {
     public static class Prop1 extends TestTracker {
         public Prop1(Object o){}
+
     }
     public static class Prop2 extends TestTracker {
         public Prop2(Object o){}
     }
 
-    @CollectionProperty(SuiteWithTwoCollectionProperties.Prop1.class)
-    public static Object factory1 = new Object();
-    @CollectionProperty(SuiteWithTwoCollectionProperties.Prop2.class)
+    @Feature(SuiteWithNullFactoryInstance.Prop1.class)
+    public static Object factory1 = null;
+    @Feature(SuiteWithNullFactoryInstance.Prop2.class)
     public static Object factory2 = new Object();
 }

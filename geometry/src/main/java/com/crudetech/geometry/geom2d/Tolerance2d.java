@@ -1,12 +1,12 @@
 ////////////////////////////////////////////////////////////////////////////////
-// Copyright (c) 2010, Andreas Mueller.
+// Copyright (c) 2011, Andreas Mueller.
 // All rights reserved. This program and the accompanying materials
 // are made available under the terms of the Eclipse Public License v1.0
 // which accompanies this distribution, and is available at
 // http://www.eclipse.org/legal/epl-v10.html
 //
 // Contributors:
-//     Andreas Mueller - initial API and implementation
+//      Andreas Mueller - initial API and implementation
 ////////////////////////////////////////////////////////////////////////////////
 package com.crudetech.geometry.geom2d;
 
@@ -24,7 +24,7 @@ import com.crudetech.lang.ArgumentNullException;
  * Setting the global tolerance is not thread safe!
  */
 public class Tolerance2d {
-    private static Tolerance globalTolerance = new Tolerance(1e-6, 1e-6);
+    private static volatile Tolerance globalTolerance = new Tolerance(1e-6, 1e-6);
     private Tolerance2d(){}
     /**
      * The global tolerance instance that is implicitly used by every object instance for comparison.

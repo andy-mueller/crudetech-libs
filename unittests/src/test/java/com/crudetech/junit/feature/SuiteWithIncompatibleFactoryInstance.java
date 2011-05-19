@@ -8,21 +8,27 @@
 // Contributors:
 //      Andreas Mueller - initial API and implementation
 ////////////////////////////////////////////////////////////////////////////////
-package com.crudetech.junit.collections;
+package com.crudetech.junit.feature;
 
 import org.junit.runner.RunWith;
 
-@RunWith(CollectionsSuite.class)
-public class SuiteWithTwoCollectionPropertiesAndTests extends TestTracker{
+@RunWith(FeaturesSuite.class)
+public class SuiteWithIncompatibleFactoryInstance {
     public static class Prop1 extends TestTracker {
         public Prop1(Object o){}
     }
     public static class Prop2 extends TestTracker {
-        public Prop2(Object o){}
-    }
+        private final Factory f;
+        interface Factory{
+        }
+        public Prop2(Factory f){
+            this.f = f;
+            int j=0;
+        }
+     }
 
-    @CollectionProperty(SuiteWithTwoCollectionPropertiesAndTests.Prop1.class)
+    @Feature(SuiteWithIncompatibleFactoryInstance.Prop1.class)
     public static Object factory1 = new Object();
-    @CollectionProperty(SuiteWithTwoCollectionPropertiesAndTests.Prop2.class)
-    public static Object factory2 = new Object();
+    @Feature(SuiteWithIncompatibleFactoryInstance.Prop2.class)
+    public static Object factory2 = new Object(){};
 }

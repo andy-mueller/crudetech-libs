@@ -1,24 +1,31 @@
 ////////////////////////////////////////////////////////////////////////////////
-// Copyright (c) 2010, Andreas Mueller.
+// Copyright (c) 2011, Andreas Mueller.
 // All rights reserved. This program and the accompanying materials
 // are made available under the terms of the Eclipse Public License v1.0
 // which accompanies this distribution, and is available at
 // http://www.eclipse.org/legal/epl-v10.html
 //
 // Contributors:
-//     Andreas Mueller - initial API and implementation
+//      Andreas Mueller - initial API and implementation
 ////////////////////////////////////////////////////////////////////////////////
 package com.crudetech.geometry.geom2d;
 
+import com.crudetech.junit.feature.Equivalent;
+import com.crudetech.junit.feature.Feature;
+import com.crudetech.junit.feature.FeaturesSuite;
 import com.crudetech.lang.AbstractRunnable;
 import com.crudetech.lang.ArgumentNullException;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+
+import java.util.List;
 
 import static com.crudetech.matcher.ThrowsException.doesThrow;
+import static java.util.Arrays.asList;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 
-
+@RunWith(FeaturesSuite.class)
 public class BoundingBox2dTest {
     @Test
     public void constructionSetsProps() {
@@ -137,4 +144,21 @@ public class BoundingBox2dTest {
 
         assertThat(bb.getLocation(), is(new Point2d(10, 10)));
     }
+
+    @Feature(Equivalent.class)
+    public static Equivalent.Factory<BoundingBox2d> bb2dEquFactory = new Equivalent.Factory<BoundingBox2d>() {
+        @Override
+        public BoundingBox2d createItem() {
+            return new BoundingBox2d(3, 4, 20, 10);
+        }
+
+        @Override
+        public List<BoundingBox2d> createOtherItems() {
+            return asList(
+                    new BoundingBox2d(3, 5, 20, 10),
+                    new BoundingBox2d(3, 4, 30, 10),
+                    new BoundingBox2d(3, 4, 20, 20)
+            );
+        }
+    };
 }

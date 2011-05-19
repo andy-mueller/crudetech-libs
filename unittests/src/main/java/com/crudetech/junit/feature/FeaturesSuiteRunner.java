@@ -8,14 +8,14 @@
 // Contributors:
 //      Andreas Mueller - initial API and implementation
 ////////////////////////////////////////////////////////////////////////////////
-package com.crudetech.junit.collections;
+package com.crudetech.junit.feature;
 
 import org.junit.runners.BlockJUnit4ClassRunner;
 import org.junit.runners.model.InitializationError;
 
 import java.util.List;
 
-public class CollectionsSuiteRunner extends BlockJUnit4ClassRunner {
+public class FeaturesSuiteRunner extends BlockJUnit4ClassRunner {
     private final Object factory;
 
     /**
@@ -24,7 +24,7 @@ public class CollectionsSuiteRunner extends BlockJUnit4ClassRunner {
      * @throws org.junit.runners.model.InitializationError
      *          if the test class is malformed.
      */
-    public CollectionsSuiteRunner(Class<?> klass, Object factory) throws InitializationError {
+    public FeaturesSuiteRunner(Class<?> klass, Object factory) throws InitializationError {
         super(klass);
 
         if(factory == null){
