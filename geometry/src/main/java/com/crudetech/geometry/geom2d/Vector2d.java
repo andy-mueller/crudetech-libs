@@ -48,17 +48,10 @@ public final class Vector2d extends AbstractToleranceComparable2d<Vector2d> impl
     public boolean equals(Vector2d rhs, Tolerance tol) {
         if (rhs == null) return false;
         if (tol == null) throw new IllegalArgumentException();
-        return FloatCompare.equals(x, rhs.x, tol.getPointTolerance())
-                && FloatCompare.equals(y, rhs.y, tol.getPointTolerance());
+        return FloatCompare.equals(x, rhs.x, tol.getVectorTolerance())
+                && FloatCompare.equals(y, rhs.y, tol.getVectorTolerance());
     }
 
-    private int long2int(long l) {
-        return (int) (l ^ (l >>> 32));
-    }
-
-    private int double2int(double d) {
-        return long2int((long) d);
-    }
 
     @SuppressWarnings({"StringConcatenation", "HardCodedStringLiteral", "MagicCharacter"})
     @Override

@@ -50,7 +50,7 @@ public class Vector2dTest {
     }
 
     @Test
-    public void yAxisConstantIsxAxis() {
+    public void yAxisConstantIsyAxis() {
         assertThat(Vector2d.yAxis, is(new Vector2d(0, 1.0)));
     }
 

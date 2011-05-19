@@ -74,4 +74,12 @@ public class FeaturesSuiteFixture {
         assertThat(TestTracker.getExecutionCount(SuiteWithIncompatibleFactoryInstance.Prop1.class), is(1));
         assertThat(TestTracker.getExecutionCount(SuiteWithIncompatibleFactoryInstance.Prop2.class), is(0));
     }
+    @Test
+    public void featuresCanBeOnMethodsToo() {
+        Result result = runTest(SuiteWithMethodAsFactory.class);
+
+        assertThat(result.wasSuccessful(), is(true));
+        assertThat(result.getRunCount(), is(1));
+        assertThat(TestTracker.getExecutionCount(SuiteWithMethodAsFactory.Prop1.class), is(1));
+    }
 }

@@ -10,13 +10,17 @@
 ////////////////////////////////////////////////////////////////////////////////
 package com.crudetech.junit.feature;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import org.junit.runner.RunWith;
 
-@Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.FIELD, ElementType.METHOD})
-public @interface Feature {
-    Class<?> value();
+@RunWith(FeaturesSuite.class)
+public class SuiteWithMethodAsFactory {
+    public static class Prop1 extends TestTracker {
+        interface Factory{}
+        public Prop1(Factory o){}
+    }
+
+    @Feature(SuiteWithMethodAsFactory.Prop1.class)
+    public static Prop1.Factory prop1Feature(){
+        return new Prop1.Factory(){};
+    }
 }
