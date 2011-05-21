@@ -21,8 +21,8 @@ import java.util.*;
  * internally wrapping the key in a lightweight {@link com.crudetech.collections.EqualityComparable} object.
  * <p/>
  * It is up to the user of the class to provide the concrete Map implementation to be used.
- * <pre>{@code
- * EqualityComparer<Integer> unsignedComparer = new EqualityComparer<Integer>() {
+ * <pre>
+ * EqualityComparer&lt;Integer&gt; unsignedComparer = new EqualityComparer&lt;Integer&gt;() {
  *     @Override
  *     public boolean equals(Integer lhs, Integer rhs) {
  *         return Math.abs(lhs) == Math.abs(rhs);
@@ -32,9 +32,9 @@ import java.util.*;
  *         return Math.abs(item);
  *     }
  * };
- * Map<Integer, String> equMap =
- *         new EqualityComparableMap<Integer, String>(unsignedComparer, new HashMap<EqualityComparable<Integer>, String>());
- * }</pre>
+ * Map&lt;Integer, String&gt; equMap =
+ *         new EqualityComparableMap&lt;Integer, String&gt;(unsignedComparer, new HashMap&lt;EqualityComparable&lt;Integer&gt;, String&gt;());
+ * </pre>
  * <p/>
  * For standard map implementations, static convenient factory methods are provided.
  *

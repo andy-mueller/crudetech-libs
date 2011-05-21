@@ -28,8 +28,7 @@ import java.util.List;
  * test fixture to test for the correct implementation of the equals contract for
  * a simple Pair class
  * <p>
- * <pre>{@code
- *
+ * <pre>
  * public class Pair implements java.io.Serializable {
  *    private final Object first;
  *    private final Object second;
@@ -37,6 +36,7 @@ import java.util.List;
  *    public Pair(final Object first, final Object second) {
  *        this.second = second;
  *        this.first = first;
+ *        Set&lt;String&gt; s;
  *    }
  *    public Object getFirst() {
  *        return first;
@@ -103,9 +103,9 @@ import java.util.List;
  *            }
  *        }
  *    }
- *}
+ * }
  *
- * }</pre>
+ * </pre>
  * <p>
  * You can compose as many feature test fixtures using the {@link Feature} annotation as you like.
  * A feature implementation must implement the {@link FeatureFixture} interface and provide a public

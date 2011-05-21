@@ -22,9 +22,9 @@ import static com.crudetech.lang.SneakyThrow.sneakyThrow;
  * inside your {@link Runnable#run} implementation and rethrow it wrapped inside
  * a {@link RuntimeException}. So the following code would work:
  * <p/>
- * <pre>{@code
+ * <pre>
  *    Runnable r = new AbstractRunnable {
- *        @Override
+ *        &#064;Override
  *        protected void doRun() throws Throwable {
  *            throw new FileNotFoundException();
  *        }
@@ -36,8 +36,8 @@ import static com.crudetech.lang.SneakyThrow.sneakyThrow;
  *         // .. you will get here....
  *     }
  *
- * }</pre>
- * Hoewver, the compiler will  not force yu to catch the exception!
+ * </pre>
+ * However, the compiler will  not force yu to catch the exception!
  */
 public abstract class AbstractRunnable implements Runnable {
     @Override

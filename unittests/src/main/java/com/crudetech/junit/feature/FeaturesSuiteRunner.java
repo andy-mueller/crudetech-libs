@@ -15,7 +15,7 @@ import org.junit.runners.model.InitializationError;
 
 import java.util.List;
 
-public class FeaturesSuiteRunner extends BlockJUnit4ClassRunner {
+class FeaturesSuiteRunner extends BlockJUnit4ClassRunner {
     private final Object factory;
 
     /**
@@ -24,7 +24,7 @@ public class FeaturesSuiteRunner extends BlockJUnit4ClassRunner {
      * @throws org.junit.runners.model.InitializationError
      *          if the test class is malformed.
      */
-    public FeaturesSuiteRunner(Class<?> klass, Object factory) throws InitializationError {
+    FeaturesSuiteRunner(Class<?> klass, Object factory) throws InitializationError {
         super(klass);
 
         if(factory == null){

@@ -27,23 +27,22 @@ import java.util.ResourceBundle;
  * file from its class name and extract strings from the file
  * /com/exampe/I18n.properties.xml. It will use the current default locale of the jvm.
  *
- * {@code
+ *
  * <pre>
  *     package com.example;
  *     class I18n extends I18nBase{
  *          static final I18n Instance = new I18n();
  *     }
- * </pre>}
+ * </pre>
  * <p>
  * Sometimes you want to switch the locale according to your context. A typical example for this is
  * when you have a web application or any other sort of server. Then you usually want to use the locale
  * of the calling client. Assuming that the requests Locale is stored inside an associated session
  * object, an implementation could look like this:
- * {@code
  * <pre>
  *     package com.example
  *     class SessionLocaleProvider implements LocaleProvider{
- *         @Override
+ *         &#064;Override
            public Locale getCurrentLocale() {
                return Session.get().getLocale();
            }
@@ -51,18 +50,20 @@ import java.util.ResourceBundle;
  *     class I18n extends I18nBase{
  *          private static I18n Instance = new I18n();
  *     }
- * </pre>}
+ * </pre>
  * Inside your application initialisation, e.g. your main method, spring context or  servlet init
  * method, you instantiate an override for the {@link LocaleProvider} implementation that
  * all I18nBase classes will use:
- * {@code I18nBase.LocaleProviderOverride localeOverride = new LocaleProviderOverride(new SessionLocaleProvider());}
+ * <pre>
+ *     I18nBase.LocaleProviderOverride localeOverride =
+ *           new LocaleProviderOverride(new SessionLocaleProvider());
+ * </pre>
  * <p>
  * Last and least, yo can control the type of the resource bundle by implementing the
  * {@link ResourceBundleControlProvider} interface and pass it to the ctor of this class. The default
  * is not Java's default, but xml property files. The reason for this is, that there ere a lot of
  * encoding issues. Here is an example of a derived class using the the standard java formats,
  * i.e. property files and/or classes.
- * {@code
  * <pre>
  *     package com.example
  *     class I18n extends I18nBase{
@@ -71,8 +72,8 @@ import java.util.ResourceBundle;
  *              super(ResourceBundleControlProvider.Default);
  *          }
  *     }
- * </pre>}
-
+ * </pre>
+ *
  */
 public abstract class I18nBase {
     private final String baseName;
