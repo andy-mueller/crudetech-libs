@@ -11,7 +11,9 @@
 package com.crudetech.junit.collections;
 
 
-public class Mutable {
+import com.crudetech.junit.feature.FeatureFixture;
+
+public class Mutable implements FeatureFixture {
 
     public interface Factory<T> {
     }

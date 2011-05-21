@@ -12,7 +12,7 @@ package com.crudetech.collections;
 
 import com.crudetech.junit.feature.Equivalent;
 import com.crudetech.junit.feature.Feature;
-import com.crudetech.junit.feature.FeaturesSuite;
+import com.crudetech.junit.feature.Features;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -22,7 +22,7 @@ import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-@RunWith(FeaturesSuite.class)
+@RunWith(Features.class)
 public class PairFixture {
     @Test
     public void getFirst() throws Exception {
@@ -37,19 +37,21 @@ public class PairFixture {
     }
 
     @Feature(Equivalent.class)
-    public static Equivalent.Factory<Pair<Integer, String>> equivalentFactory = new Equivalent.Factory<Pair<Integer, String>>() {
-        @Override
-        public Pair<Integer, String> createItem() {
-            return new Pair<Integer, String>(2, "default");
-        }
+    public static Equivalent.Factory<Pair<Integer, String>> equivalentFactory() {
+        return new Equivalent.Factory<Pair<Integer, String>>() {
+            @Override
+            public Pair<Integer, String> createItem() {
+                return new Pair<Integer, String>(2, "default");
+            }
 
-        @Override
-        public List<Pair<Integer, String>> createOtherItems() {
-            return asList(
-                    new Pair<Integer, String>(2, "other"),
-                    new Pair<Integer, String>(5, "default"),
-                    new Pair<Integer, String>(5, "other")
-            );
-        }
-    };
+            @Override
+            public List<Pair<Integer, String>> createOtherItems() {
+                return asList(
+                        new Pair<Integer, String>(2, "other"),
+                        new Pair<Integer, String>(5, "default"),
+                        new Pair<Integer, String>(5, "other")
+                );
+            }
+        };
+    }
 }

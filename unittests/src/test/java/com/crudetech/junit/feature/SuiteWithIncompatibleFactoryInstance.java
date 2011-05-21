@@ -12,7 +12,7 @@ package com.crudetech.junit.feature;
 
 import org.junit.runner.RunWith;
 
-@RunWith(FeaturesSuite.class)
+@RunWith(Features.class)
 public class SuiteWithIncompatibleFactoryInstance {
     public static class Prop1 extends TestTracker {
         public Prop1(Object o){}

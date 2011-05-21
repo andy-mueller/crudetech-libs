@@ -10,11 +10,17 @@
 ////////////////////////////////////////////////////////////////////////////////
 package com.crudetech.junit.collections;
 
+import com.crudetech.junit.feature.FeatureFixture;
 import org.junit.Test;
 
 import java.util.Collection;
+import java.util.Iterator;
 
-public class Unmodifiable<T> {
+import static java.util.Arrays.asList;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.*;
+
+public class Unmodifiable<T> implements FeatureFixture {
     private final Factory<T> factory;
 
     public Unmodifiable(Factory<T> factory) {
@@ -27,19 +33,70 @@ public class Unmodifiable<T> {
         T createUniqueItem(int id);
     }
 
+    @Test
+    public void prerequisites(){
+        Collection<T> unmodifiable = factory.createCollection();
+        assertThat(unmodifiable.isEmpty(), is(false));
+        assertThat(unmodifiable, is(is(not(sameInstance(factory.createCollection())))));
+
+    }
+
     @Test(expected = UnsupportedOperationException.class)
     public void addIsUnsupported() {
-        Collection<T> unmodifyable = factory.createCollection();
-        unmodifyable.add(factory.createUniqueItem(42));
+        Collection<T> unmodifiable = factory.createCollection();
+        unmodifiable.add(factory.createUniqueItem(42));
     }
     @Test(expected = UnsupportedOperationException.class)
-    public void clearThrowsUnsupportedOperationException(){
-        Collection<T> unmodifyable = factory.createCollection();
-        unmodifyable.clear();
+    public void addAllIsUnsupported() {
+        Collection<T> unmodifiable = factory.createCollection();
+        Collection<T> toAdd = asList(factory.createUniqueItem(42), factory.createUniqueItem(43), factory.createUniqueItem(44));
+        unmodifiable.addAll(toAdd);
     }
     @Test(expected = UnsupportedOperationException.class)
-    public void removeThrowsUnsupportedOperationException(){
-        Collection<T> unmodifyable = factory.createCollection();
-        unmodifyable.remove(factory.createUniqueItem(42));
+    public void retainAllIsUnsupported() {
+        Collection<T> unmodifiable = factory.createCollection();
+        Collection<T> toRetain = asList(factory.createUniqueItem(42), factory.createUniqueItem(43), factory.createUniqueItem(44));
+        unmodifiable.retainAll(toRetain);
+    }
+    @Test
+    public void retainAllDoesNotThrowIfCollectionIsNotModified() {
+        Collection<T> unmodifiable = factory.createCollection();
+
+        // this should leave the collection untouched!!
+        unmodifiable.retainAll(factory.createCollection());
+    }
+    @Test(expected = UnsupportedOperationException.class)
+    public void clearIsUnsupported(){
+        Collection<T> unmodifiable = factory.createCollection();
+        unmodifiable.clear();
+    }
+    @Test(expected = UnsupportedOperationException.class)
+    public void removesUnsupported(){
+        Collection<T> unmodifiable = factory.createCollection();
+        unmodifiable.remove(unmodifiable.iterator().next());
+    }
+    @Test
+    public void sizeReflectsContent(){
+        Collection<T> unmodifiable = factory.createCollection();
+
+        int count = sizeOf(unmodifiable);
+
+        assertThat(unmodifiable.size(), is(count));
+    }
+    @Test
+    public void isEmptyReflectsSize(){
+        Collection<T> unmodifiable = factory.createCollection();
+
+        assertThat(unmodifiable.size() == 0, is(unmodifiable.isEmpty()));
+    }
+
+    private int sizeOf(java.lang.Iterable<?> iterable) {
+        int count = 0;
+        Iterator<?> it = iterable.iterator();
+        while (it.hasNext()){
+            it.next();
+            count++;
+        }
+        return count;
     }
 }

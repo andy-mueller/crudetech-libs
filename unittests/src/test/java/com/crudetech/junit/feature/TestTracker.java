@@ -14,7 +14,7 @@ import org.junit.Test;
 
 import java.util.Hashtable;
 
-public class TestTracker {
+public class TestTracker implements FeatureFixture{
     private static Hashtable<Class<? extends TestTracker>, Integer> executionCount =
             new Hashtable<Class<? extends TestTracker>, Integer>();
 

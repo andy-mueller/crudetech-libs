@@ -11,25 +11,36 @@
 package com.crudetech.junit.collections;
 
 import com.crudetech.junit.feature.Feature;
-import com.crudetech.junit.feature.FeaturesSuite;
+import com.crudetech.junit.feature.Features;
 import org.junit.runner.RunWith;
 
 import java.util.Collection;
 
 import static java.util.Arrays.asList;
 
-@RunWith(FeaturesSuite.class)
+@RunWith(Features.class)
 public class ArrayAdapterTestSuite {
     @Feature(Unmodifiable.class)
-    public static Unmodifiable.Factory<Integer> unmodifiableFactory = new Unmodifiable.Factory<Integer>() {
-        @Override
-        public Collection<Integer> createCollection() {
-            return asList(0,1,2);
-        }
+    public static Unmodifiable.Factory<Integer> unmodifiableFeature() {
+        return new Unmodifiable.Factory<Integer>() {
+            @Override
+            public Collection<Integer> createCollection() {
+                return asList(0, 1, 2);
+            }
 
-        @Override
-        public Integer createUniqueItem(int id) {
-            return id;
-        }
-    };
+            @Override
+            public Integer createUniqueItem(int id) {
+                return id;
+            }
+        };
+    }
+    @Feature(Iterable.class)
+    public static Iterable.Factory<Integer> iterableFeature() {
+        return new Iterable.Factory<Integer>() {
+            @Override
+            public java.lang.Iterable<Integer> createIterable() {
+                return asList(0, 1, 2);
+            }
+        };
+    }
 }

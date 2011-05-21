@@ -30,7 +30,7 @@ import static org.hamcrest.core.IsSame.sameInstance;
  * to override {@link Object#hashCode()}  and {@link Object#equals(Object)}
  * properly.
  */
-public class Equivalent<T> {
+public class Equivalent<T> implements FeatureFixture{
     /**
      * Factory that is used by the {@link Equivalent} fixture to construct
      * the objects needed for the tests.

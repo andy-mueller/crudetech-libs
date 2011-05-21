@@ -12,7 +12,7 @@ package com.crudetech.geometry.geom2d;
 
 import com.crudetech.junit.feature.Equivalent;
 import com.crudetech.junit.feature.Feature;
-import com.crudetech.junit.feature.FeaturesSuite;
+import com.crudetech.junit.feature.Features;
 import com.crudetech.lang.AbstractRunnable;
 import com.crudetech.lang.ArgumentNullException;
 import org.junit.Test;
@@ -25,7 +25,7 @@ import static java.util.Arrays.asList;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 
-@RunWith(FeaturesSuite.class)
+@RunWith(Features.class)
 public class BoundingBox2dTest {
     @Test
     public void constructionSetsProps() {

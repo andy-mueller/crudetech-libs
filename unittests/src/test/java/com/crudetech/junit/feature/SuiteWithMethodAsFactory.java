@@ -12,7 +12,7 @@ package com.crudetech.junit.feature;
 
 import org.junit.runner.RunWith;
 
-@RunWith(FeaturesSuite.class)
+@RunWith(Features.class)
 public class SuiteWithMethodAsFactory {
     public static class Prop1 extends TestTracker {
         interface Factory{}

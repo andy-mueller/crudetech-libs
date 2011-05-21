@@ -10,20 +10,13 @@
 ////////////////////////////////////////////////////////////////////////////////
 package com.crudetech.junit.feature;
 
-import org.junit.runner.RunWith;
-
-@RunWith(Features.class)
-public class SuiteWithNullFactoryInstance {
-    public static class Prop1 extends TestTracker {
-        public Prop1(Object o){}
-
-    }
-    public static class Prop2 extends TestTracker {
-        public Prop2(Object o){}
-    }
-
-    @Feature(SuiteWithNullFactoryInstance.Prop1.class)
-    public static Object factory1 = null;
-    @Feature(SuiteWithNullFactoryInstance.Prop2.class)
-    public static Object factory2 = new Object();
+/**
+ * A tagging interface for generic feature fixtures, i.e. an unit test class that
+ * can be reused and composed using a {@link Features} suite runner. The minimum
+ * requirement for an implementation is a constructor that takes a factory
+ * object as an argument , and of course some tests to execute.
+ * <p>
+ * Have a look at the {@link Features} suite runner for more details.
+ */
+public interface FeatureFixture {
 }

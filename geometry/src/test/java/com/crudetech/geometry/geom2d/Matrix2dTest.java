@@ -11,10 +11,9 @@
 package com.crudetech.geometry.geom2d;
 
 import com.crudetech.geometry.geom.RadianAngles;
-import com.crudetech.geometry.geom3d.Tolerance3d;
 import com.crudetech.junit.feature.Equivalent;
 import com.crudetech.junit.feature.Feature;
-import com.crudetech.junit.feature.FeaturesSuite;
+import com.crudetech.junit.feature.Features;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -32,7 +31,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 
 
-@RunWith(FeaturesSuite.class)
+@RunWith(Features.class)
 public class Matrix2dTest {
     @Test
     public void defaultCtorCreatesIdentityMatrix() {
@@ -52,6 +51,7 @@ public class Matrix2dTest {
 
         assertThat(mx, isIdentity(withGlobalTol()));
     }
+
     @Test
     public void rowMajorCtor() {
         Matrix2d mx = new Matrix2d(new double[][]{
@@ -72,8 +72,9 @@ public class Matrix2dTest {
         assertThat(mx.get(row(2), column(1)), is(0.0));
         assertThat(mx.get(row(2), column(2)), is(1.0));
     }
+
     @Test
-    public void copyCtorCopies(){
+    public void copyCtorCopies() {
         Matrix2d mx = new Matrix2d(new double[][]{
                 {3, 4, 5},
                 {1, 2, 3},
@@ -146,7 +147,6 @@ public class Matrix2dTest {
     }
 
 
-
     @Test
     public void multiplyDoesPreMult() {
         Matrix2d a = new Matrix2d(new double[][]{
@@ -199,23 +199,24 @@ public class Matrix2dTest {
 
         assertThat(result, is(new Point2d(7, 7)));
     }
+
     @Test
     public void rotationMovesPoint() {
-        Point2d pt = new Point2d(0.5*sqrt(3), -0.5);
+        Point2d pt = new Point2d(0.5 * sqrt(3), -0.5);
 
-        Matrix2d mx = Matrix2d.createRotationInRadians(30 * Math.PI/180);
+        Matrix2d mx = Matrix2d.createRotationInRadians(30 * Math.PI / 180);
 
         Point2d result = mx.multiply(pt);
 
         assertThat(result, is(new Point2d(1.0, 0.0)));
     }
-    
+
     @Test
     public void rotationAndTranslationMovesPoint() {
-        Point2d pt = new Point2d(0.5*sqrt(3), -0.5);
+        Point2d pt = new Point2d(0.5 * sqrt(3), -0.5);
 
         Matrix2d trans = Matrix2d.createTranslation(new Vector2d(3, 4));
-        Matrix2d rot = Matrix2d.createRotationInRadians(30 * Math.PI/180);
+        Matrix2d rot = Matrix2d.createRotationInRadians(30 * Math.PI / 180);
 
         Matrix2d mx = trans.multiply(rot);
 
@@ -223,12 +224,13 @@ public class Matrix2dTest {
 
         assertThat(result, is(new Point2d(4.0, 4.0)));
     }
+
     @Test
     public void rotationAndTranslationOnlyRotatesVector() {
-        Vector2d vec = new Vector2d(0.5*sqrt(3), -0.5);
+        Vector2d vec = new Vector2d(0.5 * sqrt(3), -0.5);
 
         Matrix2d trans = Matrix2d.createTranslation(new Vector2d(3, 4));
-        Matrix2d rot = Matrix2d.createRotationInRadians(30 * Math.PI/180);
+        Matrix2d rot = Matrix2d.createRotationInRadians(30 * Math.PI / 180);
 
         Matrix2d mx = trans.multiply(rot);
 
@@ -236,7 +238,7 @@ public class Matrix2dTest {
 
         assertThat(result, is(new Vector2d(1.0, 0.0)));
     }
-    
+
     @Test
     public void translationDoesNotChangeVector() {
         Vector2d vec = new Vector2d(1, 3);
@@ -246,9 +248,10 @@ public class Matrix2dTest {
 
         assertThat(result, is(new Vector2d(1, 3)));
     }
+
     @Test
-    public void xScaleScalesXCoordinateOfPoint(){
-        Point2d p = new Point2d(2,1);
+    public void xScaleScalesXCoordinateOfPoint() {
+        Point2d p = new Point2d(2, 1);
 
         Matrix2d scaleX = Matrix2d.createScaleX(0.5);
 
@@ -256,9 +259,10 @@ public class Matrix2dTest {
 
         assertThat(result, is(new Point2d(1, 1)));
     }
+
     @Test
-    public void yScaleScalesYCoordinateOfPoint(){
-        Point2d p = new Point2d(2,2);
+    public void yScaleScalesYCoordinateOfPoint() {
+        Point2d p = new Point2d(2, 2);
 
         Matrix2d scaleY = Matrix2d.createScaleY(0.5);
 
@@ -266,34 +270,36 @@ public class Matrix2dTest {
 
         assertThat(result, is(new Point2d(2, 1)));
     }
+
     @Test
-    public void scaleRespectsCenter(){
+    public void scaleRespectsCenter() {
         Point2d center = new Point2d(1, 1);
 
-        Matrix2d scale = Matrix2d.createScale(2, 3, center) ;
+        Matrix2d scale = Matrix2d.createScale(2, 3, center);
 
-        assertThat(new Point2d(2,2).transformBy(scale), is(new Point2d(3, 4)));
+        assertThat(new Point2d(2, 2).transformBy(scale), is(new Point2d(3, 4)));
     }
+
     @Test
-    public void scaleRespectsCenter2(){
+    public void scaleRespectsCenter2() {
         Point2d center = new Point2d(2, 2);
 
-        Matrix2d scale = Matrix2d.createScale(2, 3, center) ;
+        Matrix2d scale = Matrix2d.createScale(2, 3, center);
 
         assertThat(new Point2d(1, 1).transformBy(scale), is(new Point2d(0, -1)));
     }
 
     @Test
-    public void scaleRespectsOffsetCenter(){
+    public void scaleRespectsOffsetCenter() {
         Point2d center = new Point2d(1, 1);
 
         Matrix2d trans = Matrix2d.createTranslation(1, 2);
 
-        Matrix2d scale = Matrix2d.createScale(2, 3, center) ;
+        Matrix2d scale = Matrix2d.createScale(2, 3, center);
 
         Matrix2d mx = Matrix2d.preMultiply(trans, scale);
 
-        assertThat(new Point2d(2,2).transformBy(mx), is(new Point2d(4, 6)));
+        assertThat(new Point2d(2, 2).transformBy(mx), is(new Point2d(4, 6)));
     }
 
     @Test
@@ -310,7 +316,7 @@ public class Matrix2dTest {
     }
 
     @Test
-    public void preMultAddsNextXFormGlobally(){
+    public void preMultAddsNextXFormGlobally() {
         Point2d p = new Point2d(1, 1);
 
         Matrix2d rot45 = Matrix2d.createRotationInRadians(RadianAngles.k45);
@@ -324,7 +330,7 @@ public class Matrix2dTest {
     }
 
     @Test
-    public void postMultAddsNextXFormOnLastXform(){
+    public void postMultAddsNextXFormOnLastXform() {
         Point2d p = new Point2d(1, 1);
 
         Matrix2d rot45 = Matrix2d.createRotationInRadians(RadianAngles.k45);
@@ -334,10 +340,11 @@ public class Matrix2dTest {
 
         Point2d actual = mx.multiply(p);
 
-        assertThat(actual, is(new Point2d(0, 2*sqrt(2))));
+        assertThat(actual, is(new Point2d(0, 2 * sqrt(2))));
     }
+
     @Test
-    public void postMultWithScaleAddsNextXFormOnLastXform(){
+    public void postMultWithScaleAddsNextXFormOnLastXform() {
         Point2d p = new Point2d(1, 1);
 
         Matrix2d rot45 = Matrix2d.createRotationInRadians(RadianAngles.k45);
@@ -348,13 +355,13 @@ public class Matrix2dTest {
 
         Point2d actual = mx.multiply(p);
 
-        assertThat(actual, is(new Point2d(0, 3*sqrt(2))));
+        assertThat(actual, is(new Point2d(0, 3 * sqrt(2))));
     }
 
     @Test
-    public void rotatesPointBy45(){
-        final double sin45 = sin(RadianAngles.k45);     
-        Point2d p = new Point2d(3*sin45, 3*sin45);
+    public void rotatesPointBy45() {
+        final double sin45 = sin(RadianAngles.k45);
+        Point2d p = new Point2d(3 * sin45, 3 * sin45);
 
         Matrix2d rot45 = Matrix2d.createRotationInRadians(RadianAngles.k45);
         Matrix2d trans21 = Matrix2d.createTranslation(2, 1);
@@ -368,33 +375,36 @@ public class Matrix2dTest {
     }
 
     @Feature(Equivalent.class)
-    public static Equivalent.Factory<Matrix2d> mxFactory = new Equivalent.Factory<Matrix2d>() {
-        private final double[][] rawMx = new double[][]{
-                {3, 4, 32},
-                {4, 1, 45},
-                {3, 333, 4}
+    public static Equivalent.Factory<Matrix2d> equivalentFeature() {
+        return new Equivalent.Factory<Matrix2d>() {
+            private final double[][] rawMx = new double[][]{
+                    {3, 4, 32},
+                    {4, 1, 45},
+                    {3, 333, 4}
 
-        };
-        @Override
-        public Matrix2d createItem() {
-            return new Matrix2d(rawMx.clone());
-        }
+            };
 
-        @Override
-        public List<Matrix2d> createOtherItems() {
-            List<Matrix2d> others = new ArrayList<Matrix2d>();
-            others.add(Matrix2d.Identity);
-
-            for(int i = 0; i < 3; ++i){
-                for(int j = 0; j < 3; ++j){
-                    double[][] data = rawMx.clone();
-                    data[i][j] += Tolerance3d.getGlobalTolerance().getVectorTolerance();
-                    others.add(new Matrix2d(data));
-                }
-
+            @Override
+            public Matrix2d createItem() {
+                return new Matrix2d(rawMx.clone());
             }
-            return others;
-        }
-    };
+
+            @Override
+            public List<Matrix2d> createOtherItems() {
+                List<Matrix2d> others = new ArrayList<Matrix2d>();
+                others.add(Matrix2d.Identity);
+
+                for (int i = 0; i < 3; ++i) {
+                    for (int j = 0; j < 3; ++j) {
+                        double[][] data = rawMx.clone();
+                        data[i][j] += Tolerance2d.getGlobalTolerance().getVectorTolerance();
+                        others.add(new Matrix2d(data));
+                    }
+
+                }
+                return others;
+            }
+        };
+    }
 
 }

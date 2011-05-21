@@ -12,7 +12,7 @@ package com.crudetech.geometry.geom2d;
 
 import com.crudetech.junit.feature.Equivalent;
 import com.crudetech.junit.feature.Feature;
-import com.crudetech.junit.feature.FeaturesSuite;
+import com.crudetech.junit.feature.Features;
 import com.crudetech.lang.ArgumentOutOfBoundsException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,7 +28,7 @@ import static org.hamcrest.core.IsNot.not;
 import static org.hamcrest.core.IsSame.sameInstance;
 
 
-@RunWith(FeaturesSuite.class)
+@RunWith(Features.class)
 public class Polygon2dTest {
     @Feature(Equivalent.class)
     public static Equivalent.Factory<Polygon2d> equivalent = new Equivalent.Factory<Polygon2d>() {

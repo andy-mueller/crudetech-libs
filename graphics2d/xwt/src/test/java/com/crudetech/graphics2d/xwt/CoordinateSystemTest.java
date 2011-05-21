@@ -1,26 +1,34 @@
 ////////////////////////////////////////////////////////////////////////////////
-// Copyright (c) 2010, Andreas Mueller.
+// Copyright (c) 2011, Andreas Mueller.
 // All rights reserved. This program and the accompanying materials
 // are made available under the terms of the Eclipse Public License v1.0
 // which accompanies this distribution, and is available at
 // http://www.eclipse.org/legal/epl-v10.html
 //
 // Contributors:
-//     Andreas Mueller - initial API and implementation
+//      Andreas Mueller - initial API and implementation
 ////////////////////////////////////////////////////////////////////////////////
 package com.crudetech.graphics2d.xwt;
 
 import com.crudetech.geometry.geom.RadianAngles;
 import com.crudetech.geometry.geom2d.Point2d;
+import com.crudetech.junit.feature.Equivalent;
+import com.crudetech.junit.feature.Feature;
+import com.crudetech.junit.feature.Features;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+
+import java.util.List;
 
 import static com.crudetech.matcher.FloatingPointMatcher.equalTo;
 import static com.crudetech.matcher.FloatingPointMatcher.withTol;
 import static java.lang.Math.*;
+import static java.util.Arrays.asList;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 
 
+@RunWith(Features.class)
 public class CoordinateSystemTest {
     @Test
     public void ctorSetsTranslation() {
@@ -107,4 +115,22 @@ public class CoordinateSystemTest {
         assertThat(coos.getRotation(), is(equalTo(RadianAngles.k30, withTol(1e-6))));
     }
 
+    @Feature(Equivalent.class)
+    public static Equivalent.Factory<CoordinateSystem> equivalentFeature() {
+        return new Equivalent.Factory<CoordinateSystem>() {
+            @Override
+            public CoordinateSystem createItem() {
+                return new CoordinateSystem(new Point2d(2, 1), RadianAngles.k120);
+            }
+
+            @Override
+            public List<CoordinateSystem> createOtherItems() {
+                return asList(
+                        new CoordinateSystem(new Point2d(2, 1), RadianAngles.k30),
+                        new CoordinateSystem(new Point2d(1, 2), RadianAngles.k120),
+                        new CoordinateSystem(new Point2d(1, 2), RadianAngles.k30)
+                );
+            }
+        };
+    }
 }

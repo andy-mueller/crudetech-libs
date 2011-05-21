@@ -11,7 +11,9 @@
 package com.crudetech.junit.collections;
 
 
-public class FixedSize<T> {
+import com.crudetech.junit.feature.FeatureFixture;
+
+public class FixedSize<T> implements FeatureFixture {
     public interface Factory<T> {
     }
 }

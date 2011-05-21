@@ -16,7 +16,7 @@ import java.util.List;
 
 import static java.util.Arrays.asList;
 
-@RunWith(FeaturesSuite.class)
+@RunWith(Features.class)
 public class EquivalentFixture {
 
     @Feature(Equivalent.class)

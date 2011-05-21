@@ -12,7 +12,7 @@ package com.crudetech.event;
 
 import com.crudetech.junit.feature.Equivalent;
 import com.crudetech.junit.feature.Feature;
-import com.crudetech.junit.feature.FeaturesSuite;
+import com.crudetech.junit.feature.Features;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -23,7 +23,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 
 
-@RunWith(FeaturesSuite.class)
+@RunWith(Features.class)
 public class EventHookingBeanFixture {
     @Test
     public void listenersAreAddedToEvent(){

@@ -13,7 +13,7 @@ package com.crudetech.geometry.geom2d;
 import com.crudetech.geometry.geom.RadianAngles;
 import com.crudetech.junit.feature.Equivalent;
 import com.crudetech.junit.feature.Feature;
-import com.crudetech.junit.feature.FeaturesSuite;
+import com.crudetech.junit.feature.Features;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -26,7 +26,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 
 
-@RunWith(FeaturesSuite.class)
+@RunWith(Features.class)
 public class Vector2dTest {
     @Test
     public void defaultCtorSetsCoordinates() {
@@ -117,7 +117,7 @@ public class Vector2dTest {
 
         @Override
         public List<Vector2d> createOtherItems() {
-            final double tol = Tolerance2d.getGlobalTolerance().getVectorTolerance();
+            final double tol = Tolerance2d.getGlobalTolerance().getVectorTolerance()*1.0000001;
 
             return asList(
                     new Vector2d(4.2+tol, 2.0),

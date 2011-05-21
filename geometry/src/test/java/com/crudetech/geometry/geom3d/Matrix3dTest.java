@@ -1,18 +1,25 @@
 ////////////////////////////////////////////////////////////////////////////////
-// Copyright (c) 2010, Andreas Mueller.
+// Copyright (c) 2011, Andreas Mueller.
 // All rights reserved. This program and the accompanying materials
 // are made available under the terms of the Eclipse Public License v1.0
 // which accompanies this distribution, and is available at
 // http://www.eclipse.org/legal/epl-v10.html
 //
 // Contributors:
-//     Andreas Mueller - initial API and implementation
+//      Andreas Mueller - initial API and implementation
 ////////////////////////////////////////////////////////////////////////////////
 package com.crudetech.geometry.geom3d;
 
 import com.crudetech.geometry.geom.RadianAngles;
+import com.crudetech.junit.feature.Equivalent;
+import com.crudetech.junit.feature.Feature;
+import com.crudetech.junit.feature.Features;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.crudetech.geometry.geom.Matrix.column;
 import static com.crudetech.geometry.geom.Matrix.row;
@@ -25,6 +32,7 @@ import static java.lang.Math.sqrt;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 
+@RunWith(Features.class)
 public class Matrix3dTest {
     @Test
     public void defaultCtorCreatesIdentityMatrix() {
@@ -145,8 +153,6 @@ public class Matrix3dTest {
 
         assertThat(doGetWithColOutOfBounds, doesThrow(IllegalArgumentException.class));
     }
-
-
     @Test
     public void multiplyDoesPreMult() {
         Matrix3d a = new Matrix3d(new double[][]{
@@ -331,5 +337,36 @@ public class Matrix3dTest {
         Point3d result = scaleZ.multiply(p);
 
         assertThat(result, is(new Point3d(2, 2, 3)));
+    }
+
+    @Feature(Equivalent.class)
+    public static Equivalent.Factory<Matrix3d> equivalentFeature(){
+        final double[][] rawMx = new double[][]{
+                {3, 4, 32, 3},
+                {4, 1, 45, 4},
+                {3, 333, 4, 66},
+                {3, 4, 32, 3},
+        };
+        return new Equivalent.Factory<Matrix3d>() {
+            @Override
+            public Matrix3d createItem() {
+                return new Matrix3d(rawMx);
+            }
+
+            @Override
+            public List<Matrix3d> createOtherItems() {
+                List<Matrix3d> others = new ArrayList<Matrix3d>();
+                others.add(Matrix3d.Identity);
+                for (int i = 0; i < 4; ++i) {
+                    for (int j = 0; j < 4; ++j) {
+                        double[][] data = rawMx.clone();
+                        data[i][j] += Tolerance3d.getGlobalTolerance().getVectorTolerance();
+                        others.add(new Matrix3d(data));
+                    }
+
+                }
+                return others;
+            }
+        };
     }
 }
