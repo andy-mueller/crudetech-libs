@@ -14,7 +14,7 @@
 
     <groupId>com.crudetech</groupId>
     <artifactId>com.crudetech</artifactId>
-    <version>0.6-SNAPSHOT</version>
+    <version>0.6</version>
 
     <name>com.crudetech</name>
 
@@ -60,11 +60,11 @@
         </license>
     </licenses>
     <scm>
-        <connection>scm:svn:http://crudetech-libs.googlecode.com/svn/java/com.crudetech/trunk</connection>
-        <developerConnection>scm:svn:https://crudetech-libs.googlecode.com/svn/java/com.crudetech/trunk
+        <connection>scm:svn:http://crudetech-libs.googlecode.com/svn/java/com.crudetech/tags/com.crudetech-0.6</connection>
+        <developerConnection>scm:svn:https://crudetech-libs.googlecode.com/svn/java/com.crudetech/tags/com.crudetech-0.6
         </developerConnection>
         <!--The # is NOT a typo!-->
-        <url>http://code.google.com/p/crudetech-libs/source/browse/#svn/java/com.crudetech/trunk</url>
+        <url>http://code.google.com/p/crudetech-libs/source/browse/#svn/java/com.crudetech/tags/com.crudetech-0.6</url>
         <!--The # is NOT a typo!-->
     </scm>
     <distributionManagement>
