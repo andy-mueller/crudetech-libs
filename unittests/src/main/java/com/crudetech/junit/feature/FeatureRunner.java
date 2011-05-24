@@ -15,16 +15,10 @@ import org.junit.runners.model.InitializationError;
 
 import java.util.List;
 
-class FeaturesSuiteRunner extends BlockJUnit4ClassRunner {
+class FeatureRunner extends BlockJUnit4ClassRunner {
     private final Object factory;
 
-    /**
-     * Creates a BlockJUnit4ClassRunner to run {@code klass}
-     *
-     * @throws org.junit.runners.model.InitializationError
-     *          if the test class is malformed.
-     */
-    FeaturesSuiteRunner(Class<?> klass, Object factory) throws InitializationError {
+    FeatureRunner(Class<?> klass, Object factory) throws InitializationError {
         super(klass);
 
         if(factory == null){

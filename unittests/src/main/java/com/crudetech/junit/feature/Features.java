@@ -22,11 +22,11 @@ import java.util.List;
 /**
  * Features are a way to reuse and compose generic test fixtures. An example for this
  * is the correct implementations of {@link Object#equals(Object)} and {@link Object#hashCode()}
- * or implementations of the java collections interfaces.
+ * or implementations of the java collections interfaces that you will test over and over again.
  * <p>
  * The following example demonstrates the reuse of the generic {@link Equivalent}
- * test fixture to test for the correct implementation of the equals contract for
- * a simple Pair class
+ * and {@link Serializable} test fixture to test for the correct implementation of the equals contract for
+ * a simple Pair class:
  * <p>
  * <pre>
  * public class Pair implements java.io.Serializable {
@@ -72,12 +72,12 @@ import java.util.List;
  * &#064;RunWith(Features.class)
  * public class PairFixture {
  *    &#064;Test
- *    public void getFirst() throws Exception {
+ *    public void getFirstReturnsValuePassedInCtor() throws Exception {
  *        Pair p = new Pair(2, "sdf");
  *        assertThat(p.getFirst(), is(2));
  *    }
  *    &#064;Feature(Equivalent.class)
- *    public static Equivalent.Factory<Pair> equivalentFactory() {
+ *    public static Equivalent.Factory<Pair> equivalentFeature() {
  *        return new Equivalent.Factory<Pair>() {
  *            &#064;Override
  *            public Pair createItem() {
@@ -113,14 +113,14 @@ import java.util.List;
  */
 public class Features extends Suite {
     public Features(Class<?> klass) throws InitializationError {
-        super(klass, extracAndCreateRunners(klass));
+        super(klass, extractAndCreateRunners(klass));
     }
 
-    private static List<Runner> extracAndCreateRunners(Class<?> klass) throws InitializationError {
+    private static List<Runner> extractAndCreateRunners(Class<?> klass) throws InitializationError {
         List<Runner> runners = new ArrayList<Runner>();
         for (FeatureAccessor field : extractFieldsWithTest(klass)) {
             Class<? extends FeatureFixture> test = field.getFeature();
-            runners.add(new FeaturesSuiteRunner(test, field.getFactory()));
+            runners.add(new FeatureRunner(test, field.getFactory()));
         }
         addSuiteIfItContainsTests(klass, runners);
         return runners;

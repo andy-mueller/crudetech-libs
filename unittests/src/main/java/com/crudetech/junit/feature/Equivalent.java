@@ -27,7 +27,7 @@ import static org.hamcrest.core.IsSame.sameInstance;
  * they check vor equivalence.
  * <p/>
  * Check Bloch, Effective Java, Chapter 3, Item 7 and 8 for more details on how
- * to override {@link Object#hashCode()}  and {@link Object#equals(Object)}
+ * to override {@link Object#hashCode()} and {@link Object#equals(Object)}
  * properly.
  */
 public class Equivalent<T> implements FeatureFixture{
