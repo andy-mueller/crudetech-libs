@@ -23,11 +23,11 @@ import java.util.*;
  * It is up to the user of the class to provide the concrete Map implementation to be used.
  * <pre>
  * EqualityComparer&lt;Integer&gt; unsignedComparer = new EqualityComparer&lt;Integer&gt;() {
- *     @Override
+ *     &#064;Override
  *     public boolean equals(Integer lhs, Integer rhs) {
  *         return Math.abs(lhs) == Math.abs(rhs);
  *     }
- *     @Override
+ *     &#064;Override
  *     public int hashCode(Integer item) {
  *         return Math.abs(item);
  *     }
