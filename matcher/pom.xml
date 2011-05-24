@@ -14,7 +14,7 @@
     <parent>
         <artifactId>com.crudetech</artifactId>
         <groupId>com.crudetech</groupId>
-        <version>0.6</version>
+        <version>0.7-SNAPSHOT</version>
     </parent>
 
     <packaging>jar</packaging>
