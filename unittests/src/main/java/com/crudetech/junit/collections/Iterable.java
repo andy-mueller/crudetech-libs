@@ -19,6 +19,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import static com.crudetech.junit.collections.Utils.end;
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsNot.not;
@@ -73,9 +74,5 @@ public class Iterable<T> implements FeatureFixture {
         it.next();
     }
 
-    private <T> Iterator<T> end(java.lang.Iterable<T> it) {
-        Iterator<T> i = it.iterator();
-        while(i.hasNext()){i.next();}
-        return i;
-    }
+
 }
