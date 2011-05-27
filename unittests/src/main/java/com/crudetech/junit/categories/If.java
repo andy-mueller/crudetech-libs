@@ -15,33 +15,20 @@ public class If {
         return o == null;
     }
 
-    public static boolean isNotNull(Object o) {
-        return !isNull(o);
-    }
-
     public static boolean isEmpty(Object[] o) {
         return o.length == 0;
     }
+
     public static boolean isEmpty(String s) {
         return "".equals(s);
-    }
-    public static boolean isNotEmpty(String s) {
-        return isEmpty(s);
-    }
-
-    public static boolean isNotEmpty(Object[] o) {
-        return !isEmpty(o);
     }
 
     public static boolean isNullOrEmpty(Object[] o) {
         return isNull(o) || isEmpty(o);
     }
+
     public static boolean isNullOrEmpty(String s) {
         return isNull(s) || isEmpty(s);
-    }
-
-    public static boolean isNotNullOrEmpty(Object[] o) {
-        return !isNullOrEmpty(o);
     }
 
     public static boolean isEmpty(Iterable<?> i) {
@@ -51,10 +38,8 @@ public class If {
     public static boolean isNotEmpty(Iterable<?> i) {
         return i.iterator().hasNext();
     }
-    public static boolean isNot(boolean b){
-        return !b;
-    }
-    public static boolean is(boolean b){
+
+    public static boolean is(boolean b) {
         return b;
     }
 }

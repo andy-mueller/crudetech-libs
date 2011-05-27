@@ -27,6 +27,7 @@ import java.util.*;
 import static com.crudetech.junit.categories.If.isNull;
 import static com.crudetech.junit.categories.If.isNullOrEmpty;
 import static java.util.Arrays.asList;
+import static java.util.Collections.emptyList;
 
 /**
  * A suite runner that collects all tests from the class path that match the
@@ -47,7 +48,7 @@ public class Categories extends Suite {
     private static Collection<Class<?>> getExclusions(Class<?> testClass) {
         ExcludeCategory exc = testClass.getAnnotation(ExcludeCategory.class);
         if (isNull(exc) || isNullOrEmpty(exc.value())) {
-            return asList();
+            return emptyList();
         }
         return asList(exc.value());
     }
@@ -57,7 +58,9 @@ public class Categories extends Suite {
     private static Collection<Class<?>> getInclusions(Class<?> testClass) throws InitializationError {
         IncludeCategory inc = testClass.getAnnotation(IncludeCategory.class);
         if (isNull(inc) || isNullOrEmpty(inc.value())) {
-            return Arrays.<Class<?>>asList(All);
+            @SuppressWarnings("unchecked")
+            Collection<Class<?>> rv = Arrays.<Class<?>>asList(All);
+            return rv;
         }
         return asList(inc.value());
     }
