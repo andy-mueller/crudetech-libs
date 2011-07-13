@@ -1,17 +1,19 @@
 ////////////////////////////////////////////////////////////////////////////////
-// Copyright (c) 2010, Andreas Mueller.
+// Copyright (c) 2011, Andreas Mueller.
 // All rights reserved. This program and the accompanying materials
 // are made available under the terms of the Eclipse Public License v1.0
 // which accompanies this distribution, and is available at
 // http://www.eclipse.org/legal/epl-v10.html
 //
 // Contributors:
-//     Andreas Mueller - initial API and implementation
+//      Andreas Mueller - initial API and implementation
 ////////////////////////////////////////////////////////////////////////////////
 package com.crudetech.geometry.geom2d;
 
 import com.crudetech.geometry.geom.Tolerance;
 import com.crudetech.lang.ArgumentNullException;
+
+import java.text.MessageFormat;
 
 /**
  * A bondingBox defines a rectangular interval in 2d coordinate system.
@@ -24,7 +26,10 @@ public class BoundingBox2d extends AbstractToleranceComparable2d<BoundingBox2d> 
         if (lowerLeft == null) throw new ArgumentNullException("lowerLeft");
         if (upperRight == null) throw new ArgumentNullException("lowerLeft");
         if (lowerLeft.getX() >= upperRight.getX() || lowerLeft.getY() >= upperRight.getY()) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException(
+                    MessageFormat.format(
+                            "Upper right is either not right of or  higher than lower left. LowerLeft: {0}, UpperRight: {1}", lowerLeft, upperRight
+                    ));
         }
 
         this.lowerLeft = lowerLeft;
@@ -70,6 +75,7 @@ public class BoundingBox2d extends AbstractToleranceComparable2d<BoundingBox2d> 
     public Point2d getLowerLeft() {
         return lowerLeft;
     }
+
     public Point2d getLocation() {
         return lowerLeft;
     }
@@ -119,7 +125,6 @@ public class BoundingBox2d extends AbstractToleranceComparable2d<BoundingBox2d> 
 
     public boolean contains(Point2d point) {
         return !doesNotContain(point);
-
     }
 
     private boolean doesNotContain(Point2d point) {

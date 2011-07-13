@@ -1,12 +1,12 @@
 ////////////////////////////////////////////////////////////////////////////////
-// Copyright (c) 2010, Andreas Mueller.
+// Copyright (c) 2011, Andreas Mueller.
 // All rights reserved. This program and the accompanying materials
 // are made available under the terms of the Eclipse Public License v1.0
 // which accompanies this distribution, and is available at
 // http://www.eclipse.org/legal/epl-v10.html
 //
 // Contributors:
-// Andreas Mueller - initial API and implementation
+//      Andreas Mueller - initial API and implementation
 ////////////////////////////////////////////////////////////////////////////////
 package com.crudetech.collections;
 
@@ -240,6 +240,9 @@ public final class Iterables {
             }
         });
     }
+    public static <Base, Derived extends Base> Iterable<Base> covariant(Iterable<Derived> from) {
+        return cast(from);
+    }
 
     public static <T, Col extends Collection<? super T>> Col copy(Iterable<T> src, Col target) {
         for (T item : src) {
@@ -250,5 +253,9 @@ public final class Iterables {
 
     public static <T> List<T> copy(Iterable<T> src) {
         return copy(src, new ArrayList<T>());
+    }
+
+    public static <T> List<T> emptyListOf(Class<T> clazz){
+        return Collections.emptyList();
     }
 }
