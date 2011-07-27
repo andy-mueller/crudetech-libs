@@ -44,69 +44,52 @@ public class I18nBaseTest {
 
     @Test
     public void defaultSetupUsesMainResources() {
-        I18nBase.LocaleProviderOverride germanXml = new I18nBase.LocaleProviderOverride(LocaleProvider.German);
-        try {
+        try (I18nBase.LocaleProviderOverride germanXml = new I18nBase.LocaleProviderOverride(LocaleProvider.German)) {
             String xmlTestString = instance.getString("testString");
 
             assertThat(xmlTestString, is("xml:Test erfolgreich!"));
-        } finally {
-            germanXml.reset();
         }
 
     }
 
     @Test
     public void propertyResourceBundleControlUsesPropertyFiles() {
-        I18nBase.LocaleProviderOverride germanProp = new I18nBase.LocaleProviderOverride(LocaleProvider.German);
-        try {
+        try (I18nBase.LocaleProviderOverride germanProp = new I18nBase.LocaleProviderOverride(LocaleProvider.German)) {
             instance = new I18n(ResourceBundleControlProvider.Properties);
             String propTestString = instance.getString("testString");
             assertThat(propTestString, is("prop:Test erfolgreich!"));
-        } finally {
-            germanProp.reset();
         }
     }
 
     @Test
     public void getStringFetchesWithProvidedLocale() {
-        I18nBase.LocaleProviderOverride englishXml = new I18nBase.LocaleProviderOverride(LocaleProvider.English);
-        try {
+        try (I18nBase.LocaleProviderOverride englishXml = new I18nBase.LocaleProviderOverride(LocaleProvider.English)) {
             String result = instance.getString("testString");
             assertThat(result, is("xml:Test successful!"));
-        } finally {
-            englishXml.reset();
         }
     }
 
     @Test
     public void overrideIsResetable() {
-        I18nBase.LocaleProviderOverride englishXml = new I18nBase.LocaleProviderOverride(LocaleProvider.English);
-        try {
-            I18nBase.LocaleProviderOverride germanXml = new I18nBase.LocaleProviderOverride(LocaleProvider.German);
-            try {
+        try (I18nBase.LocaleProviderOverride englishXml = new I18nBase.LocaleProviderOverride(LocaleProvider.English)) {
+            try (I18nBase.LocaleProviderOverride germanXml = new I18nBase.LocaleProviderOverride(LocaleProvider.German)) {
                 String result = instance.getString("testString");
                 assertThat(result, is("xml:Test erfolgreich!"));
-            } finally {
-                germanXml.reset();
             }
             String result = instance.getString("testString");
             assertThat(result, is("xml:Test successful!"));
-        } finally {
-            englishXml.reset();
         }
     }
 
     static class ImplicitBaseNameI18n extends I18nBase {
     }
+
     @Test
     public void noBaseNameUsesClassName() {
-        I18nBase.LocaleProviderOverride germanXml = new I18nBase.LocaleProviderOverride(LocaleProvider.German);
-        try {
+        try (I18nBase.LocaleProviderOverride germanXml = new I18nBase.LocaleProviderOverride(LocaleProvider.German)) {
             I18nBase i18n = new ImplicitBaseNameI18n();
             String result = i18n.getString("testString");
             assertThat(result, is("xml-classname:Test erfolgreich!"));
-        } finally {
-            germanXml.reset();
         }
     }
 

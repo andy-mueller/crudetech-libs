@@ -1,12 +1,12 @@
 ////////////////////////////////////////////////////////////////////////////////
-// Copyright (c) 2010, Andreas Mueller.
+// Copyright (c) 2011, Andreas Mueller.
 // All rights reserved. This program and the accompanying materials
 // are made available under the terms of the Eclipse Public License v1.0
 // which accompanies this distribution, and is available at
 // http://www.eclipse.org/legal/epl-v10.html
 //
 // Contributors:
-//     Andreas Mueller - initial API and implementation
+//      Andreas Mueller - initial API and implementation
 ////////////////////////////////////////////////////////////////////////////////
 package com.crudetech.graphics2d.xwt.widgets;
 
@@ -22,11 +22,11 @@ import java.util.Collection;
 import static com.crudetech.collections.Iterables.accumulate;
 
 
-public class CompoundWidget extends AbstractWidget{
+public class CompoundWidget extends AbstractWidget {
     private Collection<Widget> components = new ArrayList<Widget>();
 
     public CompoundWidget(Iterable<Widget> widgets) {
-        for(Widget w : widgets){
+        for (Widget w : widgets) {
             components.add(w);
         }
     }
@@ -37,20 +37,16 @@ public class CompoundWidget extends AbstractWidget{
 
     @Override
     protected void drawEcs(GraphicsStream2d stream) {
-        for(Widget sub : getComponents()){
-            GraphicsStream2d.RestorePoint rp = stream.createRestorePoint();
-            try{
+        for (Widget sub : getComponents()) {
+            try (GraphicsStream2d.RestorePoint rp = stream.createRestorePoint()) {
                 sub.draw(stream);
-            }
-            finally{
-                rp.restore();
             }
         }
     }
 
     @Override
     public BoundingBox2d getBoundingBox() {
-        UnaryFunction<Widget, BoundingBox2d> getBoundingBox =   new UnaryFunction<Widget, BoundingBox2d>() {
+        UnaryFunction<Widget, BoundingBox2d> getBoundingBox = new UnaryFunction<>() {
             @Override
             public BoundingBox2d execute(Widget widget) {
                 return widget.getEcs().fromCoordinateSystemToWorld(widget.getBoundingBox());
@@ -58,7 +54,7 @@ public class CompoundWidget extends AbstractWidget{
         };
         Iterable<BoundingBox2d> boxes = Iterables.transform(getComponents(), getBoundingBox);
 
-        BinaryFunction<BoundingBox2d, BoundingBox2d, BoundingBox2d> add = new BinaryFunction<BoundingBox2d, BoundingBox2d, BoundingBox2d>() {
+        BinaryFunction<BoundingBox2d, BoundingBox2d, BoundingBox2d> add = new BinaryFunction<>() {
             @Override
             public BoundingBox2d execute(BoundingBox2d lhs, BoundingBox2d rhs) {
                 return lhs.add(rhs);

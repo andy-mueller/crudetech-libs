@@ -1,32 +1,30 @@
 ////////////////////////////////////////////////////////////////////////////////
-// Copyright (c) 2010, Andreas Mueller.
+// Copyright (c) 2011, Andreas Mueller.
 // All rights reserved. This program and the accompanying materials
 // are made available under the terms of the Eclipse Public License v1.0
 // which accompanies this distribution, and is available at
 // http://www.eclipse.org/legal/epl-v10.html
 //
 // Contributors:
-// Andreas Mueller - initial API and implementation
+//      Andreas Mueller - initial API and implementation
 ////////////////////////////////////////////////////////////////////////////////
 package com.crudetech.event;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
- * Simple type safe helper class to implement events. The class is thread safe. Please note
- * that if an instance of this  class is used from one thread only, the JVM will remove all synchronization. Therefore
- * no unnecessary performance burden is imposed on the user.
+ * Simple type safe helper class to implement events. The class is thread safe.
  * <p>
  * <pre>
  * class Window{
- *   static class ClosedEventObject extends EventObject<Window>{
+ *   static class ClosedEventObject extends EventObject&lt;Window&gt;{
  *     ClosedEventObject(Window source){ super(source); }
  *   }
- *   private final EventSupport<ClosedEventObject> closedEvent =
- *     new EventSupport<ClosedEventObject>();
+ *   private final EventSupport&lt;ClosedEventObject&gt; closedEvent =
+ *     new EventSupport&lt;ClosedEventObject&gt;();
  *
- *   Event<ClosedEventObject> closedEvent(){
+ *   Event&lt;ClosedEventObject&gt; closedEvent(){
  *     return closedEvent;
  *   }
  *   void close(){
@@ -38,7 +36,7 @@ import java.util.Collection;
  *   public static void main(String[] args){
  *     Window w = new Window();
  *     w.closedEvent().addHandler(
- *       new EventListener<Window.ClosedEventObject>(){
+ *       new EventListener&lt;Window.ClosedEventObject&gt;(){
  *         void onEvent(final Window.ClosedEventObject e){
  *           System.out.println("Closed event was raised!");
  *         }
@@ -52,43 +50,30 @@ import java.util.Collection;
  */
 public class EventSupport<TEventObject extends EventObject<?>> implements Event<TEventObject> {
 
-    private final Collection<EventListener<TEventObject>> listeners = new ArrayList<EventListener<TEventObject>>();
+    private final CopyOnWriteArrayList<EventListener<TEventObject>> listeners = new CopyOnWriteArrayList<EventListener<TEventObject>>();
 
     public void addListener(EventListener<TEventObject> listener) {
-        synchronized (listeners) {
-            listeners.add(listener);
-        }
+        listeners.add(listener);
     }
-
     public void fireEvent(TEventObject eventObject) {
-        for (EventListener<TEventObject> aList : getListeners()) {
-            aList.onEvent(eventObject);
+        for (EventListener<TEventObject> listener : listeners) {
+            listener.onEvent(eventObject);
         }
     }
 
     public Iterable<EventListener<TEventObject>> getListeners() {
-        synchronized (listeners) {
-            final Collection<EventListener<TEventObject>> tmp = new ArrayList<EventListener<TEventObject>>(listeners.size());
-            tmp.addAll(listeners);
-            return tmp;
-        }
+        return new ArrayList<EventListener<TEventObject>>(listeners);
     }
 
     public void clearListeners() {
-        synchronized (listeners) {
-            listeners.clear();
-        }
+        listeners.clear();
     }
 
     public boolean contains(EventListener<TEventObject> listener) {
-        synchronized (listeners) {
-            return listeners.contains(listener);
-        }
+        return listeners.contains(listener);
     }
 
     public void removeListener(EventListener<TEventObject> listener) {
-        synchronized (listeners) {
-            listeners.remove(listener);
-        }
+        listeners.remove(listener);
     }
 }

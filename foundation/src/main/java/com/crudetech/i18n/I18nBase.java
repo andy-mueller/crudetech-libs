@@ -80,7 +80,7 @@ public abstract class I18nBase {
     private static volatile LocaleProvider localeProvider = LocaleProvider.Default;
     private final ResourceBundleControlProvider controlProvider;
 
-    public static class LocaleProviderOverride {
+    public static class LocaleProviderOverride implements AutoCloseable{
         private LocaleProvider localeProvider = LocaleProvider.Default;
         public LocaleProviderOverride(LocaleProvider localeProvider) {
             this.localeProvider = I18nBase.localeProvider;
@@ -89,6 +89,11 @@ public abstract class I18nBase {
 
         public void reset() {
             I18nBase.localeProvider = this.localeProvider;
+        }
+
+        @Override
+        public void close(){
+            reset();
         }
     }
 

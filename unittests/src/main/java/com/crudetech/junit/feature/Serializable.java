@@ -22,6 +22,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
  * A feature fixture for objects that are serializable.
+ *
  * @param <T>
  */
 public class Serializable<T extends java.io.Serializable> implements FeatureFixture {
@@ -41,11 +42,8 @@ public class Serializable<T extends java.io.Serializable> implements FeatureFixt
         T o = factory.createObject();
 
         ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-        ObjectOutputStream out = new ObjectOutputStream(byteStream);
-        try {
+        try (ObjectOutputStream out = new ObjectOutputStream(byteStream)) {
             out.writeObject(o);
-        } finally {
-            out.close();
         }
 
         ObjectInputStream in = new ObjectInputStream(new ByteArrayInputStream(byteStream.toByteArray()));

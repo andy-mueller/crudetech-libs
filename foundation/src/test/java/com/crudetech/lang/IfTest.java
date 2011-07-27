@@ -10,14 +10,18 @@
 ////////////////////////////////////////////////////////////////////////////////
 package com.crudetech.lang;
 
+import org.hamcrest.Matcher;
+import org.hamcrest.Matchers;
 import org.junit.Test;
 
 import static com.crudetech.lang.If.*;
 import static java.util.Arrays.asList;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
 
 public class IfTest {
+    private static Matcher<Boolean> is(boolean b){
+        return Matchers.is(Boolean.valueOf(b));
+    }
     @Test
     public void isNullIsTrueWhenArgumentIsNull(){
         assertThat(isNull(null), is(true));

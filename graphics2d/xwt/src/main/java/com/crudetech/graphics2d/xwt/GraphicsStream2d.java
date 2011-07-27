@@ -1,12 +1,12 @@
 ////////////////////////////////////////////////////////////////////////////////
-// Copyright (c) 2010, Andreas Mueller.
+// Copyright (c) 2011, Andreas Mueller.
 // All rights reserved. This program and the accompanying materials
 // are made available under the terms of the Eclipse Public License v1.0
 // which accompanies this distribution, and is available at
 // http://www.eclipse.org/legal/epl-v10.html
 //
 // Contributors:
-//     Andreas Mueller - initial API and implementation
+//      Andreas Mueller - initial API and implementation
 ////////////////////////////////////////////////////////////////////////////////
 package com.crudetech.graphics2d.xwt;
 
@@ -139,7 +139,7 @@ public class GraphicsStream2d {
         pipe.fillPolygon(polygon2d);
     }
 
-    public class RestorePoint {
+    public class RestorePoint implements AutoCloseable{
         private final Matrix2d[] xforms = coosStack.toArray();
         private final Pen[] pens = penStack.toArray(Pen.class);
         private final Brush[] brushes= brushStack.toArray(Brush.class);
@@ -161,6 +161,11 @@ public class GraphicsStream2d {
             fontStack.clearWithoutEvents();
             fontStack.addWithoutEvents(fonts);
             pipe.setFont(fontStack.peek());
+        }
+
+        @Override
+        public void close() {
+            restore();
         }
     }
 
