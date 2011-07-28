@@ -46,7 +46,7 @@ public class CompoundWidget extends AbstractWidget {
 
     @Override
     public BoundingBox2d getBoundingBox() {
-        UnaryFunction<Widget, BoundingBox2d> getBoundingBox = new UnaryFunction<>() {
+        UnaryFunction<Widget, BoundingBox2d> getBoundingBox = new UnaryFunction<Widget, BoundingBox2d>() {
             @Override
             public BoundingBox2d execute(Widget widget) {
                 return widget.getEcs().fromCoordinateSystemToWorld(widget.getBoundingBox());
@@ -54,7 +54,7 @@ public class CompoundWidget extends AbstractWidget {
         };
         Iterable<BoundingBox2d> boxes = Iterables.transform(getComponents(), getBoundingBox);
 
-        BinaryFunction<BoundingBox2d, BoundingBox2d, BoundingBox2d> add = new BinaryFunction<>() {
+        BinaryFunction<BoundingBox2d, BoundingBox2d, BoundingBox2d> add = new BinaryFunction<BoundingBox2d, BoundingBox2d, BoundingBox2d>() {
             @Override
             public BoundingBox2d execute(BoundingBox2d lhs, BoundingBox2d rhs) {
                 return lhs.add(rhs);

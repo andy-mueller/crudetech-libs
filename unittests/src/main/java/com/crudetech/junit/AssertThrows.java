@@ -8,7 +8,7 @@
 // Contributors:
 //      Andreas Mueller - initial API and implementation
 ////////////////////////////////////////////////////////////////////////////////
-package com.crudetech.unittests;
+package com.crudetech.junit;
 
 import java.text.MessageFormat;
 
@@ -17,7 +17,7 @@ import static org.junit.Assert.fail;
 /**
  *  Simple helper for testing the presence of exceptions in a safe manner. However, as it is in the
  *  old junit assert style, consider using the corresponding <code>ThrowsException</code> hamcrest
- *  matcher instead.
+ *  matcher instead, which is located in the crudetech matchers artifact.
  */
 public class AssertThrows {
 

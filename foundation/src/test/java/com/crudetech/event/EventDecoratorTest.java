@@ -13,6 +13,7 @@ package com.crudetech.event;
 import org.junit.Before;
 import org.junit.Test;
 
+import static com.crudetech.junit.AssertThrows.assertThrows;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
 
@@ -56,6 +57,22 @@ public class EventDecoratorTest {
         verify(listener, never()).onEvent(any(HolderEventObject.class));
     }
 
+    @Test
+    public void decoratorThrowsWhenUnknownHandlerIsRemoved() {
+        @SuppressWarnings("unchecked")
+        final EventListener<HolderEventObject> unknownListener = mock(EventListener.class);
+
+        Runnable decoratorThrowsWhenUnknownHandlerIsRemoved = new Runnable() {
+            @Override
+            public void run() {
+                decorator.getEvent().removeListener(unknownListener);
+            }
+        };
+
+        assertThrows(decoratorThrowsWhenUnknownHandlerIsRemoved, IllegalArgumentException.class);
+    }
+
+
     private static interface Holder {
         Event<HolderEventObject> getEvent();
     }
@@ -80,29 +97,24 @@ public class EventDecoratorTest {
             decoratedEvent = new EventDecorator<Holder, HolderEventObject>(this, decorated.getEvent()) {
                 @Override
                 public HolderEventObject createDecoratedEventObject(HolderEventObject e, Holder src) {
-                    return new HolderEventObject(src, e.data);
+                    return new HolderEventObject(src, e.getData());
                 }
             };
         }
-
         @Override
         public Event<HolderEventObject> getEvent() {
             return decoratedEvent;
         }
     }
-
     private static class HolderEventObject extends EventObject<Holder> {
         private final int data;
-
         HolderEventObject(final Holder h, int data) {
             super(h);
             this.data = data;
         }
-
         int getData() {
             return data;
         }
-
         @Override
         public boolean equals(Object o) {
             if (this == o) return true;
