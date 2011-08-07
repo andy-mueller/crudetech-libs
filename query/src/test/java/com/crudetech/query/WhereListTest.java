@@ -15,6 +15,7 @@ import com.crudetech.lang.ArgumentNullException;
 import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.List;
 
 import static com.crudetech.matcher.RangeHasSize.hasSizeOf;
 import static com.crudetech.matcher.RangeIsEmpty.isEmpty;
@@ -22,12 +23,12 @@ import static com.crudetech.matcher.RangeIsEqual.equalTo;
 import static com.crudetech.matcher.ThrowsException.doesThrow;
 import static com.crudetech.query.Query.from;
 import static java.util.Arrays.asList;
+import static java.util.Collections.emptyList;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 
 
-
-public class WhereTest {
+public class WhereListTest {
     private final static UnaryFunction<Integer, Boolean> lessThan5 = new UnaryFunction<Integer, Boolean>() {
 
         public Boolean execute(Integer arg) {
@@ -39,7 +40,7 @@ public class WhereTest {
     @Test
     public void selectWhere() {
 
-        Iterable<Float> collection = Arrays.asList(0f, 1f, 2f, 3f, 4f, 5f, 6f, 7f, 8f);
+        List<Float> collection = Arrays.asList(0f, 1f, 2f, 3f, 4f, 5f, 6f, 7f, 8f);
 
         UnaryFunction<Float, Integer> selection = new UnaryFunction<Float, Integer>() {
 
@@ -56,7 +57,7 @@ public class WhereTest {
     }
     @Test
     public void whereOnEmptyIsEmpty() {
-        Iterable<Integer> collection = Arrays.asList();
+        List<Integer> collection = emptyList();
 
         Iterable<Integer> result = from(collection).where(lessThan5);
 
@@ -67,7 +68,7 @@ public class WhereTest {
         Runnable whereWithNull = new Runnable() {
             @Override
             public void run() {
-                Iterable<Integer> range = asList(1, 2, 3);
+                List<Integer> range = asList(1, 2, 3);
                 from(range).where(null);
             }
         };
@@ -76,7 +77,7 @@ public class WhereTest {
 
     @Test
     public void whereOnSequencesContainingNull(){
-        Iterable<Integer> range = asList(1, 9, null, 4, 2, null, 7);
+        List<Integer> range = asList(1, 9, null, 4, 2, null, 7);
 
         Iterable<Integer> result = from(range).where(lessThan5);
 
@@ -84,7 +85,7 @@ public class WhereTest {
     }
     @Test
     public void whereOnSequencesContainingAnsStartingWithNull(){
-        Iterable<Integer> range = asList(null, 1, 9, null, 4, 2, null, 7);
+        List<Integer> range = asList(null, 1, 9, null, 4, 2, null, 7);
 
         Iterable<Integer> result = from(range).where(lessThan5);
 
@@ -95,7 +96,7 @@ public class WhereTest {
 
     @Test
     public void whereOnSequencesContainingNullAndCheckingForNull(){
-        Iterable<Integer> range = asList(null, 4, 2, null, 7, null);
+        List<Integer> range = asList(null, 4, 2, null, 7, null);
 
         UnaryFunction<Object,Boolean> isNull = new UnaryFunction<Object, Boolean>() {
             @Override

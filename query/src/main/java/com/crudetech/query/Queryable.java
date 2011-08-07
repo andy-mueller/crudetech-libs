@@ -16,6 +16,11 @@ import com.crudetech.functional.UnaryFunction;
 import java.util.List;
 
 
+/**
+ * When implemented, it represents a queryable range. This is basically
+ * an {@link Iterable} implementation that allows to map and filter its content.
+ * @param <T>
+ */
 public interface Queryable<T> extends Iterable<T>{
     <U> Queryable<U> select(UnaryFunction<? super T, U> select);
 

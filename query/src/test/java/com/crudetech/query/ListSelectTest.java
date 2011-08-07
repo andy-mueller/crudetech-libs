@@ -18,6 +18,8 @@ import com.crudetech.matcher.RangeIsEmpty;
 import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 
+import java.util.List;
+
 import static com.crudetech.matcher.RangeIsEqual.equalTo;
 import static com.crudetech.matcher.ThrowsException.doesThrow;
 import static com.crudetech.query.Query.from;
@@ -27,7 +29,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 
 
-public class SelectTest {
+public class ListSelectTest {
     private static UnaryFunction<Float, Integer> float2Int = new UnaryFunction<Float, Integer>() {
 
         public Integer execute(Float arg) {
@@ -37,7 +39,7 @@ public class SelectTest {
 
     @Test
     public void select() {
-        Iterable<Float> collection = asList(0f, 1f, 2f, 3f, 4f, 5f, 6f, 7f, 8f);
+        List<Float> collection = asList(0f, 1f, 2f, 3f, 4f, 5f, 6f, 7f, 8f);
 
         Iterable<Integer> i2 = from(collection).select(float2Int);
 
@@ -47,7 +49,7 @@ public class SelectTest {
 
     @Test
     public void selectOnEmptyRangeProducesEmptyRange() {
-        Iterable<Float> collection = emptyList();
+        List<Float> collection = emptyList();
 
         Iterable<Integer> i2 = from(collection).select(float2Int);
 
@@ -56,7 +58,7 @@ public class SelectTest {
 
     @Test
     public void selectWithNullThrows() {
-        final Iterable<Float> collection = asList(1f, 2f);
+        final List<Float> collection = asList(1f, 2f);
 
         Runnable selectWithNull = new Runnable() {
             @Override
@@ -69,7 +71,7 @@ public class SelectTest {
     }
     @Test
     public void select2WithNullThrows() {
-        final Iterable<Float> collection = asList(1f, 2f);
+        final List<Float> collection = asList(1f, 2f);
 
         Runnable selectWithNull = new Runnable() {
             @Override
@@ -83,10 +85,7 @@ public class SelectTest {
 
     @Test
     public void selectWithIndex() {
-
-        final Iterable<String> collection = asList("apple", "banana", "mango");
-
-
+        final List<String> collection = asList("apple", "banana", "mango");
 
         final BinaryFunction<String, Integer, Pair<String, Integer>> xform =
                 new BinaryFunction<String, Integer, Pair<String, Integer>>(){
