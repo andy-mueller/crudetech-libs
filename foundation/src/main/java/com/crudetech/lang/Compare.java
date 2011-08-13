@@ -1,12 +1,12 @@
 ////////////////////////////////////////////////////////////////////////////////
-// Copyright (c) 2010, Andreas Mueller.
+// Copyright (c) 2011, Andreas Mueller.
 // All rights reserved. This program and the accompanying materials
 // are made available under the terms of the Eclipse Public License v1.0
 // which accompanies this distribution, and is available at
 // http://www.eclipse.org/legal/epl-v10.html
 //
 // Contributors:
-// Andreas Mueller - initial API and implementation
+//      Andreas Mueller - initial API and implementation
 ////////////////////////////////////////////////////////////////////////////////
 package com.crudetech.lang;
 
@@ -34,6 +34,23 @@ final public class Compare {
             return lhs == rhs;
         }
         return lhs.equals(rhs);
+    }
+
+    /**
+     * Helper to negate one of the comparison methods of this class
+     * <pre>
+     *     import static com.crudetech.lang.Compare.equals;
+     *     import static com.crudetech.lang.Compare.not;
+     *     Object lhs = ...;
+     *     Object rhs = ...;
+     *     if(not(equals(lhs, rhs))
+     *         ...
+     * </pre>
+     * @param b
+     * @return The negation of the input parameter.
+     */
+    public static boolean not(boolean b){
+        return !b;
     }
 
     public static <T> boolean equals(final T lhs, final T rhs, EqualityComparer<T> comp) {

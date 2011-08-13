@@ -11,18 +11,20 @@
 package com.crudetech.lang;
 
 /**
- * A simple value type that has a fixed range. For instance the
- * possible values of a dice could be modeled as
+ * A simple value type that has a fixed range defined by an an open interval,
+ * where the lower bound is inside and the upper bound is outside of the range.
+ * <p/>
+ * For instance the possible values of a dice could be modeled as:
  * <pre>
  *     class Dice{
  *         private final Random rand = new Random();
- *         class DiceRoll extends BoundedValue&lt;Integer&gt;{
- *             private DiceRoll(int roll){
+ *         static class Roll extends BoundedValue&lt;Integer&gt;{
+ *             private Roll(int roll){
  *                 super(roll, 1, 7);//could be between 1 and 6
  *            }
  *         }
  *         Roll roll(){
- *              return new DiceRoll(random.nextInt(6)+1);
+ *              return new Roll(random.nextInt(6)+1);
  *         }
  *     }
  *
@@ -36,7 +38,7 @@ package com.crudetech.lang;
  * to model a specific range that has semantics to your domain,
  * but you are not interested in the actual values.
  */
-public abstract class BoundedValue<T> {
+public abstract class BoundedValue<T extends Comparable<T>, Derived extends BoundedValue<T, Derived>> implements Comparable<Derived> {
     private final T value;
     private final Comparable<? super T> lower;
     private final Comparable<? super T> upper;
@@ -52,10 +54,10 @@ public abstract class BoundedValue<T> {
             throw new ArgumentNullException("upper");
         }
         if (isLess(value, lower)) {
-            throw new ArgumentOutOfBoundsException("value");
+            throw new ArgumentOutOfBoundsException("value", "The argument is below the lower bound!");
         }
         if (isGreaterOrEqual(value, upper)) {
-            throw new ArgumentOutOfBoundsException("value");
+            throw new ArgumentOutOfBoundsException("value", "The argument is on or above the upper bound!");
         }
         this.value = value;
         // just for debugging
@@ -75,6 +77,60 @@ public abstract class BoundedValue<T> {
         return value;
     }
 
+    /**
+     * Checks if this objects value is equal to the passed in parameter.
+     *
+     * @param rhs The argument to test against.
+     * @return TRUE if this objects value is equal to the passed in parameter.
+     */
+    public boolean isEqualTo(T rhs) {
+        return Compare.equals(value, rhs);
+    }
+
+    public boolean isNotEqualTo(T rhs) {
+        return !isEqualTo(rhs);
+    }
+
+    public boolean isEqualTo(Derived rhs) {
+        return Compare.equals(value, rhs.getValue());
+    }
+
+    public boolean isNotEqualTo(Derived rhs) {
+        return !isEqualTo(rhs);
+    }
+
+    public boolean isLessThan(Derived rhs) {
+        return compareTo(rhs) < 0;
+    }
+
+    public boolean isGreaterThan(Derived rhs) {
+        return compareTo(rhs) > 0;
+    }
+
+    public boolean isGreaterEqualThan(Derived rhs) {
+        return compareTo(rhs) >= 0;
+    }
+
+    public boolean isLessEqualThan(Derived rhs) {
+        return compareTo(rhs) <= 0;
+    }
+
+    @Override
+    public int compareTo(Derived rhs) {
+        BoundedValue<?, ?> that = rhs;
+        if (rhs == null) {
+            throw new ArgumentNullException("rhs");
+        }
+        if (!Compare.equals(lower, that.lower)) {
+            throw new IllegalArgumentException("rhs has invalid lower bounds");
+        }
+        if (!Compare.equals(upper, that.upper)) {
+            throw new IllegalArgumentException("rhs has invalid upper bounds");
+        }
+
+        return getValue().compareTo(rhs.getValue());
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -82,18 +138,18 @@ public abstract class BoundedValue<T> {
 
         BoundedValue that = (BoundedValue) o;
 
-        if (!lower.equals(that.lower)) return false;
-        if (!upper.equals(that.upper)) return false;
-        if (!value.equals(that.value)) return false;
+        if (!Compare.equals(lower, that.lower)) return false;
+        if (!Compare.equals(upper, that.upper)) return false;
+        if (!Compare.equals(value, that.value)) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = value.hashCode();
-        result = 31 * result + lower.hashCode();
-        result = 31 * result + upper.hashCode();
+        int result = Compare.hashCode(value);
+        result = 31 * result + Compare.hashCode(lower);
+        result = 31 * result + Compare.hashCode(upper);
         return result;
     }
 
