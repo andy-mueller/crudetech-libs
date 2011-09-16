@@ -10,6 +10,9 @@
 ////////////////////////////////////////////////////////////////////////////////
 package com.crudetech.lang;
 
+
+import java.io.Serializable;
+
 /**
  * A simple value type that has a fixed range defined by an an open interval,
  * where the lower bound is inside and the upper bound is outside of the range.
@@ -37,11 +40,12 @@ package com.crudetech.lang;
  * In contrast to an enum, this class is useful when you want
  * to model a specific range that has semantics to your domain,
  * but you are not interested in the actual values.
+ * <b>
+ * This class is serializable, as long as the wrapped class is
+ * serializable.
  */
-public abstract class BoundedValue<T extends Comparable<T>, Derived extends BoundedValue<T, Derived>> implements Comparable<Derived> {
+public abstract class BoundedValue<T> implements Serializable {
     private final T value;
-    private final Comparable<? super T> lower;
-    private final Comparable<? super T> upper;
 
     public BoundedValue(T value, Comparable<? super T> lower, Comparable<? super T> upper) {
         if (value == null) {
@@ -53,23 +57,20 @@ public abstract class BoundedValue<T extends Comparable<T>, Derived extends Boun
         if (upper == null) {
             throw new ArgumentNullException("upper");
         }
-        if (isLess(value, lower)) {
+        if (isNotInsideLowerBound(value, lower)) {
             throw new ArgumentOutOfBoundsException("value", "The argument is below the lower bound!");
         }
-        if (isGreaterOrEqual(value, upper)) {
+        if (isNotInUpperBound(value, upper)) {
             throw new ArgumentOutOfBoundsException("value", "The argument is on or above the upper bound!");
         }
-        this.value = value;
-        // just for debugging
-        this.lower = lower;
-        this.upper = upper;
-    }
 
-    private boolean isGreaterOrEqual(T value, Comparable<? super T> upper) {
+        this.value = value;
+    }
+    private boolean isNotInUpperBound(T value, Comparable<? super T> upper) {
         return upper.compareTo(value) <= 0;
     }
 
-    private boolean isLess(T value, Comparable<? super T> lower) {
+    private boolean isNotInsideLowerBound(T value, Comparable<? super T> lower) {
         return lower.compareTo(value) > 0;
     }
 
@@ -91,44 +92,21 @@ public abstract class BoundedValue<T extends Comparable<T>, Derived extends Boun
         return !isEqualTo(rhs);
     }
 
-    public boolean isEqualTo(Derived rhs) {
-        return Compare.equals(value, rhs.getValue());
+    public boolean isLessThan(Comparable<? super T> rhs) {
+        return rhs.compareTo(getValue()) > 0;
     }
 
-    public boolean isNotEqualTo(Derived rhs) {
-        return !isEqualTo(rhs);
+    public boolean isLessEqualThan(Comparable<? super T> rhs) {
+        return rhs.compareTo(getValue()) >= 0;
     }
 
-    public boolean isLessThan(Derived rhs) {
-        return compareTo(rhs) < 0;
+    public boolean isGreaterThan(Comparable<? super T> rhs) {
+        return rhs.compareTo(getValue()) < 0;
     }
 
-    public boolean isGreaterThan(Derived rhs) {
-        return compareTo(rhs) > 0;
-    }
 
-    public boolean isGreaterEqualThan(Derived rhs) {
-        return compareTo(rhs) >= 0;
-    }
-
-    public boolean isLessEqualThan(Derived rhs) {
-        return compareTo(rhs) <= 0;
-    }
-
-    @Override
-    public int compareTo(Derived rhs) {
-        BoundedValue<?, ?> that = rhs;
-        if (rhs == null) {
-            throw new ArgumentNullException("rhs");
-        }
-        if (!Compare.equals(lower, that.lower)) {
-            throw new IllegalArgumentException("rhs has invalid lower bounds");
-        }
-        if (!Compare.equals(upper, that.upper)) {
-            throw new IllegalArgumentException("rhs has invalid upper bounds");
-        }
-
-        return getValue().compareTo(rhs.getValue());
+    public boolean isGreaterEqualThan(Comparable<? super T> rhs) {
+        return rhs.compareTo(getValue()) <= 0;
     }
 
     @Override
@@ -136,25 +114,21 @@ public abstract class BoundedValue<T extends Comparable<T>, Derived extends Boun
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        BoundedValue that = (BoundedValue) o;
+        BoundedValue<?> that = (BoundedValue<?>) o;
 
-        if (!Compare.equals(lower, that.lower)) return false;
-        if (!Compare.equals(upper, that.upper)) return false;
-        if (!Compare.equals(value, that.value)) return false;
+        return Compare.equals(value, that.value);
 
-        return true;
     }
 
     @Override
     public int hashCode() {
-        int result = Compare.hashCode(value);
-        result = 31 * result + Compare.hashCode(lower);
-        result = 31 * result + Compare.hashCode(upper);
-        return result;
+        return Compare.hashCode(value);
     }
 
     @Override
     public String toString() {
-        return String.format("%s{%s<=%s<%s}", getClass().getSimpleName(), lower, value, upper);
+        return getClass().getSimpleName() + '{' +
+                "value=" + value +
+                '}';
     }
 }

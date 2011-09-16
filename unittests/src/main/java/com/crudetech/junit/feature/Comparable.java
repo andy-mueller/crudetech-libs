@@ -13,6 +13,7 @@ package com.crudetech.junit.feature;
 import org.junit.Before;
 import org.junit.Test;
 
+import static com.crudetech.junit.AssertThrows.assertThrows;
 import static java.lang.Integer.signum;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.not;
@@ -84,4 +85,16 @@ public class Comparable<T extends java.lang.Comparable<T>> implements FeatureFix
         assertThat(x.compareTo(x2), is(0));
     }
 
+    @Test
+    public void compareToThrowsWhenArgIsNull() {
+        Runnable compareWithNull = new Runnable() {
+            @Override
+            public void run() {
+                x.compareTo(null);
+            }
+        };
+
+        // I hate to throw NullPointerException, but that what the spec says!
+        assertThrows(compareWithNull, NullPointerException.class);
+    }
 }
