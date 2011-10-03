@@ -133,4 +133,29 @@ public class CompareTest {
 
         assertThat(Compare.equals(lhs, rhs), is(false));
     }
+    @Test
+    public void minIsFirstWhenFirstIsLess(){
+        assertThat(Compare.min(1, 2), is(1));
+    }
+    @Test
+    public void minIsFirstWhenFirstIsEqual(){
+        assertThat(Compare.min(2, 2), is(2));
+    }
+    @Test
+    public void minIsSecondWhenFirstIsGreater(){
+        assertThat(Compare.min(3, 2), is(2));
+    }
+
+    @Test
+    public void maxIsFirstWhenFirstIsGreater(){
+        assertThat(Compare.max(3, 2), is(3));
+    }
+    @Test
+    public void maxIsFirstWhenFirstIsEqual(){
+        assertThat(Compare.max(2, 2), is(2));
+    }
+    @Test
+    public void maxIsSecondWhenFirstIsSmaller(){
+        assertThat(Compare.max(1, 2), is(2));
+    }
 }

@@ -46,15 +46,16 @@ final public class Compare {
      *     if(not(equals(lhs, rhs))
      *         ...
      * </pre>
+     *
      * @param b
      * @return The negation of the input parameter.
      */
-    public static boolean not(boolean b){
+    public static boolean not(boolean b) {
         return !b;
     }
 
     public static <T> boolean equals(final T lhs, final T rhs, EqualityComparer<T> comp) {
-        if(comp == null){
+        if (comp == null) {
             throw new ArgumentNullException("comp");
         }
         if (lhs == null || rhs == null) {
@@ -70,11 +71,11 @@ final public class Compare {
 
         int l1 = lhs.length();
         int l2 = rhs.length();
-        if(l1 != l2){
+        if (l1 != l2) {
             return false;
         }
-        for(int idx = 0; idx < l1; ++idx){
-            if(lhs.charAt(idx) != rhs.charAt(idx)){
+        for (int idx = 0; idx < l1; ++idx) {
+            if (lhs.charAt(idx) != rhs.charAt(idx)) {
                 return false;
             }
         }
@@ -164,5 +165,81 @@ final public class Compare {
      */
     public static int hashCode(Object o) {
         return o != null ? o.hashCode() : 0;
+    }
+
+    /**
+     * Returns the smaller of both passed in {@link Comparable} implementations
+     * or the first if both are equal.
+     *
+     * @param lhs
+     * @param rhs
+     * @param <T>
+     * @return
+     */
+    public static <T extends Comparable<T>> T min(T lhs, T rhs) {
+        VerifyArgument.isNotNull("lhs", lhs);
+        VerifyArgument.isNotNull("rhs", rhs);
+        if (lhs.compareTo(rhs) <= 0) {
+            return lhs;
+        }
+        return rhs;
+    }
+
+    /**
+     * Returns the greater one of both passed in {@link Comparable} implementations
+     * or the first if both are equal.
+     *
+     * @param lhs
+     * @param rhs
+     * @param <T>
+     * @return
+     */
+    public static <T extends Comparable<T>> T max(T lhs, T rhs) {
+        VerifyArgument.isNotNull("lhs", lhs);
+        VerifyArgument.isNotNull("rhs", rhs);
+        if (lhs.compareTo(rhs) >= 0) {
+            return lhs;
+        }
+        return rhs;
+    }
+
+    public static <T extends Comparable<T>> boolean isLess(T lhs, T rhs) {
+        VerifyArgument.isNotNull("lhs", lhs);
+        VerifyArgument.isNotNull("rhs", rhs);
+        return lhs.compareTo(rhs) < 0;
+    }
+
+    public static <T extends Comparable<T>> boolean isLessEqual(T lhs, T rhs) {
+        VerifyArgument.isNotNull("lhs", lhs);
+        VerifyArgument.isNotNull("rhs", rhs);
+        return lhs.compareTo(rhs) <= 0;
+    }
+
+    public static <T extends Comparable<T>> boolean isGreater(T lhs, T rhs) {
+        VerifyArgument.isNotNull("lhs", lhs);
+        VerifyArgument.isNotNull("rhs", rhs);
+        return lhs.compareTo(rhs) > 0;
+    }
+
+    public static <T extends Comparable<T>> boolean isGreaterEqual(T lhs, T rhs) {
+        VerifyArgument.isNotNull("lhs", lhs);
+        VerifyArgument.isNotNull("rhs", rhs);
+        return lhs.compareTo(rhs) >= 0;
+    }
+
+    public static boolean isLess(double lhs, double rhs, double tol) {
+        return !equals(lhs, rhs, tol) && lhs < rhs;
+    }
+
+    public static boolean isLessEqual(double lhs, double rhs, double tol) {
+        return !equals(lhs, rhs, tol) || lhs < rhs;
+    }
+
+    public static boolean isGreater(double lhs, double rhs, double tol) {
+        return !equals(lhs, rhs, tol) && lhs > rhs;
+    }
+
+    public static boolean isGreaterEqual(double lhs, double rhs, double tol) {
+        return !equals(lhs, rhs, tol) || lhs > rhs;
     }
 }

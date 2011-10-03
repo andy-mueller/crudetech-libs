@@ -31,7 +31,7 @@ public class ListView<TView, TModel> extends CollectionView<TView, TModel> imple
 
     @Override
     public boolean addAll(int index, Collection<? extends TView> c) {
-        Collection<TModel> source = new CollectionView<TModel, TView>(c, getViewToModel());
+        Collection<TModel> source = new CollectionView<>(c, getViewToModel());
         return getModelCollection().addAll(index, source);
     }
 
@@ -129,6 +129,6 @@ public class ListView<TView, TModel> extends CollectionView<TView, TModel> imple
     @Override
     public List<TView> subList(int fromIndex, int toIndex) {
         List<TModel> subList = getModelCollection().subList(fromIndex, toIndex);
-        return new ListView<TView, TModel>(subList, getModelToView(), getViewToModel());
+        return new ListView<>(subList, getModelToView(), getViewToModel());
     }
 }

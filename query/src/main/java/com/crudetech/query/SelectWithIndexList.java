@@ -12,7 +12,7 @@ package com.crudetech.query;
 
 
 import com.crudetech.functional.BinaryFunction;
-import com.crudetech.lang.ArgumentNullException;
+import com.crudetech.lang.VerifyArgument;
 
 import java.util.AbstractList;
 import java.util.List;
@@ -22,12 +22,8 @@ class SelectWithIndexList<From, To> extends AbstractList<To>{
     private final BinaryFunction<? super From, Integer, To> select;
 
     SelectWithIndexList(List<? extends From> range, BinaryFunction<? super From, Integer, To> select) {
-        if(range == null){
-            throw new ArgumentNullException("range");
-        }
-        if(select == null){
-            throw new ArgumentNullException("select");
-        }
+        VerifyArgument.isNotNull("range", range);
+        VerifyArgument.isNotNull("select", select);
         this.range = range;
         this.select = select;
     }

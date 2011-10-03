@@ -33,5 +33,12 @@ public class AssertThrows {
         }
         fail(MessageFormat.format("No exception at all was thrown! Expected type was {0}.", exceptionClass));
     }
+    public static void assertNoThrow(Runnable runnable) {
+        try{
+            runnable.run();
+        }catch (Exception e){
+            fail(MessageFormat.format("\nExpected: No exception.\nGot:      Exception {0}", e));
+        }
+    }
 
 }

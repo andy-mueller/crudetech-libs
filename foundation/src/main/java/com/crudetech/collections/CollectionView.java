@@ -21,7 +21,7 @@ import java.util.Iterator;
  * A collection implementation that offers a projective view on another collection.
  * All transformations are done on the fly, so no value is stored two times!
  * <p>
- * if you just need a forward transformation, i.e you just need to read from the
+ * If you just need a forward transformation, i.e you just need to read from the
  * original model collection, use the overloaded
  * {@link com.crudetech.collections.CollectionView#CollectionView(java.util.Collection, com.crudetech.functional.UnaryFunction, com.crudetech.functional.UnaryFunction)}
  * constructor. The collection will throw a {@link UnsupportedOperationException}

@@ -11,6 +11,7 @@
 package com.crudetech.collections;
 
 import com.crudetech.lang.ArgumentNullException;
+import com.crudetech.lang.VerifyArgument;
 
 import java.util.Iterator;
 import java.util.List;
@@ -19,7 +20,7 @@ import java.util.NoSuchElementException;
 import static java.util.Arrays.asList;
 
 /**
- * A collection api compatible circular iterator that lets you
+ * A collection api compatible circular iterable that lets you
  * iterate endlessly over a given {@link java.util.List} implementation.
  * When it reaches the end of the collection it will wrap around and
  * continue at the beginning again.
@@ -57,9 +58,7 @@ public class CircularIterable<T> implements Iterable<T>{
     }
 
     public static <T> CircularIterable<T> from(List<T> items) {
-        if(items == null){
-            throw new ArgumentNullException("items");
-        }
+        VerifyArgument.isNotNull("items", items);
         return new CircularIterable<T>(items);
     }
 

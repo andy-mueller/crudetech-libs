@@ -24,57 +24,74 @@ package com.crudetech.lang;
  *         }
  *     }
  * </pre>
+ * Other useful helpers of this type are in the {@link Compare} class.
+ * For argument checking, please refer to hamcrest matchers or to {@link VerifyArgument}.
  */
 public class If {
-    private If(){}
-    public static boolean isNull(Object o){
+    private If() {
+    }
+
+    public static boolean isNull(Object o) {
         return o == null;
     }
-    public static boolean isNotNull(Object o){
+
+    public static boolean isNotNull(Object o) {
         return !isNull(o);
     }
-    public static boolean isEmpty(CharSequence str){
+
+    public static boolean isEmpty(CharSequence str) {
         return str.length() == 0;
     }
-    public static boolean isNullOrEmpty(CharSequence str){
+
+    public static boolean isNullOrEmpty(CharSequence str) {
         return isNull(str) || isEmpty(str);
     }
-    public static boolean isNotNullOrEmpty(CharSequence str){
+
+    public static boolean isNotNullOrEmpty(CharSequence str) {
         return !isNullOrEmpty(str);
     }
-    public static boolean isNotEmpty(CharSequence str){
+
+    public static boolean isNotEmpty(CharSequence str) {
         return !isEmpty(str);
     }
 
-    public static boolean isEmpty(Object[] o){
+    public static boolean isEmpty(Object[] o) {
         return o.length == 0;
     }
-    public static boolean isNullOrEmpty(Object[] o){
+
+    public static boolean isNullOrEmpty(Object[] o) {
         return isNull(o) || isEmpty(o);
     }
-    public static boolean isNotNullOrEmpty(Object[] o){
+
+    public static boolean isNotNullOrEmpty(Object[] o) {
         return !isNullOrEmpty(o);
     }
 
-    public static boolean isNotEmpty(Object[] o){
+    public static boolean isNotEmpty(Object[] o) {
         return !isEmpty(o);
     }
-    public static boolean isEmpty(Iterable<?> i){
+
+    public static boolean isEmpty(Iterable<?> i) {
         return !i.iterator().hasNext();
     }
-    public static boolean isNotEmpty(Iterable<?> i){
+
+    public static boolean isNotEmpty(Iterable<?> i) {
         return !isEmpty(i);
     }
-    public static boolean isNotNullOrEmpty(Iterable<?> i){
+
+    public static boolean isNotNullOrEmpty(Iterable<?> i) {
         return !isNull(i) && !isEmpty(i);
     }
-    public static boolean isNullOrEmpty(Iterable<?> i){
+
+    public static boolean isNullOrEmpty(Iterable<?> i) {
         return !isNotNullOrEmpty(i);
     }
-    public static boolean isNot(boolean b){
+
+    public static boolean isNot(boolean b) {
         return !b;
     }
-    public static boolean is(boolean b){
+
+    public static boolean is(boolean b) {
         return b;
     }
 }

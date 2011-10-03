@@ -21,6 +21,7 @@ import java.util.*;
  * internally wrapping the key in a lightweight {@link com.crudetech.collections.EqualityComparable} object.
  * <p/>
  * It is up to the user of the class to provide the concrete Map implementation to be used.
+ * For standard jdk map implementations, static convenient factory methods are provided.
  * <pre>
  * EqualityComparer&lt;Integer&gt; unsignedComparer = new EqualityComparer&lt;Integer&gt;() {
  *     &#064;Override
@@ -36,7 +37,6 @@ import java.util.*;
  *         new EqualityComparableMap&lt;Integer, String&gt;(unsignedComparer, new HashMap&lt;EqualityComparable&lt;Integer&gt;, String&gt;());
  * </pre>
  * <p/>
- * For standard map implementations, static convenient factory methods are provided.
  *
  * @param <TKey>   The type of keys maintained by this map
  * @param <TValue> The type of mapped values
@@ -51,25 +51,25 @@ public class EqualityComparableMap<TKey, TValue> implements Map<TKey, TValue> {
     }
 
     public static <K, V> Map<K, V> newHashMap(EqualityComparer<K> equComp) {
-        return new EqualityComparableMap<K, V>(equComp, new HashMap<EqualityComparable<K>, V>());
+        return new EqualityComparableMap<>(equComp, new HashMap<EqualityComparable<K>, V>());
     }
 
     public static <K, V> Map<K, V> newLinkedHashMap(EqualityComparer<K> equComp, final UnaryFunction<Entry<K, V>, Boolean> removeOldestEntry) {
-        return new EqualityComparableMap<K, V>(equComp, new LinkedHashMap<EqualityComparable<K>, V>() {
+        return new EqualityComparableMap<>(equComp, new LinkedHashMap<EqualityComparable<K>, V>() {
             @Override
             protected boolean removeEldestEntry(Map.Entry<EqualityComparable<K>, V> eldest) {
-                return removeOldestEntry.execute(new AbstractMap.SimpleEntry<K, V>(eldest.getKey().getWrapped(), eldest.getValue()));
+                return removeOldestEntry.execute(new AbstractMap.SimpleEntry<>(eldest.getKey().getWrapped(), eldest.getValue()));
             }
         }
         );
     }
 
     public static <K, V> Map<K, V> newLinkedHashMap(EqualityComparer<K> equComp) {
-        return new EqualityComparableMap<K, V>(equComp, new LinkedHashMap<EqualityComparable<K>, V>());
+        return new EqualityComparableMap<>(equComp, new LinkedHashMap<EqualityComparable<K>, V>());
     }
 
     public static <K, V> Map<K, V> newTreeMap(EqualityComparer<K> equComp) {
-        return new EqualityComparableMap<K, V>(equComp, new TreeMap<EqualityComparable<K>, V>());
+        return new EqualityComparableMap<>(equComp, new TreeMap<EqualityComparable<K>, V>());
     }
 
     @Override
@@ -105,7 +105,7 @@ public class EqualityComparableMap<TKey, TValue> implements Map<TKey, TValue> {
     }
 
     private EqualityComparable<TKey> wrapKey(TKey key) {
-        return new EqualityComparable<TKey>(equComp, key);
+        return new EqualityComparable<>(equComp, key);
     }
 
     @Override
@@ -144,7 +144,7 @@ public class EqualityComparableMap<TKey, TValue> implements Map<TKey, TValue> {
                 return wrapKey(key);
             }
         };
-        return new SetView<TKey, EqualityComparable<TKey>>(wrapped.keySet(), unwrapKey, wrapKey);
+        return new SetView<>(wrapped.keySet(), unwrapKey, wrapKey);
     }
 
     @Override
@@ -158,18 +158,18 @@ public class EqualityComparableMap<TKey, TValue> implements Map<TKey, TValue> {
         UnaryFunction<Entry<EqualityComparable<TKey>, TValue>, Entry<TKey, TValue>> wrapKey = new UnaryFunction<Entry<EqualityComparable<TKey>, TValue>, Entry<TKey, TValue>>() {
             @Override
             public Entry<TKey, TValue> execute(Entry<EqualityComparable<TKey>, TValue> entry) {
-                return new AbstractMap.SimpleEntry<TKey, TValue>(entry.getKey().getWrapped(), entry.getValue());
+                return new AbstractMap.SimpleEntry<>(entry.getKey().getWrapped(), entry.getValue());
             }
         };
 
         UnaryFunction<Entry<TKey, TValue>, Entry<EqualityComparable<TKey>, TValue>> unwrapKey = new UnaryFunction<Entry<TKey, TValue>, Entry<EqualityComparable<TKey>, TValue>>() {
             @Override
             public Entry<EqualityComparable<TKey>, TValue> execute(Entry<TKey, TValue> entry) {
-                return new AbstractMap.SimpleEntry<EqualityComparable<TKey>, TValue>(wrapKey(entry.getKey()), entry.getValue());
+                return new AbstractMap.SimpleEntry<>(wrapKey(entry.getKey()), entry.getValue());
             }
         };
 
-        return new SetView<Entry<TKey, TValue>, Entry<EqualityComparable<TKey>, TValue>>(wrapped.entrySet(), wrapKey, unwrapKey);
+        return new SetView<>(wrapped.entrySet(), wrapKey, unwrapKey);
     }
 
     @Override
