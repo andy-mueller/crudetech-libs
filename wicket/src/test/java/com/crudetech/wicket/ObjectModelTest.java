@@ -10,6 +10,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 package com.crudetech.wicket;
 
+import org.apache.wicket.model.IDetachable;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.junit.Before;
@@ -161,5 +162,31 @@ public class ObjectModelTest {
 
         verify(inner, times(1)).detach();
     }
-    // detachDoesNothingOnValue
+    @Test
+    public void detachDelegatesToValueIfItIsDetachable(){
+        class DetachableValue implements IDetachable{
+            private boolean detached = true;
+            @Override public void detach() {
+                detached = false;
+            }
+        }
+        class DetachableValueConverter implements ObjectModel.Converter<DetachableValue, String>{
+            @Override
+            public String convertTo(DetachableValue detachableValue) {
+                throw new UnsupportedOperationException("Implement me!");
+            }
+
+            @Override
+            public DetachableValue convertFrom(String source) {
+                throw new UnsupportedOperationException("Implement me!");
+            }
+        }
+        DetachableValue value = new DetachableValue();
+        ObjectModel<DetachableValue, String> model = new ObjectModel<>(new DetachableValueConverter(), value);
+
+
+        model.detach();
+
+        assertThat(value.detached, is(false));
+    }
 }

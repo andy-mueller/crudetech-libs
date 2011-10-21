@@ -16,6 +16,20 @@ import org.apache.wicket.model.IDetachable;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 
+/**
+ * Adaptor model that simplifies and enables the use of domain objects in
+ * wicket models.
+ * <p>
+ * A  lot of predefined wicket components use primitive types and toString to display them.
+ * This often leads to the effect that the programming style relies more on these primitives and
+ * strings as on domain objects. This model helps you to convert any complex object into another
+ * representation. When you have more complicated domain objects, displaying
+ * them can be achieved using {@link org.apache.wicket.model.PropertyModel}s or
+ * their type safe brother.
+ *
+ * @param <TObject> The domain object type.
+ * @param <TDisplay> The target type and the type of this model
+ */
 public class ObjectModel<TObject, TDisplay> implements IChainingModel<TDisplay> {
 
     public static interface Converter<TSource, TTarget> {

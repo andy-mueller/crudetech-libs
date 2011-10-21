@@ -52,4 +52,12 @@ public class Pair<F, S> {
         result = 31 * result + Compare.hashCode(second);
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "Pair{" +
+                "first=" + first +
+                ", second=" + second +
+                '}';
+    }
 }

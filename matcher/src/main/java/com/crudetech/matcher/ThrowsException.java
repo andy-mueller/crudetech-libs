@@ -11,9 +11,10 @@
 package com.crudetech.matcher;
 
 
+import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
-import org.hamcrest.TypeSafeDiagnosingMatcher;
+import org.hamcrest.TypeSafeMatcher;
 
 import static com.crudetech.matcher.Verify.verifyThat;
 import static org.hamcrest.Matchers.is;
@@ -26,14 +27,19 @@ import static org.hamcrest.text.IsEmptyString.isEmptyOrNullString;
  * takes a {@link Runnable} implementation, executes it catches any thrown exception and
  * examines it.
  */
-public class ThrowsException extends TypeSafeDiagnosingMatcher<Runnable> {
+public class ThrowsException extends TypeSafeMatcher<Runnable> {
     private final Class<? extends Exception> exceptionClazz;
     private final Class<? extends Exception> causeClazz;
     private final String message;
 
     private static final String UnspecifiedCause = "<Unspecified>";
     private static final String UnspecifiedMessage = "<Unspecified>";
-    private static class UnspecifiedCauseExceptionType extends Exception{}
+    private boolean didThrowCorrect = true;
+    private Exception lastException = null;
+    private boolean executed = false;
+
+    private static class UnspecifiedCauseExceptionType extends Exception {
+    }
 
     private ThrowsException(Class<? extends Exception> exceptionClazz, Class<? extends Exception> causeClazz, String message) {
         verifyThat("exceptionClazz", exceptionClazz, is(notNullValue()));
@@ -50,7 +56,24 @@ public class ThrowsException extends TypeSafeDiagnosingMatcher<Runnable> {
     }
 
     public static Matcher<Runnable> doesNotThrow() {
-        return not(doesThrow(Exception.class));
+        return new BaseMatcher<Runnable>() {
+            private final Matcher<Runnable> doesThrow = doesThrow(Exception.class);
+
+            @Override
+            public boolean matches(Object item) {
+                return !doesThrow.matches(item);
+            }
+
+            @Override
+            public void describeTo(Description description) {
+                description.appendText("No exception to be thrown!");
+            }
+
+            @Override
+            public void describeMismatch(Object item, Description description) {
+                doesThrow.describeMismatch(item, description);
+            }
+        };
     }
 
     public static <T extends Exception> Matcher<Runnable> doesThrow(final Class<T> exceptionClazz) {
@@ -83,20 +106,30 @@ public class ThrowsException extends TypeSafeDiagnosingMatcher<Runnable> {
     }
 
     @Override
-    protected boolean matchesSafely(Runnable runnable, Description mismatchDescription) {
+    protected void describeMismatchSafely(Runnable item, Description mismatchDescription) {
+        if (lastException != null) {
+            mismatchDescription.appendText(toString(lastException));
+        } else {
+            mismatchDescription.appendText("<Nothing>");
+        }
+    }
+
+    @Override
+    protected boolean matchesSafely(Runnable runnable) {
+        if(executed){
+            throw new IllegalStateException("This matcher can only be executed once!");
+        }
+        executed = true;
         try {
             runnable.run();
         } catch (Exception lastException) {
+            this.lastException = lastException;
             boolean ex = exceptionClazz.isAssignableFrom(lastException.getClass());
             boolean cause = causeMatches(lastException);
             boolean msg = message.equals(UnspecifiedMessage) || message.equals(lastException.getMessage());
-            boolean didThrowCorrect = ex && cause && msg;
-            if(!didThrowCorrect){
-                mismatchDescription.appendText(toString(lastException));
-            }
+            didThrowCorrect = ex && cause && msg;
             return didThrowCorrect;
         }
-        mismatchDescription.appendText("<Nothing>");
         return false;
     }
 
@@ -129,16 +162,18 @@ public class ThrowsException extends TypeSafeDiagnosingMatcher<Runnable> {
                 '}';
     }
 
-    private static String toString(Throwable e){
-        if(e == null){
+    private static String toString(Throwable e) {
+        if (e == null) {
             return UnspecifiedCause;
         }
         String msg = e.getMessage() != null ? e.getMessage() : UnspecifiedMessage;
         return String.format(ExceptionFormat, e.getClass().getName(), msg, toString(e.getCause()));
     }
+
     private static final String ExceptionFormat = "%s{message=\"%s\", cause=%s}";
-    private static String toString(Class<? extends Throwable> clazz, String message, Class<? extends Throwable> cause){
-        if(UnspecifiedCauseExceptionType.class.isAssignableFrom(clazz)){
+
+    private static String toString(Class<? extends Throwable> clazz, String message, Class<? extends Throwable> cause) {
+        if (UnspecifiedCauseExceptionType.class.isAssignableFrom(clazz)) {
             return UnspecifiedCause;
         }
         String causeString = toString(cause, UnspecifiedMessage, UnspecifiedCauseExceptionType.class);

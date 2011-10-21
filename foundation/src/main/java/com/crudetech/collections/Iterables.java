@@ -87,6 +87,7 @@ public final class Iterables {
         }
         return false;
     }
+
     public static boolean contains(Iterable<Double> range, double value) {
         if (range == null) throw new ArgumentNullException("range");
         for (Double v : range) {
@@ -106,6 +107,7 @@ public final class Iterables {
         }
         return false;
     }
+
     public static boolean contains(Iterable<Float> range, float value, float tolerance) {
         if (range == null) throw new ArgumentNullException("range");
         for (Float v : range) {
@@ -120,6 +122,7 @@ public final class Iterables {
         if (range == null) throw new ArgumentNullException("range");
         return !range.iterator().hasNext();
     }
+
     public static <T> boolean isNotEmpty(final Iterable<T> range) {
         return !isEmpty(range);
     }
@@ -210,12 +213,15 @@ public final class Iterables {
     public static <T> Iterable<T> concat(Iterable<T> i1, Iterable<T> i2) {
         return concat(asList(i1, i2));
     }
+
     public static <T> Iterable<T> concat(Iterable<T> i1, Iterable<T> i2, Iterable<T> i3) {
         return concat(asList(i1, i2, i3));
     }
+
     public static <T> Iterable<T> concat(Iterable<T> i1, Iterable<T> i2, Iterable<T> i3, Iterable<T> i4) {
         return concat(asList(i1, i2, i3, i4));
     }
+
     public static <T> Iterable<T> concat(Iterable<T> i1, Iterable<T> i2, Iterable<T> i3, Iterable<T> i4, Iterable<T> i5) {
         return concat(asList(i1, i2, i3, i4, i5));
     }
@@ -240,6 +246,7 @@ public final class Iterables {
             }
         });
     }
+
     public static <Base, Derived extends Base> Iterable<Base> covariant(Iterable<Derived> from) {
         return cast(from);
     }
@@ -255,7 +262,7 @@ public final class Iterables {
         return copy(src, new ArrayList<T>());
     }
 
-    public static <T> List<T> emptyListOf(Class<T> clazz){
+    public static <T> List<T> emptyListOf(Class<T> clazz) {
         return Collections.emptyList();
     }
 }

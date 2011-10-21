@@ -10,14 +10,18 @@
 ////////////////////////////////////////////////////////////////////////////////
 package com.crudetech.matcher;
 
+import org.hamcrest.Matcher;
 import org.junit.Test;
 
 import javax.xml.bind.DataBindingException;
 import java.sql.SQLException;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.crudetech.matcher.ThrowsException.*;
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.fail;
 
 
 public class ThrowsExceptionFixture {
@@ -66,6 +70,7 @@ public class ThrowsExceptionFixture {
         };
         assertThat(doIt, doesThrow(DataBindingException.class, withCause(SQLException.class)));
     }
+
     @Test
     public void doesThrowWithMsg() {
         Runnable doIt = new Runnable() {
@@ -75,6 +80,7 @@ public class ThrowsExceptionFixture {
         };
         assertThat(doIt, doesThrow(DataBindingException.class, withMessage("OOO")));
     }
+
     @Test
     public void doesThrowWithMsgAndCause() {
         Runnable doIt = new Runnable() {
@@ -84,6 +90,7 @@ public class ThrowsExceptionFixture {
         };
         assertThat(doIt, doesThrow(DataBindingException.class, withMessage("OOO"), withCause(SQLException.class)));
     }
+
     @Test
     public void doesThrowWithMsgAndCauseFails() {
         Runnable doIt = new Runnable() {
@@ -93,6 +100,7 @@ public class ThrowsExceptionFixture {
         };
         assertThat(doIt, not(doesThrow(DataBindingException.class, withMessage("XXX"), withCause(SQLException.class))));
     }
+
     @Test
     public void doesThrowWithCauseFails() {
         Runnable doIt = new Runnable() {
@@ -101,5 +109,42 @@ public class ThrowsExceptionFixture {
             }
         };
         assertThat(doIt, not(doesThrow(DataBindingException.class, withCause(RuntimeException.class))));
+    }
+
+    @Test
+    public void runnableIsOnlyExecutedOnceOnFailure() {
+        final AtomicInteger counter = new AtomicInteger(0);
+        Runnable doIt = new Runnable() {
+            public void run() {
+                counter.incrementAndGet();
+                throw new IllegalStateException();
+            }
+        };
+
+        try {
+            assertThat(doIt, doesThrow(IllegalArgumentException.class));
+            fail("Don't want to be here!!");
+        } catch (AssertionError ae) {
+        }
+        assertThat(counter.get(), is(1));
+    }
+
+    @Test
+    public void matcherCanOnlyBeExecutedOneTime() {
+        Matcher<Runnable> doesThrow = doesThrow(IllegalArgumentException.class);
+        Runnable doThrow = new Runnable() {
+            @Override
+            public void run() {
+                throw new IllegalArgumentException();
+            }
+        };
+
+        doesThrow.matches(doThrow);
+
+        try {
+            doesThrow.matches(doThrow);
+            fail("Expected exception was not thrown!");
+        } catch (IllegalStateException e) {
+        }
     }
 }

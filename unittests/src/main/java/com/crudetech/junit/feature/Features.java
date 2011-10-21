@@ -23,11 +23,11 @@ import java.util.List;
  * Features are a way to reuse and compose generic test fixtures. An example for this
  * is the correct implementations of {@link Object#equals(Object)} and {@link Object#hashCode()}
  * or implementations of the java collections interfaces that you will test over and over again.
- * <p>
+ * <p/>
  * The following example demonstrates the reuse of the generic {@link Equivalent}
  * and {@link Serializable} test fixture to test for the correct implementation of the equals contract for
  * a simple Pair class:
- * <p>
+ * <p/>
  * <pre>
  * public class Pair implements java.io.Serializable {
  *    private final Object first;
@@ -106,7 +106,7 @@ import java.util.List;
  * }
  *
  * </pre>
- * <p>
+ * <p/>
  * You can compose as many feature test fixtures using the {@link Feature} annotation as you like.
  * A feature implementation must implement the {@link FeatureFixture} interface and provide a public
  * one argument constructor taking the appropriate factory to create the objects for the tests.
@@ -120,7 +120,7 @@ public class Features extends Suite {
         List<Runner> runners = new ArrayList<Runner>();
         for (FeatureAccessor field : extractFieldsWithTest(klass)) {
             Class<? extends FeatureFixture> test = field.getFeature();
-            runners.add(new FeatureRunner(test, field.getFactory()));
+            runners.add(new FeatureRunner(test, field.getFactory(), field.getName()));
         }
         addSuiteIfItContainsTests(klass, runners);
         return runners;
@@ -189,6 +189,10 @@ public class Features extends Suite {
 
         Class<? extends FeatureFixture> getFeature() {
             return field.getAnnotation(Feature.class).value();
+        }
+
+        String getName() {
+            return this.field.getName();
         }
     }
 

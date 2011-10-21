@@ -11,15 +11,18 @@
 package com.crudetech.junit.feature;
 
 import org.junit.runners.BlockJUnit4ClassRunner;
+import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.InitializationError;
 
 import java.util.List;
 
 class FeatureRunner extends BlockJUnit4ClassRunner {
     private final Object factory;
+    private final String name;
 
-    FeatureRunner(Class<?> klass, Object factory) throws InitializationError {
+    FeatureRunner(Class<?> klass, Object factory, String name) throws InitializationError {
         super(klass);
+        this.name = name;
 
         if(factory == null){
             throw new InitializationError(new IllegalArgumentException("Factory instance must not be null!!"));
@@ -52,5 +55,15 @@ class FeatureRunner extends BlockJUnit4ClassRunner {
             String gripe = "Test class should have exactly one public constructor taking a factory of type " + factory;
             errors.add(new Exception(gripe));
         }
+    }
+
+    @Override
+    protected String getName() {
+        return name;
+    }
+
+    @Override
+    protected String testName(FrameworkMethod method) {
+        return super.testName(method) + " [" + name + "]";
     }
 }
