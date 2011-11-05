@@ -15,6 +15,7 @@ import com.crudetech.lang.Compare;
 /**
  * Simple base class for {@link Iterable}s that provides an {@link java.util.Arrays} like
  * implementation of {@link Object#toString()}, {@link Object#hashCode()} and {@link Object#equals(Object)}.
+ *
  * @param <T>
  */
 public abstract class AbstractIterable<T> implements Iterable<T> {
@@ -22,6 +23,7 @@ public abstract class AbstractIterable<T> implements Iterable<T> {
     public int hashCode() {
         return Iterables.hashCode(this);
     }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -31,9 +33,17 @@ public abstract class AbstractIterable<T> implements Iterable<T> {
 
         return Compare.equals(this, that);
     }
+
     @SuppressWarnings({"StringConcatenation", "HardCodedStringLiteral", "MagicCharacter"})
     @Override
     public String toString() {
         return Iterables.toString(this).toString();
+    }
+
+    public boolean isEmpty() {
+        return Iterables.isEmpty(this);
+    }
+    public boolean isNotEmpty() {
+        return Iterables.isNotEmpty(this);
     }
 }

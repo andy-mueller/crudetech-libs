@@ -13,11 +13,13 @@ package com.crudetech.collections;
 import com.crudetech.lang.AbstractRunnable;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
 import static com.crudetech.junit.AssertThrows.assertThrows;
+import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -33,6 +35,8 @@ public class CircularIterableTest {
         assertThat(iterator.next(), is(2));
         assertThat(iterator.next(), is(0));
         assertThat(iterator.next(), is(1));
+        assertThat(iterator.next(), is(2));
+        assertThat(iterator.next(), is(0));
     }
 
     @Test
@@ -72,5 +76,24 @@ public class CircularIterableTest {
         };
 
         assertThrows(fromThrowsOnNullInput, IllegalArgumentException.class);
+    }
+
+    @Test
+    public void removeWorksIfInnerIteratorDoesAllowRemove() {
+        CircularIterable<Integer> it = CircularIterable.from(new ArrayList<>(asList(0, 1, 2)));
+        Iterator<Integer> iterator = it.iterator();
+
+        assertThat(iterator.next(), is(0));
+        assertThat(iterator.next(), is(1));
+        assertThat(iterator.next(), is(2));
+        assertThat(iterator.next(), is(0));
+
+        iterator.remove();
+
+        assertThat(iterator.next(), is(1));
+        assertThat(iterator.next(), is(2));
+        assertThat(iterator.next(), is(1));
+        assertThat(iterator.next(), is(2));
+        assertThat(iterator.next(), is(1));
     }
 }
