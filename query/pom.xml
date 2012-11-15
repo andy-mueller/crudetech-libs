@@ -14,7 +14,7 @@
     <parent>
         <artifactId>com.crudetech</artifactId>
         <groupId>com.crudetech</groupId>
-        <version>0.21-SNAPSHOT</version>
+        <version>0.23-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
