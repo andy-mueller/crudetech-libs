@@ -19,7 +19,7 @@ import com.crudetech.graphics2d.xwt.widgets.*;
 import static java.util.Arrays.asList;
 
 /**
- * A very simple test scene that can be used to visually expect the your xwt implementation.
+ * A very simple test scene that can be used to visually inspect your xwt implementation.
  */
 public class TestScene {
     private final double width, height;
@@ -47,7 +47,8 @@ public class TestScene {
 
         CoordinateSystem ecs = new CoordinateSystem(new Point2d(300, 10), RadianAngles.k0);
 
-        try (GraphicsStream2d.RestorePoint rp = pipe.createRestorePoint()) {
+        GraphicsStream2d.RestorePoint rp = pipe.createRestorePoint();
+        try {
             pipe.getCoordinateSystemStack().pushCoordinateSystem(ecs);
 
             pipe.getPenStack().push(new Pen(2f));
@@ -56,6 +57,8 @@ public class TestScene {
             pipe.getBrushStack().pop();
 
             pipe.drawPolygon(poly);
+        } finally {
+            rp.restore();
         }
     }
 
@@ -68,8 +71,11 @@ public class TestScene {
         RectangularBorderedTextWidget txt = new RectangularBorderedTextWidget("Hallo Welt!", 60, 30, props);
         txt.getEcs().setLocation(new Point2d(200, 10));
 
-        try (GraphicsStream2d.RestorePoint rp = pipe.createRestorePoint()) {
+        GraphicsStream2d.RestorePoint rp = pipe.createRestorePoint();
+        try {
             txt.draw(pipe);
+        } finally {
+            rp.restore();
         }
     }
 
@@ -78,8 +84,11 @@ public class TestScene {
         TextWidget txt = new TextWidget("Hallo Welt!", 60, 30, textProps);
         txt.getEcs().setLocation(new Point2d(100, 10));
 
-        try (GraphicsStream2d.RestorePoint rp = pipe.createRestorePoint()) {
+        GraphicsStream2d.RestorePoint rp = pipe.createRestorePoint();
+        try {
             txt.draw(pipe);
+        } finally {
+            rp.restore();
         }
     }
 
@@ -88,8 +97,11 @@ public class TestScene {
         RectangularBorderedWidget tableBoundary = new RectangularBorderedWidget(60, 30, rectProps);
         tableBoundary.getEcs().setLocation(new Point2d(10, 10));
 
-        try (GraphicsStream2d.RestorePoint rp = pipe.createRestorePoint()) {
+        GraphicsStream2d.RestorePoint rp = pipe.createRestorePoint();
+        try {
             tableBoundary.draw(pipe);
+        } finally {
+            rp.restore();
         }
     }
 
@@ -97,8 +109,11 @@ public class TestScene {
         RectangularBorderedWidgetDispProps tableProps = new RectangularBorderedWidgetDispProps(new Pen(2.0f), new SolidBrush(Color.Blue));
         RectangularBorderedWidget tableBoundary = new RectangularBorderedWidget(width, height, tableProps);
 
-        try (GraphicsStream2d.RestorePoint rp = pipe.createRestorePoint()) {
+        GraphicsStream2d.RestorePoint rp = pipe.createRestorePoint();
+        try {
             tableBoundary.draw(pipe);
+        } finally {
+            rp.restore();
         }
     }
 }

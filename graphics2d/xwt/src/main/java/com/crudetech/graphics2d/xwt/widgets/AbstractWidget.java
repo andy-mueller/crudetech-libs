@@ -39,9 +39,12 @@ public abstract class AbstractWidget implements Widget {
 
     @Override
     public void draw(GraphicsStream2d stream) {
-        try (GraphicsStream2d.RestorePoint rp = stream.createRestorePoint()) {
+        GraphicsStream2d.RestorePoint rp = stream.createRestorePoint();
+        try {
             stream.getCoordinateSystemStack().pushCoordinateSystem(getEcs());
             drawEcs(stream);
+        } finally {
+            rp.restore();
         }
     }
 

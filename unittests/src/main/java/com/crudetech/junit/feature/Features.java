@@ -36,7 +36,6 @@ import java.util.List;
  *    public Pair(final Object first, final Object second) {
  *        this.second = second;
  *        this.first = first;
- *        Set&lt;String&gt; s;
  *    }
  *    public Object getFirst() {
  *        return first;
@@ -119,6 +118,7 @@ public class Features extends Suite {
     private static List<Runner> extractAndCreateRunners(Class<?> klass) throws InitializationError {
         List<Runner> runners = new ArrayList<Runner>();
         for (FeatureAccessor field : extractFieldsWithTest(klass)) {
+            @SuppressWarnings("unchecked")
             Class<? extends FeatureFixture> test = field.getFeature();
             runners.add(new FeatureRunner(test, field.getFactory(), field.getName()));
         }

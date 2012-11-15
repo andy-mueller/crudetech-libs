@@ -27,6 +27,10 @@ package com.crudetech.lang;
  *     throw sneakyThrow(e);
  * }
  * </pre>
+ * <p>
+ * Please note, that this technique causes the following problem, when used behind a proxy.
+ * Most proxy frameworks throw a {@link java.lang.reflect.UndeclaredThrowableException},
+ * if the proxied object throws a checked exception, that was not declared.
  */
 public class SneakyThrow {
     private SneakyThrow(){}

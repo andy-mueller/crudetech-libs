@@ -33,8 +33,11 @@ public class GraphicsStream2dRestorePointTest {
 
         Iterable<Matrix2d> originalStack = asList(stream.getCoordinateSystemStack().toArray());
 
-        try (GraphicsStream2d.RestorePoint rp = stream.createRestorePoint()) {
+        GraphicsStream2d.RestorePoint rp = stream.createRestorePoint();
+        try {
             stream.getCoordinateSystemStack().pushTranslation(10, 42);
+        } finally {
+            rp.restore();
         }
 
         assertThat(originalStack, is(equalTo(stream.getCoordinateSystemStack())));
@@ -51,8 +54,11 @@ public class GraphicsStream2dRestorePointTest {
 
         Iterable<Matrix2d> originalStack = asList(stream.getCoordinateSystemStack().toArray());
 
-        try (GraphicsStream2d.RestorePoint rp = stream.createRestorePoint()) {
+        GraphicsStream2d.RestorePoint rp = stream.createRestorePoint();
+        try {
             stream.getCoordinateSystemStack().pop();
+        } finally {
+            rp.restore();
         }
 
         assertThat(originalStack, is(equalTo(stream.getCoordinateSystemStack())));
@@ -70,8 +76,11 @@ public class GraphicsStream2dRestorePointTest {
         stream.getPenStack().push(new Pen(5));
         Iterable<Pen> originalStack = asList(stream.getPenStack().toArray(Pen.class));
 
-        try (GraphicsStream2d.RestorePoint rp = stream.createRestorePoint()) {
+        GraphicsStream2d.RestorePoint rp = stream.createRestorePoint();
+        try {
             stream.getPenStack().push(new Pen(4));
+        } finally {
+            rp.restore();
         }
 
         assertThat(originalStack, is(equalTo(stream.getPenStack())));
@@ -89,8 +98,11 @@ public class GraphicsStream2dRestorePointTest {
         stream.getPenStack().push(new Pen(5));
         Iterable<Pen> originalStack = asList(stream.getPenStack().toArray(Pen.class));
 
-        try (GraphicsStream2d.RestorePoint rp = stream.createRestorePoint()) {
+        GraphicsStream2d.RestorePoint rp = stream.createRestorePoint();
+        try {
             stream.getPenStack().pop();
+        } finally {
+            rp.restore();
         }
 
         assertThat(originalStack, is(equalTo(stream.getPenStack())));
@@ -108,8 +120,11 @@ public class GraphicsStream2dRestorePointTest {
         stream.getFontStack().push(new Font("Arial", FontStyle.Italic, 8));
         Iterable<Font> originalStack = asList(stream.getFontStack().toArray(Font.class));
 
-        try (GraphicsStream2d.RestorePoint rp = stream.createRestorePoint()) {
+        GraphicsStream2d.RestorePoint rp = stream.createRestorePoint();
+        try {
             stream.getFontStack().push(new Font("Times", FontStyle.Plain, 23));
+        } finally {
+            rp.restore();
         }
 
         assertThat(originalStack, is(equalTo(stream.getFontStack())));
@@ -127,8 +142,11 @@ public class GraphicsStream2dRestorePointTest {
         stream.getFontStack().push(new Font("Arial", FontStyle.Italic, 8));
         Iterable<Font> originalStack = asList(stream.getFontStack().toArray(Font.class));
 
-        try (GraphicsStream2d.RestorePoint rp = stream.createRestorePoint()) {
+        GraphicsStream2d.RestorePoint rp = stream.createRestorePoint();
+        try {
             stream.getFontStack().pop();
+        }finally{
+            rp.restore();
         }
 
         assertThat(originalStack, is(equalTo(stream.getFontStack())));
@@ -146,8 +164,11 @@ public class GraphicsStream2dRestorePointTest {
         stream.getBrushStack().push(new SolidBrush(Color.Green));
         Iterable<Brush> originalStack = asList(stream.getBrushStack().toArray(Brush.class));
 
-        try (GraphicsStream2d.RestorePoint rp = stream.createRestorePoint()) {
+        GraphicsStream2d.RestorePoint rp = stream.createRestorePoint();
+        try {
             stream.getBrushStack().push(new SolidBrush(Color.Red));
+        }finally{
+            rp.restore();
         }
 
         assertThat(originalStack, is(equalTo(stream.getBrushStack())));
@@ -165,8 +186,11 @@ public class GraphicsStream2dRestorePointTest {
         stream.getBrushStack().push(new SolidBrush(Color.Green));
         Iterable<Brush> originalStack = asList(stream.getBrushStack().toArray(Brush.class));
 
-        try (GraphicsStream2d.RestorePoint rp = stream.createRestorePoint()) {
+        GraphicsStream2d.RestorePoint rp = stream.createRestorePoint();
+        try {
             stream.getBrushStack().pop();
+        }finally{
+            rp.restore();
         }
 
         assertThat(originalStack, is(equalTo(stream.getBrushStack())));

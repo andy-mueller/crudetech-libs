@@ -40,19 +40,19 @@ public class ObjectModelTest {
 
     @Before
     public void before() throws Exception {
-        valueModel = new ObjectModel<>(int2string, 42);
+        valueModel = new ObjectModel<Integer,String>(int2string, 42);
         innerModel = Model.of(42);
-        chainedModel = new ObjectModel<>(int2string, innerModel);
+        chainedModel = new ObjectModel<Integer,String>(int2string, innerModel);
     }
 
     @Test
     public void defaultCtorCreatesEmptyModel() {
-        ObjectModel<Integer, String> model = new ObjectModel<>(int2string);
+        ObjectModel<Integer, String> model = new ObjectModel<Integer,String>(int2string);
         assertThat(model.getObject(), is(nullValue()));
     }
     @Test
     public void ctorWithNullValueStoresNull() {
-        ObjectModel<Integer, String> model = new ObjectModel<>(int2string, (Integer)null);
+        ObjectModel<Integer, String> model = new ObjectModel<Integer,String>(int2string, (Integer)null);
         assertThat(model.getObject(), is(nullValue()));
     }
     @Test
@@ -60,7 +60,7 @@ public class ObjectModelTest {
         Runnable ctorWithNullModel = new Runnable() {
             @Override
             public void run() {
-                new ObjectModel<>(int2string, (IModel<Integer>)null);
+                new ObjectModel<Integer,String>(int2string, (IModel<Integer>)null);
             }
         };
 
@@ -101,7 +101,7 @@ public class ObjectModelTest {
                 throw new BoomException();
             }
         };
-        final ObjectModel<Integer, String> model = new ObjectModel<>(int2string, inner);
+        final ObjectModel<Integer, String> model = new ObjectModel<Integer,String>(int2string, inner);
 
         Runnable getObject = new Runnable() {
             @Override
@@ -155,8 +155,8 @@ public class ObjectModelTest {
 
     @Test
     public void detachDelegatesToInnerModel(){
-        Model<Integer> inner = spy(new Model<>(42));
-        ObjectModel<Integer, String> model = new ObjectModel<>(int2string, inner);
+        Model<Integer> inner = spy(new Model<Integer>(42));
+        ObjectModel<Integer, String> model = new ObjectModel<Integer,String>(int2string, inner);
 
         model.detach();
 
@@ -182,7 +182,7 @@ public class ObjectModelTest {
             }
         }
         DetachableValue value = new DetachableValue();
-        ObjectModel<DetachableValue, String> model = new ObjectModel<>(new DetachableValueConverter(), value);
+        ObjectModel<DetachableValue, String> model = new ObjectModel<DetachableValue, String>(new DetachableValueConverter(), value);
 
 
         model.detach();

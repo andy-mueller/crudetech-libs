@@ -26,10 +26,13 @@ public class RectangularBorderedWidget extends RectangularWidget {
 
     @Override
     protected void drawEcs(GraphicsStream2d stream) {
-        try (GraphicsStream2d.RestorePoint rp = stream.createRestorePoint()) {
+        GraphicsStream2d.RestorePoint rp = stream.createRestorePoint();
+        try {
             stream.getPenStack().push(getDisplayProperties().getBorderPen());
             stream.getBrushStack().push(getDisplayProperties().getBorderBrush());
             stream.drawRectangle(getBoundingBox());
+        } finally {
+            rp.restore();
         }
     }
 }

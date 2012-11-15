@@ -80,7 +80,7 @@ public class CircularIterableTest {
 
     @Test
     public void removeWorksIfInnerIteratorDoesAllowRemove() {
-        CircularIterable<Integer> it = CircularIterable.from(new ArrayList<>(asList(0, 1, 2)));
+        CircularIterable<Integer> it = CircularIterable.from(new ArrayList<Integer>(asList(0, 1, 2)));
         Iterator<Integer> iterator = it.iterator();
 
         assertThat(iterator.next(), is(0));

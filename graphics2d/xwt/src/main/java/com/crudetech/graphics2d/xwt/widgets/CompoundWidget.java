@@ -38,8 +38,11 @@ public class CompoundWidget extends AbstractWidget {
     @Override
     protected void drawEcs(GraphicsStream2d stream) {
         for (Widget sub : getComponents()) {
-            try (GraphicsStream2d.RestorePoint rp = stream.createRestorePoint()) {
+            GraphicsStream2d.RestorePoint rp = stream.createRestorePoint();
+            try {
                 sub.draw(stream);
+            } finally {
+                rp.restore();
             }
         }
     }

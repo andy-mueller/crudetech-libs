@@ -14,7 +14,8 @@ import java.util.Iterator;
 
 /**
  * Simple helper class that offers standard comparing functionality with additional
- * null checks
+ * null checks. It offers a more extensive variety of comparison methods than
+ * the jdk 7 Objects class.
  */
 final public class Compare {
 
@@ -163,8 +164,9 @@ final public class Compare {
      * @param o The object reference.
      * @return The hash cod eof the object or 0 if the reference is null.
      */
+    @Deprecated
     public static int hashCode(Object o) {
-        return o != null ? o.hashCode() : 0;
+        return Objects.hashCode(o);
     }
 
     /**

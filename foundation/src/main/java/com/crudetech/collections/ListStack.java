@@ -57,10 +57,14 @@ public class ListStack<T> implements LightweightStack<T> {
 
     @Override
     public T peek() {
+        verifyNotEmpty();
+        return inner.get(inner.size() - 1);
+    }
+
+    private void verifyNotEmpty() {
         if (isEmpty()) {
             throw new EmptyStackException();
         }
-        return inner.get(inner.size() - 1);
     }
 
     @Override
@@ -81,9 +85,7 @@ public class ListStack<T> implements LightweightStack<T> {
 
     @Override
     public void pop() {
-        if (isEmpty()) {
-            throw new EmptyStackException();
-        }
+        verifyNotEmpty();
         inner.remove(inner.size() - 1);
     }
 

@@ -41,7 +41,7 @@ import static com.crudetech.lang.SneakyThrow.sneakyThrow;
  */
 public abstract class AbstractRunnable implements Runnable {
     @Override
-    public void run() {
+    public final void run() {
         try {
             doRun();
         } catch (Throwable e) {
@@ -50,6 +50,7 @@ public abstract class AbstractRunnable implements Runnable {
         }
     }
 
+    @SuppressWarnings("UnusedParameters")
     protected void exceptionThrown(Throwable throwable) {
         //no-op
     }

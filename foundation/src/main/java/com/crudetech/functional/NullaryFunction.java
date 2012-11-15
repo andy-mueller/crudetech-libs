@@ -10,6 +10,18 @@
 ////////////////////////////////////////////////////////////////////////////////
 package com.crudetech.functional;
 
-public interface NullaryFunction<Result> {
-    Result execute();  
+/**
+ * A function with no arguments.
+ *
+ * @param <TResult> The result type.
+ */
+public interface NullaryFunction<TResult> {
+    /**
+     * Executes the represented function and returns the result.
+     * And implementation is expected to be idempotent, i.e. it can be called multiple times
+     * and will return the same results
+     *
+     * @return The result of this function.
+     */
+    TResult execute();
 }

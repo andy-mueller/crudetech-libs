@@ -42,8 +42,11 @@ public class Serializable<T extends java.io.Serializable> implements FeatureFixt
         T o = factory.createObject();
 
         ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-        try (ObjectOutputStream out = new ObjectOutputStream(byteStream)) {
+        ObjectOutputStream out = new ObjectOutputStream(byteStream);
+        try {
             out.writeObject(o);
+        } finally {
+            out.close();
         }
 
         ObjectInputStream in = new ObjectInputStream(new ByteArrayInputStream(byteStream.toByteArray()));

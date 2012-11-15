@@ -91,7 +91,7 @@ import java.util.Map;
  * </pre>
  */
 public abstract class EventDecorator<TEventSource, TEventObject extends EventObject<TEventSource>> implements Event<TEventObject> {
-    private final EventSupport<TEventObject> event = new EventSupport<>();
+    private final EventSupport<TEventObject> event = new EventSupport<TEventObject>();
     private final TEventSource decorated;
     private final Event<TEventObject> decoratedEvent;
     private final Object SyncLock = new Object();
@@ -115,7 +115,8 @@ public abstract class EventDecorator<TEventSource, TEventObject extends EventObj
         }
     }
 
-    private final Map<EventListener<TEventObject>, EventListener<TEventObject>> handlers = new HashMap<>();
+    private final Map<EventListener<TEventObject>, EventListener<TEventObject>> handlers =
+            new HashMap<EventListener<TEventObject>, EventListener<TEventObject>>();
 
     private EventListener<TEventObject> createAdapter() {
         return new EventListener<TEventObject>() {

@@ -47,19 +47,19 @@ public class ListQueryable<T> extends AbstractQueryable<T> {
         }
         final int end = start + amount;
         if (end >= list.size()) {
-            return new ListQueryable<>();
+            return new ListQueryable<T>();
         }
-        return new ListQueryable<>(list.subList(start, end));
+        return new ListQueryable<T>(list.subList(start, end));
     }
 
     @Override
     public <U> Queryable<U> select(UnaryFunction<? super T, U> select) {
-        return new ListQueryable<>(new SelectList<>(list, select));
+        return new ListQueryable<U>(new SelectList<T, U>(list, select));
     }
 
     @Override
     public <U> Queryable<U> select(BinaryFunction<? super T, Integer, U> select) {
-        return new ListQueryable<>(new SelectWithIndexList<>(list, select));
+        return new ListQueryable<U>(new SelectWithIndexList<T, U>(list, select));
     }
 
     @Override
@@ -67,19 +67,18 @@ public class ListQueryable<T> extends AbstractQueryable<T> {
         if (filter == null) {
             throw new ArgumentNullException("filter");
         }
-        return new IterableQueryable<T>(new WhereIterable(list, filter));
+        return new IterableQueryable<T>(new WhereIterable<T>(list, filter));
     }
 
     @Override
-    public <U> Queryable<U> cast(Class<U> targetClass) {
+    public <U> Queryable<U> cast(final Class<U> targetClass) {
         UnaryFunction<T, U> cast = new UnaryFunction<T, U>() {
             @Override
             public U execute(T t) {
-                @SuppressWarnings("unchecked") U u = (U) t;
-                return u;
+                return targetClass.cast(t);
             }
         };
-        return new ListQueryable<>(new SelectList<>(list, cast));
+        return new ListQueryable<U>(new SelectList<T, U>(list, cast));
     }
 
     @Override
@@ -99,6 +98,6 @@ public class ListQueryable<T> extends AbstractQueryable<T> {
 
     @Override
     public List<T> toList() {
-        return new ArrayList<>(list);
+        return new ArrayList<T>(list);
     }
 }

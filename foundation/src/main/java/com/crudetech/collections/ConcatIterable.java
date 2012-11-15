@@ -15,6 +15,10 @@ import com.crudetech.functional.UnaryFunction;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+/**
+ * Concatenates a set of iterables into one iterable.
+ * @param <T>
+ */
 class ConcatIterable<T> extends AbstractIterable<T> {
     private final Iterable<Iterable<T>> iterables;
 

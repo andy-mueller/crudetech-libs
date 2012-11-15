@@ -78,7 +78,7 @@ public class EventDecoratorTest {
     }
 
     private static class DecoratedHolder implements Holder {
-        private final EventSupport<HolderEventObject> event = new EventSupport<>();
+        private final EventSupport<HolderEventObject> event = new EventSupport<HolderEventObject>();
 
         void raiseEvent(HolderEventObject e) {
             getEvent().fireEvent(e);

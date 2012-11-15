@@ -27,6 +27,7 @@ public abstract class AbstractToleranceComparable<TolComp extends ToleranceCompa
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
+        @SuppressWarnings("unchecked")
         TolComp that = (TolComp) o;
         return equals(that, getGlobalTolerance());
     }

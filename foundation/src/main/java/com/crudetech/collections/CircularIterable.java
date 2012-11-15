@@ -64,7 +64,7 @@ public class CircularIterable<T> extends AbstractIterable<T> {
 
     public static <T> CircularIterable<T> from(List<T> items) {
         VerifyArgument.isNotNull("items", items);
-        return new CircularIterable<>(items);
+        return new CircularIterable<T>(items);
     }
 
     public static <T> CircularIterable<T> from(T... items) {

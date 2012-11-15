@@ -122,7 +122,7 @@ public abstract class BoundedValue<T> implements Serializable {
 
     @Override
     public int hashCode() {
-        return Compare.hashCode(value);
+        return Objects.hashCode(value);
     }
 
     @Override

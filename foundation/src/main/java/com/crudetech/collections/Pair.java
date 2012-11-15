@@ -11,6 +11,7 @@
 package com.crudetech.collections;
 
 import com.crudetech.lang.Compare;
+import com.crudetech.lang.Objects;
 
 /**
  * A simple pair class that references two other objects.<br/>
@@ -48,8 +49,8 @@ public class Pair<F, S> {
 
     @Override
     public int hashCode() {
-        int result = Compare.hashCode(first);
-        result = 31 * result + Compare.hashCode(second);
+        int result = Objects.hashCode(first);
+        result = 31 * result + Objects.hashCode(second);
         return result;
     }
 

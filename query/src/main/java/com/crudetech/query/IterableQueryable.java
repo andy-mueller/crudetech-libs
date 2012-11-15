@@ -38,13 +38,13 @@ public class IterableQueryable<T> extends AbstractQueryable<T> {
     @Override
     public <U> Queryable<U> select(final UnaryFunction<? super T, U> select) {
         if (select == null) throw new ArgumentNullException("select");
-        return new IterableQueryable<>(new SelectIterable<>(range, select));
+        return new IterableQueryable<U>(new SelectIterable<T, U>(range, select));
     }
 
     @Override
     public <U> Queryable<U> select(final BinaryFunction<? super T, Integer, U> select) {
         if (select == null) throw new ArgumentNullException("select");
-        return new IterableQueryable<>(new SelectWithIndexIterable<>(range, select));
+        return new IterableQueryable<U>(new SelectWithIndexIterable<T, U>(range, select));
     }
 
     @Override
@@ -55,7 +55,7 @@ public class IterableQueryable<T> extends AbstractQueryable<T> {
         return new IterableQueryable<T>(range) {
             @Override
             public Iterator<T> iterator() {
-                return new SliceIterator<>(IterableQueryable.this.iterator(), start, amount);
+                return new SliceIterator<T>(IterableQueryable.this.iterator(), start, amount);
             }
         };
     }
@@ -76,7 +76,7 @@ public class IterableQueryable<T> extends AbstractQueryable<T> {
         if (filter == null) {
             throw new ArgumentNullException("filter");
         }
-        return new IterableQueryable<>(new WhereIterable<>(range, filter));
+        return new IterableQueryable<T>(new WhereIterable<T>(range, filter));
     }
 
     @Override
@@ -106,7 +106,7 @@ public class IterableQueryable<T> extends AbstractQueryable<T> {
 
     @Override
     public List<T> toList() {
-        ArrayList<T> targetList = new ArrayList<>();
+        ArrayList<T> targetList = new ArrayList<T>();
         copy(this, targetList);
         return targetList;
     }

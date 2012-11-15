@@ -139,7 +139,7 @@ public class GraphicsStream2d {
         pipe.fillPolygon(polygon2d);
     }
 
-    public class RestorePoint implements AutoCloseable{
+    public class RestorePoint implements com.crudetech.lang.AutoCloseable{
         private final Matrix2d[] xforms = coosStack.toArray();
         private final Pen[] pens = penStack.toArray(Pen.class);
         private final Brush[] brushes= brushStack.toArray(Brush.class);

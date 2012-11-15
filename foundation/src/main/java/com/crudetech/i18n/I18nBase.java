@@ -80,7 +80,7 @@ public abstract class I18nBase {
     private static volatile LocaleProvider localeProvider = LocaleProvider.Default;
     private final ResourceBundleControlProvider controlProvider;
 
-    public static class LocaleProviderOverride implements AutoCloseable{
+    public static class LocaleProviderOverride implements com.crudetech.lang.AutoCloseable{
         private LocaleProvider localeProvider = LocaleProvider.Default;
         public LocaleProviderOverride(LocaleProvider localeProvider) {
             this.localeProvider = I18nBase.localeProvider;

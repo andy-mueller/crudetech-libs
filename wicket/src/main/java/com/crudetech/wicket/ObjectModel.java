@@ -19,15 +19,15 @@ import org.apache.wicket.model.Model;
 /**
  * Adaptor model that simplifies and enables the use of domain objects in
  * wicket models.
- * <p>
+ * <p/>
  * A  lot of predefined wicket components use primitive types and toString to display them.
  * This often leads to the effect that the programming style relies more on these primitives and
  * strings as on domain objects. This model helps you to convert any complex object into another
  * representation. When you have more complicated domain objects, displaying
  * them can be achieved using {@link org.apache.wicket.model.PropertyModel}s or
- * their type safe brother.
+ * their type safe brothers.
  *
- * @param <TObject> The domain object type.
+ * @param <TObject>  The domain object type.
  * @param <TDisplay> The target type and the type of this model
  */
 public class ObjectModel<TObject, TDisplay> implements IChainingModel<TDisplay> {
@@ -77,15 +77,14 @@ public class ObjectModel<TObject, TDisplay> implements IChainingModel<TDisplay> 
         return rv != null ? converter.convertTo(rv) : null;
     }
 
+    @SuppressWarnings("unchecked")
     private IModel<TObject> valueAsModel() {
-        @SuppressWarnings("unchecked")
-        IModel<TObject> model = ((IModel<TObject>) value);
-        return model;
+        return ((IModel<TObject>) value);
     }
+
+    @SuppressWarnings("unchecked")
     private TObject valueAsObject() {
-        @SuppressWarnings("unchecked")
-        TObject tmp = (TObject) value;
-        return tmp;
+        return (TObject) value;
     }
 
     private boolean valueIsModel() {
@@ -95,17 +94,17 @@ public class ObjectModel<TObject, TDisplay> implements IChainingModel<TDisplay> 
     @Override
     public void setObject(TDisplay value) {
         TObject newValue = converter.convertFrom(value);
-        if(valueIsModel()){
+        if (valueIsModel()) {
             valueAsModel().setObject(newValue);
-        }      else{
+        } else {
             this.value = newValue;
         }
     }
 
     @Override
     public void detach() {
-        if(value instanceof IDetachable){
-            ((IDetachable)value).detach();
+        if (value instanceof IDetachable) {
+            ((IDetachable) value).detach();
         }
     }
 }

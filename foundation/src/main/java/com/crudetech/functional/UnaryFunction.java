@@ -11,6 +11,20 @@
 package com.crudetech.functional;
 
 
-public interface UnaryFunction<Arg, Result> {
-    Result execute(Arg arg);    
+/**
+ * A function with one argument.
+ *
+ * @param <TArg>    The argument type
+ * @param <TResult> The result type.
+ */
+public interface UnaryFunction<TArg, TResult> {
+    /**
+     * Executes the represented function, taking the given argument and returning the result.
+     * And implementation is expected to be idempotent, i.e. it can be called multiple times with the
+     * same argument and will return the same results
+     *
+     * @param arg The argument of the function call.
+     * @return The result of this function.
+     */
+    TResult execute(TArg arg);
 }

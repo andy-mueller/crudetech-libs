@@ -210,27 +210,75 @@ public final class Iterables {
         return init;
     }
 
+    /**
+     * Concatenates a set of iterables into one iterable.
+     * @param i1
+     * @param i2
+     * @param <T>
+     * @return
+     */
     public static <T> Iterable<T> concat(Iterable<T> i1, Iterable<T> i2) {
         return concat(asList(i1, i2));
     }
 
+    /**
+     * Concatenates a set of iterables into one iterable.
+     * @param i1
+     * @param i2
+     * @param i3
+     * @param <T>
+     * @return
+     */
     public static <T> Iterable<T> concat(Iterable<T> i1, Iterable<T> i2, Iterable<T> i3) {
         return concat(asList(i1, i2, i3));
     }
 
+    /**
+     * Concatenates a set of iterables into one iterable.
+     * @param i1
+     * @param i2
+     * @param i3
+     * @param i4
+     * @param <T>
+     * @return
+     */
     public static <T> Iterable<T> concat(Iterable<T> i1, Iterable<T> i2, Iterable<T> i3, Iterable<T> i4) {
         return concat(asList(i1, i2, i3, i4));
     }
 
+    /**
+     * Concatenates a set of iterables into one iterable.
+     * @param i1
+     * @param i2
+     * @param i3
+     * @param i4
+     * @param i5
+     * @param <T>
+     * @return
+     */
     public static <T> Iterable<T> concat(Iterable<T> i1, Iterable<T> i2, Iterable<T> i3, Iterable<T> i4, Iterable<T> i5) {
         return concat(asList(i1, i2, i3, i4, i5));
     }
 
+    /**
+     * Concatenates a set of iterables into one iterable.
+     *
+     * @param iterables
+     * @param <T>
+     * @return
+     */
     public static <T> Iterable<T> concat(Iterable<T>... iterables) {
         if (iterables == null) throw new ArgumentNullException("iterables");
         return new ConcatIterable<T>(asList(iterables));
     }
 
+    /**
+     * Concatenates a set of iterables into one iterable.
+     *
+     * @param iterables
+     * @param <T>
+     * @return
+     */
     public static <T> Iterable<T> concat(Iterable<Iterable<T>> iterables) {
         if (iterables == null) throw new ArgumentNullException("iterables");
         return new ConcatIterable<T>(iterables);

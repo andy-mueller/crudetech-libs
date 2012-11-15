@@ -29,11 +29,14 @@ public class TextWidget extends RectangularWidget {
 
     @Override
     protected void drawEcs(GraphicsStream2d stream) {
-        try (GraphicsStream2d.RestorePoint rp = stream.createRestorePoint()) {
+        GraphicsStream2d.RestorePoint rp = stream.createRestorePoint();
+        try {
             stream.getBrushStack().push(getDisplayProperties().getTextBrush());
             stream.getFontStack().push(getDisplayProperties().getFont());
 
             stream.drawString(text, getBoundingBox(), 1);
+        } finally {
+            rp.restore();
         }
     }
 
