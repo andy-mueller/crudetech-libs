@@ -17,7 +17,8 @@ import java.util.Map;
  * When a class that has an {@link Event} needs to be decorated, this typically
  * applies to the events of this class, too. It turned out, that in java writing such
  * event decorating code is very verbose and non trivial, especially when you want
- * to ensure a proper removing of the listeners.
+ * to ensure a proper removing of the listeners. Therefore this class was created,
+ * to handle this for you.
  * <p>
  * This class is thread safe.
  * <p/>
@@ -95,7 +96,8 @@ public abstract class EventDecorator<TEventSource, TEventObject extends EventObj
     private final TEventSource decorated;
     private final Event<TEventObject> decoratedEvent;
     private final Object SyncLock = new Object();
-
+    private final Map<EventListener<? super TEventObject>, EventListener<TEventObject>> handlers =
+            new HashMap<EventListener<? super TEventObject>, EventListener<TEventObject>>();
 
     public EventDecorator(TEventSource decorated, Event<TEventObject> decoratedEvent) {
         this.decorated = decorated;
@@ -106,7 +108,7 @@ public abstract class EventDecorator<TEventSource, TEventObject extends EventObj
      * {@inheritDoc}
      */
     @Override
-    public void addListener(EventListener<TEventObject> e) {
+    public void addListener(EventListener<? super TEventObject> e) {
         EventListener<TEventObject> adapter = createAdapter();
         synchronized (SyncLock) {
             event.addListener(e);
@@ -115,10 +117,7 @@ public abstract class EventDecorator<TEventSource, TEventObject extends EventObj
         }
     }
 
-    private final Map<EventListener<TEventObject>, EventListener<TEventObject>> handlers =
-            new HashMap<EventListener<TEventObject>, EventListener<TEventObject>>();
-
-    private EventListener<TEventObject> createAdapter() {
+    private EventListener <TEventObject> createAdapter() {
         return new EventListener<TEventObject>() {
             @Override
             public void onEvent(TEventObject e) {
@@ -142,15 +141,14 @@ public abstract class EventDecorator<TEventSource, TEventObject extends EventObj
      * {@inheritDoc}
      */
     @Override
-    public void removeListener(EventListener<TEventObject> e) {
+    public void removeListener(EventListener<? super TEventObject> e) {
         synchronized (SyncLock) {
-            EventListener<TEventObject> adapter = handlers.get(e);
+            EventListener<TEventObject> adapter = handlers.remove(e);
             if (adapter == null) {
                 throw new IllegalArgumentException("The provided listener was not registered with this object!");
             }
             event.removeListener(e);
             decoratedEvent.removeListener(adapter);
-            handlers.remove(e);
         }
     }
 }

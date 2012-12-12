@@ -18,21 +18,25 @@ import java.util.Arrays;
 import java.util.Iterator;
 
 public class Builder {
-         private Builder(){}
-     public static <T> Iterable<T> concat(final Iterable<T>... ranges){
+    private Builder() {
+    }
+
+    public static <T> Iterable<T> concat(final Iterable<T>... ranges) {
         return Iterables.concat(ranges);
     }
-    public static <T> Iterable<T> concat(final Iterable<Iterable<T>> ranges){
+
+    public static <T> Iterable<T> concat(final Iterable<Iterable<T>> ranges) {
         return Iterables.concat(ranges);
     }
+
     @SuppressWarnings("unchecked")
     public static <T> Iterable<T> concat(final Iterable<T> range, final T... additional) {
         return Builder.concat(range, Arrays.asList(additional));
     }
 
 
-    public static <T> Iterable<T> generate(final NullaryFunction<T> creator, final int count){
-        return new AbstractIterable<T>(){
+    public static <T> Iterable<T> generate(final NullaryFunction<T> creator, final int count) {
+        return new AbstractIterable<T>() {
             public Iterator<T> iterator() {
                 return new GenerateIterator<T>(creator, count);
             }

@@ -20,19 +20,19 @@ package com.crudetech.event;
  * @param <TEventObject>
  */
 public class EventHookingBean<TEventObject extends EventObject<?>> {
-    private final Event<TEventObject> event;
-    private final Iterable<EventListener<TEventObject>> eventListeners;
+    private final Event<? extends TEventObject> event;
+    private final Iterable<EventListener<? super  TEventObject>> eventListeners;
 
-    public EventHookingBean(Event<TEventObject> event, Iterable<EventListener<TEventObject>> eventListeners) {
+    public EventHookingBean(Event<? extends TEventObject> event, Iterable<EventListener<? super  TEventObject>> eventListeners) {
         this.event = event;
         this.eventListeners = eventListeners;
-        for (EventListener<TEventObject> listener : eventListeners) {
+        for (EventListener<? super TEventObject> listener : eventListeners) {
             event.addListener(listener);
         }
     }
 
     public void destroy() {
-        for (EventListener<TEventObject> listener : eventListeners) {
+        for (EventListener<? super TEventObject> listener : eventListeners) {
             event.removeListener(listener);
         }
     }

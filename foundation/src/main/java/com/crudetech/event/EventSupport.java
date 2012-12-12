@@ -10,7 +10,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 package com.crudetech.event;
 
-import java.util.ArrayList;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
@@ -50,30 +49,31 @@ import java.util.concurrent.CopyOnWriteArrayList;
  */
 public class EventSupport<TEventObject extends EventObject<?>> implements Event<TEventObject> {
 
-    private final CopyOnWriteArrayList<EventListener<TEventObject>> listeners = new CopyOnWriteArrayList<EventListener<TEventObject>>();
+    private final CopyOnWriteArrayList<EventListener<? super TEventObject>> listeners =
+            new CopyOnWriteArrayList<EventListener<? super TEventObject>>();
 
-    public void addListener(EventListener<TEventObject> listener) {
+    public void addListener(EventListener<? super TEventObject> listener) {
         listeners.add(listener);
     }
     public void fireEvent(TEventObject eventObject) {
-        for (EventListener<TEventObject> listener : listeners) {
+        for (EventListener<? super TEventObject> listener : listeners) {
             listener.onEvent(eventObject);
         }
     }
 
-    public Iterable<EventListener<TEventObject>> getListeners() {
-        return new ArrayList<EventListener<TEventObject>>(listeners);
+    public Iterable<EventListener<? super TEventObject>> getListeners() {
+        return listeners;
     }
 
     public void clearListeners() {
         listeners.clear();
     }
 
-    public boolean contains(EventListener<TEventObject> listener) {
+    public boolean contains(EventListener<? super TEventObject> listener) {
         return listeners.contains(listener);
     }
 
-    public void removeListener(EventListener<TEventObject> listener) {
+    public void removeListener(EventListener<? super TEventObject> listener) {
         listeners.remove(listener);
     }
 }

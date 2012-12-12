@@ -14,13 +14,13 @@ package com.crudetech.event;
  * A type safe interface that represents an event. You can add and remove
  * listeners an will be notified when the event occurs.
  * <p>
- * To provide events, you will use this interface through the {@EventSupport} class.
+ * To provide events, you will use this interface through the {@link EventSupport} class.
  * Please refer to the {@link EventSupport} documentation for details on
  * how to use the type safe event mechanism.
  */
 public interface Event<TEventObject extends EventObject<?>> {
 
-    void addListener(EventListener<TEventObject> listener);
+    void addListener(EventListener<? super TEventObject> listener);
 
-    void removeListener(EventListener<TEventObject> listener);
+    void removeListener(EventListener<? super TEventObject> listener);
 }
