@@ -59,7 +59,7 @@ import java.util.ResourceBundle;
  *           new LocaleProviderOverride(new SessionLocaleProvider());
  * </pre>
  * <p>
- * Last and least, yo can control the type of the resource bundle by implementing the
+ * Last and least, you can control the type of the resource bundle by implementing the
  * {@link ResourceBundleControlProvider} interface and pass it to the ctor of this class. The default
  * is not Java's default, but xml property files. The reason for this is, that there ere a lot of
  * encoding issues. Here is an example of a derived class using the the standard java formats,
