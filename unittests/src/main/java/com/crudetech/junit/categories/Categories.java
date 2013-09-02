@@ -58,9 +58,7 @@ public class Categories extends Suite {
     private static Collection<Class<?>> getInclusions(Class<?> testClass) throws InitializationError {
         IncludeCategory inc = testClass.getAnnotation(IncludeCategory.class);
         if (isNull(inc) || isNullOrEmpty(inc.value())) {
-            @SuppressWarnings("unchecked")
-            Collection<Class<?>> rv = Arrays.<Class<?>>asList(All);
-            return rv;
+            return Arrays.<Class<?>>asList(All);
         }
         return asList(inc.value());
     }
@@ -148,7 +146,7 @@ public class Categories extends Suite {
         }
         private Set<Class<?>> getCategories(Category cat) {
             if (isNull(cat)) {
-                return new HashSet<Class<?>>(asList(StandardCategory.class));
+                return new HashSet<Class<?>>(Arrays.<Class<?>>asList(StandardCategory.class));
             }
             if (isNull(cat.value())) {
                 return new HashSet<Class<?>>();
