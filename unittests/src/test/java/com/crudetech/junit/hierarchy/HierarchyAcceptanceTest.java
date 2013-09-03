@@ -8,14 +8,8 @@ public class HierarchyAcceptanceTest {
 
     @Before
     public void before_0() {
-        printName();
     }
 
-    private void printName() {
-        StackTraceElement method = Thread.currentThread().getStackTrace()[2];
-        String methodName = method.getMethodName();
-        System.out.println(methodName);
-    }
 
     @Test
     public void level_0() throws Exception {
