@@ -13,6 +13,10 @@ public class BlockJUnit4NonStaticClassRunner extends HierarchicalBlockJUnit4Clas
     }
 
     @Override
+    protected void validateNoNonStaticInnerClass(List<Throwable> errors) {
+    }
+
+    @Override
     protected void validateZeroArgConstructor(List<Throwable> errors) {
         if (hasOneConstructor()
                 && hasNotOnlyOneOuterClassReferenceArgument()) {
