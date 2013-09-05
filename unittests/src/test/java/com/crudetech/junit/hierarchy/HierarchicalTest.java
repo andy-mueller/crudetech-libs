@@ -5,9 +5,7 @@ import com.crudetech.junit.hierarchy.stubs.OneInnerStaticClass;
 import com.crudetech.junit.hierarchy.stubs.Tracker;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.Description;
 import org.junit.runner.JUnitCore;
-import org.junit.runner.notification.RunListener;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
