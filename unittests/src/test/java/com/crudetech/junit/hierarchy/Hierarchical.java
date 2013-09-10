@@ -6,6 +6,7 @@ import org.junit.runner.notification.RunNotifier;
 import org.junit.runners.BlockJUnit4ClassRunner;
 import org.junit.runners.ParentRunner;
 import org.junit.runners.model.InitializationError;
+import org.junit.runners.model.Statement;
 
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
@@ -30,6 +31,14 @@ public class Hierarchical extends ParentRunner<Runner> {
             runners.add(innerRunner);
         }
         return runners;
+    }
+
+    @Override
+    protected Statement classBlock(RunNotifier notifier) {
+        return super.classBlock(notifier);
+        // build bafore/afterClass
+        // all: setup/test/teardown of this class
+        //recurse down
     }
 
     private Class<?> getTestJavaClass() {
