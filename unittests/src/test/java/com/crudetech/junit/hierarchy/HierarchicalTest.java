@@ -6,6 +6,9 @@ import com.crudetech.junit.hierarchy.stubs.Tracker;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.JUnitCore;
+import org.junit.runner.Result;
+
+import java.util.Arrays;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
@@ -20,7 +23,10 @@ public class HierarchicalTest {
 
     private void runTest(Class<?> testClass) {
         JUnitCore jUnitCore = new JUnitCore();
-        assertThat(jUnitCore.run(testClass).getRunCount(), is(greaterThanOrEqualTo(1)));
+        Result result = jUnitCore.run(testClass);
+        assertThat(result.getRunCount(), is(greaterThanOrEqualTo(1)));
+        assertThat(Arrays.toString(result.getFailures().toArray()),result.getFailureCount(), is((0)));
+
     }
 
     @Test
