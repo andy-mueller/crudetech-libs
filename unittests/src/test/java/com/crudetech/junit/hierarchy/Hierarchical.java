@@ -24,12 +24,12 @@ public class Hierarchical extends ParentRunner<Runner> {
     public Hierarchical(Class<?> testClass, Hierarchical parent) throws InitializationError {
         super(testClass);
         this.parent = parent;
-        this.childRunners = buildChildRunners();
         this.thisNodeRunner = BlockJUnit4InnerClassRunner.createInnerClassRunner(testClass, getParentsNodeRunner());
+        this.childRunners = buildChildRunners();
     }
 
     private BlockJUnit4InnerClassRunner getParentsNodeRunner() {
-        return return parent != null ? parent.thisNodeRunner : null;
+         return parent != null ? parent.thisNodeRunner : null;
     }
 
     private List<Runner> buildChildRunners() throws InitializationError {
@@ -74,10 +74,6 @@ public class Hierarchical extends ParentRunner<Runner> {
     @Override
     protected List<Runner> getChildren() {
         return childRunners;
-    }
-
-    private static boolean isStatic(Class<?> innerClass) {
-        return Modifier.isStatic(innerClass.getModifiers());
     }
 
     private static Class<?>[] getAllInnerClasses(Class<?> klass) {

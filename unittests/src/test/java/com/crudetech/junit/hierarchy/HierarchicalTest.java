@@ -35,7 +35,7 @@ public class HierarchicalTest {
         assertThat(Tracker.lastMethodRun(), is("OneInnerStaticClass$Inner#atest"));
     }
 
-    @Test
+   @Test
     public void givenANonStaticInnerClass_InnerClassIsExecuted() throws Exception {
         runTest(OneInnerNonStaticClass.class);
         assertThat(Tracker.lastMethodRun(), is("OneInnerNonStaticClass$Inner#atest"));
