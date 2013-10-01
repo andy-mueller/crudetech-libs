@@ -1,5 +1,7 @@
 package com.crudetech.junit.hierarchy.stubs;
 
+import java.text.MessageFormat;
+
 public class Tracker {
     static String last;
 
@@ -8,16 +10,20 @@ public class Tracker {
     }
 
     public static void executed() {
-           last = executingMethod();
+        last = executingMethod();
     }
 
     private static String executingMethod() {
         StackTraceElement callingMethod = Thread.currentThread().getStackTrace()[3];
         String method = callingMethod.getMethodName();
-        String className = callingMethod.getClassName();
+        String className = getClassName(callingMethod);
+        return MessageFormat.format("{0}#{1}", className, method);
+    }
+
+    private static String getClassName(StackTraceElement element) {
+        String className = element.getClassName();
         int start = className.lastIndexOf('.') + 1;
-        className = className.substring(start);
-        return className + "#" + method;
+        return className.substring(start);
     }
 
     public static void reset() {
