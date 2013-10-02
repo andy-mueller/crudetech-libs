@@ -1,5 +1,6 @@
 package com.crudetech.junit.hierarchy;
 
+import com.crudetech.junit.hierarchy.stubs.MultipleNestedInnerClasses;
 import com.crudetech.junit.hierarchy.stubs.OneInnerNonStaticClass;
 import com.crudetech.junit.hierarchy.stubs.OneInnerStaticClass;
 import com.crudetech.junit.hierarchy.stubs.Tracker;
@@ -39,6 +40,13 @@ public class HierarchicalTest {
     public void givenANonStaticInnerClass_InnerClassIsExecuted() throws Exception {
         runTest(OneInnerNonStaticClass.class);
         assertThat(Tracker.lastMethodRun(), is("OneInnerNonStaticClass$Inner#atest"));
+    }
+
+    @Test
+    public void givenMultipleNestedInnerClasses_allInnerClassesArePickedUp() throws Exception {
+        runTest(MultipleNestedInnerClasses.class);
+        assertThat(Tracker.methodWasRun("MultipleNestedInnerClasses$Inner#atest"), is(true));
+        assertThat(Tracker.methodWasRun("MultipleNestedInnerClasses$Inner$Inner2#btest"), is(true));
     }
 
     //multiple Levels

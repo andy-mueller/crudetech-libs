@@ -1,16 +1,19 @@
 package com.crudetech.junit.hierarchy.stubs;
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class Tracker {
-    static String last;
+    private static List<String> methods = Collections.synchronizedList(new ArrayList<String>());
 
     public static String lastMethodRun() {
-        return last;
+        return methods.get(methods.size() - 1);
     }
 
     public static void executed() {
-        last = executingMethod();
+        methods.add(executingMethod());
     }
 
     private static String executingMethod() {
@@ -27,6 +30,10 @@ public class Tracker {
     }
 
     public static void reset() {
-        last = null;
+        methods.clear();
+    }
+
+    public static boolean methodWasRun(String method) {
+        return methods.contains(method);
     }
 }
