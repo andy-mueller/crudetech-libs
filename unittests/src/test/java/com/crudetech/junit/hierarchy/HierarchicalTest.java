@@ -1,18 +1,22 @@
 package com.crudetech.junit.hierarchy;
 
-import com.crudetech.junit.hierarchy.stubs.MultipleNestedInnerClasses;
-import com.crudetech.junit.hierarchy.stubs.OneInnerNonStaticClass;
-import com.crudetech.junit.hierarchy.stubs.OneInnerStaticClass;
-import com.crudetech.junit.hierarchy.stubs.Tracker;
+import com.crudetech.junit.feature.TestTracker;
+import com.crudetech.junit.hierarchy.stubs.*;
+import org.hamcrest.collection.IsIterableContainingInOrder;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.JUnitCore;
 import org.junit.runner.Result;
+import sun.swing.BakedArrayList;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
+import static java.util.Arrays.asList;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
+import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.is;
 
 public class HierarchicalTest {
@@ -20,7 +24,6 @@ public class HierarchicalTest {
     public void resetTracker(){
         Tracker.reset();
     }
-
 
     private void runTest(Class<?> testClass) {
         JUnitCore jUnitCore = new JUnitCore();
@@ -33,24 +36,41 @@ public class HierarchicalTest {
     @Test
     public void givenAStaticInnerClass_InnerClassIsExecuted() throws Exception {
         runTest(OneInnerStaticClass.class);
-        assertThat(Tracker.lastMethodRun(), is("OneInnerStaticClass$Inner#atest"));
+        assertTestWasRun("OneInnerStaticClass$Inner#atest");
     }
 
    @Test
     public void givenANonStaticInnerClass_InnerClassIsExecuted() throws Exception {
         runTest(OneInnerNonStaticClass.class);
-        assertThat(Tracker.lastMethodRun(), is("OneInnerNonStaticClass$Inner#atest"));
+        assertTestWasRun("OneInnerNonStaticClass$Inner#atest");
     }
 
     @Test
     public void givenMultipleNestedInnerClasses_allInnerClassesArePickedUp() throws Exception {
         runTest(MultipleNestedInnerClasses.class);
-        assertThat(Tracker.methodWasRun("MultipleNestedInnerClasses$Inner#atest"), is(true));
-        assertThat(Tracker.methodWasRun("MultipleNestedInnerClasses$Inner$Inner2#btest"), is(true));
+        assertTestWasRun("MultipleNestedInnerClasses$Inner#atest");
+        assertTestWasRun("MultipleNestedInnerClasses$Inner$Inner2#btest");
     }
 
-    //multiple Levels
-    //executes befores on inner class
+    private void assertTestWasRun(String testMethod) {
+        Tracker.assertMethodWasRun(testMethod);
+    }
+
+    @Test
+    public void givenNonStaticNestedClass_beforeIsExecutedOnOuterAndInnerClassBeforeTheTest() throws Exception {
+        runTest(InnerNonStaticClassWithBefores.class);
+
+        Tracker.assertExecutionOrder(
+                "InnerNonStaticClassWithBefores#outerBefore",
+                "InnerNonStaticClassWithBefores$Inner#innerBefore",
+                "InnerNonStaticClassWithBefores$Inner#innerTest");
+
+//        TestTracker.assertExecutionOrder(
+//                "InnerNonStaticClassWithBefores#outerBefore",
+//                "InnerNonStaticClassWithBefores#outerTest" );
+    }
+
+    //test are run top down??
     //executes after on inner class
     //executes rules on inner class
     //executes beforeClass on static outer class before all test/befores/after/rules ran

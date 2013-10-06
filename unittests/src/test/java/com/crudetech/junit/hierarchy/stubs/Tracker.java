@@ -5,15 +5,16 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class Tracker {
-    private static List<String> methods = Collections.synchronizedList(new ArrayList<String>());
+import static java.util.Arrays.asList;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.greaterThanOrEqualTo;
+import static org.hamcrest.Matchers.is;
 
-    public static String lastMethodRun() {
-        return methods.get(methods.size() - 1);
-    }
+public class Tracker {
+    private static List<String> collectedMethods = Collections.synchronizedList(new ArrayList<String>());
 
     public static void executed() {
-        methods.add(executingMethod());
+        collectedMethods.add(executingMethod());
     }
 
     private static String executingMethod() {
@@ -30,10 +31,14 @@ public class Tracker {
     }
 
     public static void reset() {
-        methods.clear();
+        collectedMethods.clear();
     }
 
-    public static boolean methodWasRun(String method) {
-        return methods.contains(method);
+    public static void assertMethodWasRun(String method) {
+        assertThat(collectedMethods.contains(method), is(true));
+    }
+
+    public static void assertExecutionOrder(String... methods) {
+        assertThat(Collections.indexOfSubList(collectedMethods, asList(methods)), is(greaterThanOrEqualTo(0)));
     }
 }
