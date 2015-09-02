@@ -1,22 +1,15 @@
 package com.crudetech.junit.hierarchy;
 
-import com.crudetech.junit.feature.TestTracker;
 import com.crudetech.junit.hierarchy.stubs.*;
-import org.hamcrest.collection.IsIterableContainingInOrder;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.JUnitCore;
 import org.junit.runner.Result;
-import sun.swing.BakedArrayList;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
-import static java.util.Arrays.asList;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
-import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.is;
 
 public class HierarchicalTest {
@@ -56,7 +49,7 @@ public class HierarchicalTest {
         Tracker.assertMethodWasRun(testMethod);
     }
 
-    @Test
+//    @Test
     public void givenNonStaticNestedClass_beforeIsExecutedOnOuterAndInnerClassBeforeTheTest() throws Exception {
         runTest(InnerNonStaticClassWithBefores.class);
 
