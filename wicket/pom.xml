@@ -14,7 +14,7 @@
     <parent>
         <artifactId>com.crudetech</artifactId>
         <groupId>com.crudetech</groupId>
-        <version>0.27-SNAPSHOT</version>
+        <version>0.27</version>
     </parent>
 
     <artifactId>wicket</artifactId>
