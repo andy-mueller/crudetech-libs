@@ -19,11 +19,11 @@ package com.crudetech.event;
  * how to use the type safe event mechanism.
  * @param <TEventObject>
  */
-public class EventHookingBean<TEventObject extends EventObject<?>> {
-    private final Event<? extends TEventObject> event;
+public class EventHookingBean<TSource, TEventObject extends EventObject<? extends TSource>> {
+    private final Event<TEventObject> event;
     private final Iterable<EventListener<? super  TEventObject>> eventListeners;
 
-    public EventHookingBean(Event<? extends TEventObject> event, Iterable<EventListener<? super  TEventObject>> eventListeners) {
+    public EventHookingBean(Event<TEventObject> event, Iterable<EventListener<? super  TEventObject>> eventListeners) {
         this.event = event;
         this.eventListeners = eventListeners;
         for (EventListener<? super TEventObject> listener : eventListeners) {

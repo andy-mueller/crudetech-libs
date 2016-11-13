@@ -13,7 +13,9 @@ package com.crudetech.event;
 import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.List;
 
+import static java.util.Arrays.asList;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 
@@ -45,7 +47,7 @@ public class EventHookingBeanFixture {
 
     @Test
     public void listenersAreRemovedWhenDestroyed(){
-        EventSupport<EventObject<Object>> event = new EventSupport<EventObject<Object>>();
+        EventSupport<EventObject<Object>> event = new EventSupport<>();
         EventListener<EventObject<Object>> l1 = new EventListener<EventObject<Object>>() {
             @Override
             public void onEvent(EventObject<Object> e) {
@@ -60,5 +62,21 @@ public class EventHookingBeanFixture {
         eventHook.destroy();
         assertThat(event.getListeners().iterator().hasNext(), is(false));
     }
+    @Test
+    public void listenersAreAddedToEventCovariant(){
+        EventSupport<EventObject<Integer>> event = new EventSupport<>();
+        EventListener<EventObject<Number>> l1 = new EventListener<EventObject<Number>>() {
+            @Override
+            public void onEvent(EventObject e) {
+            }
+        };
+        EventListener<EventObject<Number>> l2 = new EventListener<EventObject<Number>>() {
+            @Override
+            public void onEvent(EventObject e) {
+            }
+        };
 
+        Iterable<EventListener<? super EventObject<Number>>> listeners = null;
+        new EventHookingBean<>(event, listeners);
+    }
 }
